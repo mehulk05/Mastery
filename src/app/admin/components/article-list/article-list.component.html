@@ -1,0 +1,35 @@
+<div class="container">
+    <div class="card list-section">
+        <div class="title-section">
+            <h5>
+                Article List
+            </h5>
+        </div>
+        <div class="table table-responsive">
+            <table class="table table-striped my-0 table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Author</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr *ngFor="let article of articleList; let i=index" class="table-light" (click)="navigateTo($event,chatSession)">
+                        <td> {{i+1}} </td>
+                        <td>{{article.title}}</td>
+                        <td>{{article.date}}</td>
+                        <td>{{article.author}}</td>
+                        <td>
+                            <a href="javascript:void(0)" (click)="editArticle(article)"><i
+                                                   class="fas fa-pencil-alt ms-text-primary"></i>Edit</a>
+                            <a href="javascript:void(0)" (click)="deleteArticle(article)" style="color: brown;"><i
+                                                   class="far fa-trash-alt ms-text-danger" style="margin-left: 20px;"></i>Delete</a>
+                        </td>
+            </table>
+        </div>
+    </div>
+</div>

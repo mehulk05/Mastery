@@ -116,6 +116,16 @@
               "devServerTarget": "mastery:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "mastery:build:production",
+            "firebaseProject": "matery-5d74a",
+            "firebaseHostingSite": "matery-5d74a"
+          }
         }
       }
     }

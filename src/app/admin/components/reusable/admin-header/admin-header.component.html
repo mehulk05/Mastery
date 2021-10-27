@@ -1,0 +1,30 @@
+<header class="main-header"><button class="main-navigation__menu-btn"><span></span><span></span><span></span></button>
+    <h1 class="main-navigation__title"><a href="#/">Blog Book</a></h1>
+    <nav class="main-navigation__header-nav">
+        <ul class="nav-links">
+            <li>
+                <a routerLinkActive="active" routerLink="/admin/" [routerLinkActiveOptions]="{exact: true}">Home</a>
+            </li>
+            <li>
+                <a routerLinkActive="active" routerLink="/admin/add-user" [routerLinkActiveOptions]="{exact: true}"> Users</a>
+            </li>
+            <li>
+                <a routerLinkActive="active" routerLink="/admin/article-list" [routerLinkActiveOptions]="{exact: true}"> Article</a>
+            </li>
+            <li>
+                <a routerLinkActive="active" routerLink="/admin/" [routerLinkActiveOptions]="{exact: true}"> Vidoes</a>
+            </li>
+
+            <li>
+                <a routerLinkActive="active" routerLink="/admin/" [routerLinkActiveOptions]="{exact: true}"> Books</a>
+            </li>
+
+            <li>
+                <a routerLinkActive="active" routerLink="/admin/" [routerLinkActiveOptions]="{exact: true}"> Shows</a>
+            </li>
+
+            <li><a *ngIf="!isAuth" routerLinkActive=" active " routerLink="/admin/auth ">Login/Register</a></li>
+            <li><button *ngIf="isAuth" (click)="onLogout()">Logout </button></li>
+        </ul>
+    </nav>
+</header>

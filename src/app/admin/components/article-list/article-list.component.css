@@ -1,0 +1,31 @@
+table {
+    clear: both;
+    margin-top: 6px!important;
+    margin-bottom: 6px!important;
+    max-width: none!important;
+    border-collapse: separate!important;
+    border-spacing: 0;
+}
+
+table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+    color: #56595c;
+}
+
+table tbody td {
+    color: #56595c;
+}
+
+table tbody tr:nth-child(2n) td {
+    background-color: #edf4ff;
+}
+
+.list-section {
+    box-shadow: 0 0 0.875rem 0 rgb(41 48 66 / 17%) !important;
+    margin-bottom: 24px;
+    box-shadow: 0 0 0.875rem 0 rgb(41 48 66 / 5%);
+    border: 0;
+    border-radius: .65rem;
+    padding: 2em;
+}
