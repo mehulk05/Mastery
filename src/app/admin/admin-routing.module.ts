@@ -6,6 +6,7 @@ import { AddEditUserComponent } from './components/add-edit-user/add-edit-user.c
 import { AdminAuthComponent } from './components/admin-auth/admin-auth.component';
 import { AdminWrapperComponent } from './components/admin-wrapper/admin-wrapper.component';
 import { ArticleListComponent } from './components/article-list/article-list.component';
+import { UserListComponent } from './components/user-list/user-list.component';
 
 const routes: Routes = [
   {
@@ -21,7 +22,12 @@ const routes: Routes = [
       {
         path: 'add-user',
         component: AddEditUserComponent,
-
+        canActivate:[AuthGuard]
+      },
+      {
+        path: 'user-list',
+        component: UserListComponent,
+        canActivate:[AuthGuard]
       },
       {
         path: 'edit-user/:id',

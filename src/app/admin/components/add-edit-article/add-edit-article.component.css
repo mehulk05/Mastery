@@ -3,29 +3,7 @@
     border: 1px solid gainsboro
 }
 
-.flex-button {
-    display: flex;
-    justify-content: flex-end;
-}
-
-.flex-button button {
-    margin-left: 1em;
-}
-
-.error>div {
-    color: red;
-    font-size: 14px;
-}
-
-span.error-red {
-    color: red;
-}
-
 .ng-invalid.ng-touched ::ng-deep .cke_chrome,
 input.ng-invalid.ng-touched {
     border-color: red;
-}
-
-.add-form {
-    margin-top: 2em;
 }

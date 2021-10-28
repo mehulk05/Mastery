@@ -1,1 +1,39 @@
-<p>user-list works!</p>
+<div class="container">
+    <div class="card list-section">
+        <div class="title-section">
+            <h5>
+                User List
+            </h5>
+
+            <button class="btn btn-add btn-primary" (click)="addUser()">Add User</button>
+        </div>
+        <div class="table table-responsive">
+            <table class="table table-striped my-0 table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Password</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr *ngFor="let article of UserList; let i=index" class="table-light">
+                        <td> {{i+1}} </td>
+                        <td>{{article?.email}}</td>
+                        <td>{{article?.password}}</td>
+                        <td>{{article?.date | date:'MMM d, y hh:mm a'}}</td>
+                        <td>
+                            <a href="javascript:void(0)" (click)="editUser(article)">
+                                <i class="fas fa-pencil-alt ms-text-primary"></i> Edit
+                            </a>
+                            <a href="javascript:void(0)" (click)="deleteUser(article)" style="color: red;">
+                                <i class="far fa-trash-alt ms-text-danger"></i> Delete
+                            </a>
+                        </td>
+            </table>
+        </div>
+    </div>
+</div>

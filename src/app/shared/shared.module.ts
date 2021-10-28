@@ -5,7 +5,8 @@ import { LocalStorageService } from './services/local-storage.service';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import { AuthGuard } from './services/auth-guard.service';
+import { UserRoutingModule } from '@app/user/user-routing.module';
+
 
 
 
@@ -17,16 +18,16 @@ import { AuthGuard } from './services/auth-guard.service';
   imports: [
     CommonModule,
     NgxSpinnerModule,
+   UserRoutingModule
   ],
   exports: [
     HeaderComponent,
     FooterComponent,
-    NgxSpinnerModule
+    NgxSpinnerModule,UserRoutingModule
   ],
   providers: [
     ApiService,
     LocalStorageService,
-    AuthGuard
   ],
 })
 export class SharedModule { }

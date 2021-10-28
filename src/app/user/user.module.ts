@@ -8,6 +8,9 @@ import { FormsModule } from '@angular/forms';
 import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
 import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
 import { HttpClientModule } from '@angular/common/http';
+import { UserWrappperComponent } from './components/user-wrappper/user-wrappper.component';
+import { SharedModule } from '@app/shared/shared.module';
+import { UserAuthGuard } from '@app/shared/services/userauth-gaurd.service';
 
 
 @NgModule({
@@ -15,13 +18,15 @@ import { HttpClientModule } from '@angular/common/http';
     UserAuthComponent,
     ArticleListingComponent,
     VerifyEmailComponent,
-    ForgetPasswordComponent
+    ForgetPasswordComponent,
+    UserWrappperComponent
   ],
   imports: [
     CommonModule,
     UserRoutingModule,
     FormsModule,
-    HttpClientModule
-  ]
+    HttpClientModule,SharedModule
+  ],
+  providers:[UserAuthGuard]
 })
 export class UserModule { }

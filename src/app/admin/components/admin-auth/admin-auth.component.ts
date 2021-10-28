@@ -66,8 +66,6 @@ export class AdminAuthComponent implements OnInit {
         this.ngxLoader.hide();
       }
     );
-
-    form.reset();
     form.reset();
   }
 }

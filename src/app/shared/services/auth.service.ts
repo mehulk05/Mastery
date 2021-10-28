@@ -191,8 +191,3 @@ export class AuthService {
     });
   }
 }
-
-export interface AuthData {
-  email: string;
-  password: string;
-}
