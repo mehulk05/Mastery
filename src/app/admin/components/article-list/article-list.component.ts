@@ -40,6 +40,9 @@ export class ArticleListComponent implements OnInit {
   }
 
   deleteArticle(article){
-    this.articleCrudService.deleteArticleByKey(article.key)
+    this.articleCrudService.deleteArticleByKey(article.key).subscribe(data=>{
+      console.log(data)
+      this.getArticleList()
+    })
   }
 }
