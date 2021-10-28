@@ -18,7 +18,7 @@
                 </thead>
                 <tbody>
 
-                    <tr *ngFor="let article of articleList; let i=index" class="table-light" (click)="navigateTo($event,chatSession)">
+                    <tr *ngFor="let article of articleList; let i=index" class="table-light">
                         <td> {{i+1}} </td>
                         <td>{{article.title}}</td>
                         <td>{{article.date}}</td>

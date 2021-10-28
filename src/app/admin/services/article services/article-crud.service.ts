@@ -20,6 +20,10 @@ export class ArticleCrudService {
     return this.articlesRef;
   }
 
+  getSingleArticle(artice_id):Observable<any>{
+    return this.http.get<any>( `${this.hostUrl}/articles/${artice_id}.json`)
+  }
+
   createArticle(articleObject: any):  Observable<any> {
     return  this.http.post(
       `${this.hostUrl}/articles.json`,
@@ -27,11 +31,18 @@ export class ArticleCrudService {
     )
   }
 
-  updateArtice(){
-
+  updateArtice(articleObject,article_id){
+    return  this.http.put(
+      `${this.hostUrl}/articles/${article_id}.json`,
+        articleObject
+    )
   }
 
   getAllArticle(): Observable<any[]> {
     return this.http.get<any[]>( `${this.hostUrl}/articles.json`)
+  }
+
+  deleteArticleByKey(articleKey):Observable<any>{
+    return this.http.delete<any>( `${this.hostUrl}/articles/${articleKey}.json`)
   }
 }
