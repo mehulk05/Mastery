@@ -19,12 +19,22 @@ import {
   
     canActivate(route: ActivatedRouteSnapshot,
       state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-        if (this.authService.isAuth()) {
-            return true;
-          } else {
-            this.router.navigate(["admin/auth"], {
+
+      let  token = JSON.parse(localStorage.getItem("userData"))
+      console.log(token)
+      if(token){
+        return true
+      }
+      this.router.navigate(["admin/auth"], {
                 queryParams: { returnUrl: state.url }
               });
-          }
-        }
+      }
+        // if (this.authService.user) {
+        //     return true;
+        //   } else {
+        //     this.router.navigate(["admin/auth"], {
+        //         queryParams: { returnUrl: state.url }
+        //       });
+        //   }
+        // }
   }

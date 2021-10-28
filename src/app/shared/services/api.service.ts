@@ -1,19 +1,20 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { map } from 'rxjs/operators';
+import { exhaustMap, map, take } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { LocalStorageService } from './local-storage.service';
 import { Router } from '@angular/router';
 import { ERROR_HANDLER_MESSAGE, LOCAL_STORAGE_KEYS } from '@app/common/constants/constant';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-
+  token
   private hostUrl = environment.apiUrl;
   constructor(
     public http: HttpClient,
@@ -22,11 +23,15 @@ export class ApiService {
     @Inject(PLATFORM_ID) private platformId: object,
     private router: Router,
     public localStorageService: LocalStorageService,
+    private authService:AuthService
   ) { }
 
   async getHeader(headerOptions, doNotSendAuthorizationParam) {
-    const headerParams = { Authorization: '' };
-    const token: any = await this.localStorageService.getDataFromIndexedDB(LOCAL_STORAGE_KEYS.TOKEN);
+  
+    this.authService.user.subscribe(user=>{
+      this.token = user.token
+    })
+    const headerParams = { auth: '' };
 
     /* START -> Used for multilingual */
     const lang: any = await this.localStorageService.getDataFromIndexedDB(LOCAL_STORAGE_KEYS.LANGUAGE);
@@ -36,9 +41,8 @@ export class ApiService {
       headerParams['X-L10N-Locale'] = 'en';
     }
     /* END */
-
-    if (doNotSendAuthorizationParam !== true && token) {
-      headerParams.Authorization = `Bearer ${token}`;
+    if (doNotSendAuthorizationParam !== true && this.token) {
+      headerParams.auth = this.token;
     }
     if (headerOptions) {
       Object.assign(headerParams, headerOptions);
@@ -51,7 +55,7 @@ export class ApiService {
     url: string, body: any, doNotSendAuthorizationParam: boolean = false, headerOptions: any = {}, loaderContinue?) {
     return new Promise(async (resolve, reject) => {
       const options = await this.getHeader(headerOptions, doNotSendAuthorizationParam);
-      this.http.post(`${this.hostUrl}${url}`, body, options).pipe(map((res) => {
+      this.http.post(`${this.hostUrl}${url}?auth=${this.token}`, body, options).pipe(map((res) => {
         if (!loaderContinue) {
           this.stopLoader();
         }
@@ -67,8 +71,8 @@ export class ApiService {
 
   get(url: string, doNotSendAuthorizationParam: boolean = false, headerOptions: any = {}, loaderContinue?) {
     return new Promise(async (resolve, reject) => {
-      const options = await this.getHeader(headerOptions, doNotSendAuthorizationParam);
-      this.http.get(`${this.hostUrl}${url}`, options).pipe(map((res) => {
+    //  const options = await this.getHeader(headerOptions, doNotSendAuthorizationParam);
+      this.http.get(`${this.hostUrl}${url}`).pipe(map((res) => {
         if (!loaderContinue) {
           this.stopLoader();
         }
@@ -86,7 +90,7 @@ export class ApiService {
   put(url, body: any, headerOptions: any = {}, doNotSendAuthorizationParam: boolean = false, loaderContinue?) {
     return new Promise(async (resolve, reject) => {
       const options = await this.getHeader(headerOptions, doNotSendAuthorizationParam);
-      this.http.put(`${this.hostUrl}${url}`, body, options).pipe(map((res) => {
+      this.http.put(`${this.hostUrl}${url}?auth=${this.token}`, body, options).pipe(map((res) => {
         if (!loaderContinue) {
           this.stopLoader();
         }
@@ -103,7 +107,7 @@ export class ApiService {
   delete(url, headerOptions: any = {}, doNotSendAuthorizationParam: boolean = false, loaderContinue?) {
     return new Promise(async (resolve, reject) => {
       const options = await this.getHeader(headerOptions, doNotSendAuthorizationParam);
-      this.http.delete(`${this.hostUrl}${url}`, options).pipe(map((res) => {
+      this.http.delete(`${this.hostUrl}${url}?auth=${this.token}`, options).pipe(map((res) => {
         if (!loaderContinue) {
           this.stopLoader();
         }
@@ -155,7 +159,7 @@ export class ApiService {
     } else if (err.status === 401) {
       this.error(err.error.error.message);
       this.localStorageService.clearDataFromIndexedDB();
-      this.router.navigate(['/home-page']);
+      this.router.navigate(['/admin/auth']);
     } else if (err.status === 412) {
       this.error(err.error.error.message);
     } else if (err.status === 422) {

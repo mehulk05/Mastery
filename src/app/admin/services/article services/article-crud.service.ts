@@ -16,9 +16,6 @@ export class ArticleCrudService {
     this.articlesRef = db.list(this.dbPath);
   }
 
-  getAll(): AngularFireList<any> {
-    return this.articlesRef;
-  }
 
   getSingleArticle(artice_id):Observable<any>{
     return this.http.get<any>( `${this.hostUrl}/articles/${artice_id}.json`)

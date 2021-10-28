@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ArticleCrudService } from '@app/admin/services/article services/article-crud.service';
+import { ApiService } from '@app/shared/services/api.service';
 
 @Component({
   selector: 'app-article-list',
@@ -10,39 +11,41 @@ import { ArticleCrudService } from '@app/admin/services/article services/article
 export class ArticleListComponent implements OnInit {
   articleList = []
 
-  constructor(private articleCrudService:ArticleCrudService,
-              private router : Router) { }
+  constructor(private articleCrudService: ArticleCrudService,
+    private router: Router,
+    private apiService: ApiService) { }
 
   ngOnInit(): void {
     this.getArticleList()
   }
 
-  getArticleList(){
-    this.articleCrudService.getAllArticle().subscribe(data=>{
-      this.articleList = this.formatData(data)
-      console.log(this.articleList)
-    })
+  async getArticleList() {
+    this.apiService.startLoader()
+    const result = await this.apiService.get("articles.json")
+    this.articleList = this.formatData(result)
   }
 
-  formatData(data){
+  formatData(data) {
     let returnData = []
     for (const key in data) {
       if (data.hasOwnProperty(key)) {
-        returnData.push({ ...data[key],key });
+        returnData.push({ ...data[key], key });
       }
     }
     return returnData
   }
 
-  editArticle(article){
-    console.log("here")
-    this.router.navigateByUrl("/admin/edit-article/"+article.key)
+  editArticle(article) {
+    this.router.navigateByUrl("/admin/edit-article/" + article.key)
   }
 
-  deleteArticle(article){
-    this.articleCrudService.deleteArticleByKey(article.key).subscribe(data=>{
-      console.log(data)
-      this.getArticleList()
-    })
+  async deleteArticle(article) {
+    this.apiService.startLoader()
+    const result = await this.apiService.delete(`articles/${article.key}.json`)
+    this.getArticleList()
+  }
+
+  addArticle(){
+    this.router.navigateByUrl("/admin/add-article")
   }
 }

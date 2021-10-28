@@ -1,3 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import "~bootstrap/dist/css/bootstrap.css"
+@import "~bootstrap/dist/css/bootstrap.css";
+.title-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 2px solid slategrey;
+}
+
+.btn-add {
+    background-color: #2b3144;
+    border-radius: 14px;
+    border-color: #2b3144;
+}
+
+.title-section h5 {
+    font-size: 26px;
+    color: #2b3144;
+}

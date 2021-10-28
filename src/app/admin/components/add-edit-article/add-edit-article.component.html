@@ -1,4 +1,11 @@
 <div class="container">
+    <div class="title-section">
+        <h5>
+            Article List
+        </h5>
+
+        <button class="btn btn-add btn-primary" (click)="goBack()">Go Back</button>
+    </div>
     <div class="add-form">
         <form class="login-box" [formGroup]="articleForm" (ngSubmit)="submitForm()">
             <div class="form-row row">
@@ -11,6 +18,21 @@
                                 Title is required.
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row row">
+                <div class="col-md-6">
+                    <label>Category<span class="error-red">*</span></label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" formControlName="category">
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label>Author<span class="error-red">*</span></label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" formControlName="author">
                     </div>
                 </div>
             </div>

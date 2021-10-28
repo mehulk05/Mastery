@@ -29,3 +29,21 @@ table tbody tr:nth-child(2n) td {
     border-radius: .65rem;
     padding: 2em;
 }
+
+.table th {
+    border-top: none;
+}
+
+.title-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1em;
+    border-bottom: 2px solid slategrey;
+}
+
+.btn-add {
+    background-color: #2b3144;
+    border-radius: 14px;
+    border-color: #2b3144;
+}

@@ -12,15 +12,16 @@ const routes: Routes = [
     path: '',
     component: AdminWrapperComponent,
     children: [
-      { path: '', redirectTo: 'auth', pathMatch: 'full' },
+      { path: '', redirectTo: 'article-list', pathMatch: 'full' },
       {
         path:"auth",
-        component:AdminAuthComponent
+        component:AdminAuthComponent,
+
       },
       {
         path: 'add-user',
         component: AddEditUserComponent,
-        canActivate:[AuthGuard]
+
       },
       {
         path: 'edit-user/:id',
@@ -31,6 +32,7 @@ const routes: Routes = [
         path: 'add-article',
         component: AddEditArticleComponent,
         canActivate:[AuthGuard]
+        
       },
       {
         path: 'article-list',

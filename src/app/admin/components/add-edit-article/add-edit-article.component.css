@@ -25,3 +25,7 @@ span.error-red {
 input.ng-invalid.ng-touched {
     border-color: red;
 }
+
+.add-form {
+    margin-top: 2em;
+}

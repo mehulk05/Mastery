@@ -8,26 +8,25 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./admin-header.component.css']
 })
 export class AdminHeaderComponent implements OnInit {
-  isAuth = false;
-  authSubscription: Subscription;
-  isLogged:boolean
+  isAuthenticated = false;
+  private userSub: Subscription;
   constructor(private authService:AuthService) { }
 
   ngOnInit(): void {
-    
-    this.authSubscription = this.authService.authChange.subscribe(authStatus => {
-      this.isAuth = authStatus;
-      console.log(authStatus)
+    this.authService.autoLogin();
+    this.userSub = this.authService.user.subscribe(user => {
+      this.isAuthenticated = !!user;
+      console.log(!user);
+      console.log(!!user, this.isAuthenticated);
     });
-  
   }
 
-  onLogout(){
+  onLogout() {
     this.authService.logout();
   }
 
   ngOnDestroy() {
-    this.authSubscription.unsubscribe();
+    this.userSub.unsubscribe();
   }
 
 

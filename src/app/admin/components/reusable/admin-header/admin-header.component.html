@@ -9,7 +9,7 @@
                 <a routerLinkActive="active" routerLink="/admin/add-user" [routerLinkActiveOptions]="{exact: true}"> Users</a>
             </li>
             <li>
-                <a routerLinkActive="active" routerLink="/admin/article-list" [routerLinkActiveOptions]="{exact: true}"> Article</a>
+                <a routerLinkActive="active" routerLink="/admin/article-list"> Article</a>
             </li>
             <li>
                 <a routerLinkActive="active" routerLink="/admin/" [routerLinkActiveOptions]="{exact: true}"> Vidoes</a>
@@ -23,8 +23,8 @@
                 <a routerLinkActive="active" routerLink="/admin/" [routerLinkActiveOptions]="{exact: true}"> Shows</a>
             </li>
 
-            <li><a *ngIf="!isAuth" routerLinkActive=" active " routerLink="/admin/auth ">Login/Register</a></li>
-            <li><button *ngIf="isAuth" (click)="onLogout()">Logout </button></li>
+            <li><a *ngIf="!isAuthenticated" routerLinkActive="active" routerLink="/admin/auth">Login/Register</a></li>
+            <li><button *ngIf="isAuthenticated" (click)="onLogout()">Logout </button></li>
         </ul>
     </nav>
 </header>
