@@ -17,7 +17,7 @@ export class AdminAuthComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
-    
+    this.authService.logout()
   }
 
   isLoginMode = true;
@@ -57,7 +57,7 @@ export class AdminAuthComponent implements OnInit {
         console.log(resData);
          this.isLoading = false
             this.ngxLoader.hide();
-            this.router.navigate(["admin/add-article"]);
+            this.router.navigate(["admin/article-list"]);
       },
       errorMessage => {
         console.log(errorMessage);

@@ -47,3 +47,20 @@ table tbody tr:nth-child(2n) td {
     border-radius: 14px;
     border-color: #2b3144;
 }
+
+table td a {
+    margin-right: 10px;
+}
+
+@media screen and (max-width:767px) {
+    .list-section {
+        padding: 1em 10px;
+    }
+    .title-section h5 {
+        font-size: 20px;
+    }
+    table thead th,
+    table tbody td {
+        font-size: 14px;
+    }
+}

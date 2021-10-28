@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 export class AdminHeaderComponent implements OnInit {
   isAuthenticated = false;
   private userSub: Subscription;
+  isMenuOpen:boolean =false
   constructor(private authService:AuthService) { }
 
   ngOnInit(): void {
@@ -29,5 +30,8 @@ export class AdminHeaderComponent implements OnInit {
     this.userSub.unsubscribe();
   }
 
+  openMenu(){
+    this.isMenuOpen =!this.isMenuOpen
+  }
 
 }
