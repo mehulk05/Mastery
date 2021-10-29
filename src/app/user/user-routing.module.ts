@@ -20,12 +20,12 @@ const routes: Routes = [
       {
         path: 'article-detail/:id',
         component: ArticleDetailComponent,
-        canActivate:[UserAuthGuard]
+      //  canActivate:[UserAuthGuard]
       },
       {
         path: 'article-list',
         component: ArticleListingComponent,
-        canActivate:[UserAuthGuard]
+       // canActivate:[UserAuthGuard]
       },
       
     ]
