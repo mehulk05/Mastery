@@ -18,12 +18,11 @@ import { UserRoutingModule } from '@app/user/user-routing.module';
   imports: [
     CommonModule,
     NgxSpinnerModule,
-   UserRoutingModule
   ],
   exports: [
     HeaderComponent,
     FooterComponent,
-    NgxSpinnerModule,UserRoutingModule
+    NgxSpinnerModule
   ],
   providers: [
     ApiService,

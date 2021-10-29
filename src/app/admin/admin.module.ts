@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ArticleListComponent } from './components/article-list/article-list.component';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { CKEditorModule } from 'ckeditor4-angular';
+import { AuthGuard } from '@app/shared/services/auth-guard.service';
 
 
 @NgModule({
@@ -31,6 +32,8 @@ import { CKEditorModule } from 'ckeditor4-angular';
     FormsModule,
     ReactiveFormsModule,
     CKEditorModule
-  ]
+    
+  ],
+  providers:[AuthGuard]
 })
 export class AdminModule { }

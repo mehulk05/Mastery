@@ -15,7 +15,7 @@ export class UserAuthService {
   ) { }
 
   async autoLogin() {
-    this.apiService.startLoader()
+    
     let userDataOld = JSON.parse(localStorage.getItem('userSideData'));
     if (!userDataOld) {
       return;
@@ -29,7 +29,6 @@ export class UserAuthService {
       userDataOld.seconds - new Date().getTime();
         console.log(expirationDuration)
       this.autoLogout(expirationDuration);
-      this.router.navigateByUrl("/user/article-list")
     }
   }
 

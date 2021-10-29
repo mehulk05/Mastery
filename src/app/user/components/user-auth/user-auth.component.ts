@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '@app/shared/services/api.service';
-import { AuthService } from '@app/shared/services/auth.service';
 import { UserAuthService } from '@app/shared/services/user-auth.service';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 
 @Component({
   selector: 'app-user-auth',
@@ -14,9 +13,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 export class UserAuthComponent implements OnInit {
 
   constructor(private apiService: ApiService,
-    private ngxLoader: NgxSpinnerService,
-    private router: Router,
-    private userAuth:UserAuthService) { }
+    private userAuth:UserAuthService,
+    private router:Router) { }
 
   ngOnInit(): void {
     
@@ -50,6 +48,7 @@ export class UserAuthComponent implements OnInit {
           userData.seconds = seconds
           localStorage.setItem("userSideData",JSON.stringify(userData))
           console.log("true password")
+          this.router.navigateByUrl("/user/article-list")
           
         }
         else{

@@ -11,6 +11,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { UserWrappperComponent } from './components/user-wrappper/user-wrappper.component';
 import { SharedModule } from '@app/shared/shared.module';
 import { UserAuthGuard } from '@app/shared/services/userauth-gaurd.service';
+import { ArticleDetailComponent } from './components/article-detail/article-detail.component';
+import { UserHeaderComponent } from './components/user-header/user-header.component';
 
 
 @NgModule({
@@ -19,7 +21,9 @@ import { UserAuthGuard } from '@app/shared/services/userauth-gaurd.service';
     ArticleListingComponent,
     VerifyEmailComponent,
     ForgetPasswordComponent,
-    UserWrappperComponent
+    UserWrappperComponent,
+    ArticleDetailComponent,
+    UserHeaderComponent
   ],
   imports: [
     CommonModule,

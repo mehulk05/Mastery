@@ -23,6 +23,7 @@
         "bootstrap": "^4.6.0",
         "ckeditor4-angular": "^2.2.2",
         "firebase": "^8.1.2",
+        "font-awesome": "^4.7.0",
         "jquery": "^3.6.0",
         "localforage": "^1.10.0",
         "ngx-spinner": "^11.0.1",
