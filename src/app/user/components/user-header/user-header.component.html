@@ -3,14 +3,14 @@
     <h1 class="main-navigation__title"><a href="/user">Blog Book</a></h1>
     <nav class="main-navigation__header-nav">
         <ul class="nav-links">
-            <li>
+            <!-- <li>
                 <a routerLinkActive="active" routerLink="/user/" [routerLinkActiveOptions]="{exact: true}">Home</a>
-            </li>
+            </li> -->
 
             <li>
                 <a routerLinkActive="active" routerLink="/user/article-list"> Article</a>
             </li>
-            <li>
+            <!-- <li>
                 <a routerLinkActive="active" routerLink="/admin/" [routerLinkActiveOptions]="{exact: true}"> Vidoes</a>
             </li>
 
@@ -20,7 +20,7 @@
 
             <li>
                 <a routerLinkActive="active" routerLink="/admin/" [routerLinkActiveOptions]="{exact: true}"> Shows</a>
-            </li>
+            </li> -->
 
 
             <li><button *ngIf="isAuthenticated" (click)="onLogout()">Logout </button></li>
@@ -42,16 +42,16 @@
     <div class="Menus">
         <nav>
             <ul id="navigation" (click)="openMenu()">
-                <li>
+                <!-- <li>
                     <a routerLinkActive="active" routerLink="/admin/" [routerLinkActiveOptions]="{exact: true}">Home</a>
-                </li>
-                <li>
+                </li> -->
+                <!-- <li>
                     <a routerLinkActive="active" routerLink="/admin/user-list" [routerLinkActiveOptions]="{exact: true}"> Users</a>
-                </li>
+                </li> -->
                 <li>
                     <a routerLinkActive="active" routerLink="/admin/article-list"> Article</a>
                 </li>
-                <li>
+                <!-- <li>
                     <a routerLinkActive="active" routerLink="/admin/" [routerLinkActiveOptions]="{exact: true}"> Vidoes</a>
                 </li>
 
@@ -61,7 +61,7 @@
 
                 <li>
                     <a routerLinkActive="active" routerLink="/admin/" [routerLinkActiveOptions]="{exact: true}"> Shows</a>
-                </li>
+                </li> -->
 
                 <li *ngIf="isAuthenticated"><button (click)="onLogout()">Logout </button></li>
             </ul>
