@@ -6,7 +6,9 @@ import { AddEditUserComponent } from './components/add-edit-user/add-edit-user.c
 import { AdminAuthComponent } from './components/admin-auth/admin-auth.component';
 import { AdminWrapperComponent } from './components/admin-wrapper/admin-wrapper.component';
 import { ArticleListComponent } from './components/article-list/article-list.component';
+import { ForgetPasswordComponent } from './components/reusable/forget-password/forget-password.component';
 import { UserListComponent } from './components/user-list/user-list.component';
+import { ViewArticleComponent } from './components/view-article/view-article.component';
 
 const routes: Routes = [
   {
@@ -29,6 +31,11 @@ const routes: Routes = [
         component: UserListComponent,
         canActivate:[AuthGuard]
       },
+
+      {
+        path: 'forget-password',
+        component: ForgetPasswordComponent,
+      },
       {
         path: 'edit-user/:id',
         component: AddEditUserComponent,
@@ -49,6 +56,17 @@ const routes: Routes = [
         path: 'edit-article/:id',
         component: AddEditArticleComponent,
         canActivate:[AuthGuard]
+      },
+
+      {
+        path: 'view-article/:id',
+        component: ViewArticleComponent,
+        canActivate:[AuthGuard]
+      },
+
+      {
+        path: 'forget-password',
+        component: ViewArticleComponent,
       },
     ]
   },

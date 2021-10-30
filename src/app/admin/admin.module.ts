@@ -13,6 +13,8 @@ import { ArticleListComponent } from './components/article-list/article-list.com
 import { UserListComponent } from './components/user-list/user-list.component';
 import { CKEditorModule } from 'ckeditor4-angular';
 import { AuthGuard } from '@app/shared/services/auth-guard.service';
+import { ViewArticleComponent } from './components/view-article/view-article.component';
+import { ForgetPasswordComponent } from './components/reusable/forget-password/forget-password.component';
 
 
 @NgModule({
@@ -24,9 +26,12 @@ import { AuthGuard } from '@app/shared/services/auth-guard.service';
     AdminFooterComponent,
     AdminWrapperComponent,
     ArticleListComponent,
-    UserListComponent
+    UserListComponent,
+    ViewArticleComponent,
+    ForgetPasswordComponent
   ],
   imports: [
+    
     CommonModule,
     AdminRoutingModule,
     FormsModule,

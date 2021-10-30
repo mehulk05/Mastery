@@ -53,7 +53,8 @@ export class AddEditArticleComponent implements OnInit {
       body: ["", Validators.required],
       date: [new Date()],
       author: [this.author.email],
-      category:[""]
+      category:[""],
+      isPublic:[false]
     });
   }
 
@@ -74,15 +75,51 @@ export class AddEditArticleComponent implements OnInit {
     })
   }
 
+  getImages(string) {
+    const imgRex = /<img.*?src="(.*?)"[^>]+>/g;
+    const images = [];
+      let img;
+      while ((img = imgRex.exec(string))) {
+         images.push(img[1]);
+      }
+    return images;
+  }  
+
+    getMeta(url){   
+    var img = new Image();
+    img.src = url
+    console.log(img.height,img.width)
+    return {ht:img.height,width:img.width,url:url}
+    
+}
 
   submitForm() {
+    let body = this.articleForm.value.body
+    let img = this.getImages(body)
+
+    let imgUrl ="https://neilpatel.com/wp-content/uploads/2017/08/blog.jpg"
+
+    if(img.length>0){
+      img.map(item=>{
+        let meta  = this.getMeta(item)
+        if(meta.width>300){
+          imgUrl = meta.url
+        }
+      })
+    }
+    
     let articleObject = {
       title: this.articleForm.value.title,
       body: this.articleForm.value.body,
       author: this.articleForm.value.author,
       category: this.articleForm.value.category,
       date: this.articleForm.value.date,
+      isPublic: false,
+      imgUrl: imgUrl
     }
+
+    console.log(articleObject)
+    
 
     if (this.article_id) {
       this.updateArticle(articleObject)

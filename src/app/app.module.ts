@@ -13,7 +13,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CKEditorModule } from 'ckeditor4-angular';
-import { AuthInterceptorService } from './shared/services/auth-interceptor.service';
+import { ToastrModule } from 'ngx-toastr';
 @NgModule({
   declarations: [
     AppComponent
@@ -28,7 +28,8 @@ import { AuthInterceptorService } from './shared/services/auth-interceptor.servi
     AngularFireDatabaseModule,
     AngularFirestoreModule,
     HttpClientModule,
-    CKEditorModule
+    CKEditorModule,
+    ToastrModule.forRoot(), 
     
   ],
   providers: [

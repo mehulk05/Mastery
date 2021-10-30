@@ -184,10 +184,20 @@ export class AuthService {
   success(message){
     Swal.fire({
       title:"Success",
-      text: "User Created Successfully",
+      text: message,
       icon: 'success',
       timer: 5000,
       confirmButtonText: "OKAY"
     });
   }
+
+  async sendPasswordResetEmail(passwordResetEmail: string) {
+    return await this.angularFireAuth.sendPasswordResetEmail(passwordResetEmail)
+      .then(() => {
+        this.logout()
+        this.router.navigate(['admin/auth']);
+        this.success("Reset Password Mail sent");
+      })
+  }
+  
 }

@@ -14,7 +14,7 @@ export class UserHeaderComponent implements OnInit {
   constructor(private userAuthService:UserAuthService) { }
 
   ngOnInit(): void {
-    this.userAuthService.user.subscribe(data=>{
+    this.userSub = this.userAuthService.user.subscribe(data=>{
     console.log(data)
      this.isAuthenticated = !!data
     })

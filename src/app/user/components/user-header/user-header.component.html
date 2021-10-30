@@ -22,9 +22,7 @@
                 <a routerLinkActive="active" routerLink="/admin/" [routerLinkActiveOptions]="{exact: true}"> Shows</a>
             </li>
 
-            <li>
-                <a *ngIf="!isAuthenticated" routerLinkActive="active" routerLink="/user/user-auth" [routerLinkActiveOptions]="{exact: true}">Login/Register</a>
-            </li>
+
             <li><button *ngIf="isAuthenticated" (click)="onLogout()">Logout </button></li>
         </ul>
     </nav>
@@ -65,7 +63,6 @@
                     <a routerLinkActive="active" routerLink="/admin/" [routerLinkActiveOptions]="{exact: true}"> Shows</a>
                 </li>
 
-                <li *ngIf="!isAuthenticated"><a routerLinkActive="active" routerLink="/admin/auth">Login/Register</a></li>
                 <li *ngIf="isAuthenticated"><button (click)="onLogout()">Logout </button></li>
             </ul>
         </nav>

@@ -16,6 +16,7 @@
                         <th scope="col">Date</th>
                         <th scope="col">Author</th>
                         <th scope="col">Category</th>
+                        <th scope="col">Is Public</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
@@ -28,11 +29,28 @@
                         <td>{{article?.author}}</td>
                         <td>{{article?.category}}</td>
                         <td>
+                            <div *ngIf="article.isPublic ; else resetStatus">
+                                <label class="switch">
+                                        <input type="checkbox" checked (change)="onCheckBoxChange($event, article)">
+                                        <span class="slider round"></span>
+                                    </label>
+                            </div>
+                            <ng-template #resetStatus>
+                                <label class="switch">
+                                        <input type="checkbox" (change)="onCheckBoxChange($event, article)">
+                                        <span class="slider round"></span>
+                                    </label>
+                            </ng-template>
+                        </td>
+                        <td>
+                            <a href="javascript:void(0)" class="primary" (click)="ViewArticle(article)">
+                                View
+                            </a>
                             <a href="javascript:void(0)" (click)="editArticle(article)">
-                                <i class="fas fa-pencil-alt ms-text-primary"></i> Edit
+                                Edit
                             </a>
                             <a href="javascript:void(0)" (click)="deleteArticle(article)" style="color: red;">
-                                <i class="far fa-trash-alt ms-text-danger"></i> Delete
+                                Delete
                             </a>
                         </td>
             </table>
