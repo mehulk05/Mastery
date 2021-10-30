@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ArticleCrudService } from '@app/admin/services/article services/article-crud.service';
 import { ApiService } from '@app/shared/services/api.service';
+import { CrudService } from '@app/shared/services/crud.service';
 
 @Component({
   selector: 'app-add-edit-article',
@@ -11,7 +12,8 @@ import { ApiService } from '@app/shared/services/api.service';
 })
 export class AddEditArticleComponent implements OnInit {
   articleForm: FormGroup;
-  article_id: null
+  article_id: null;
+  aricleData:any
   config: any;
   author = JSON.parse(localStorage.getItem("userData"))
   constructor(
@@ -19,7 +21,8 @@ export class AddEditArticleComponent implements OnInit {
     private router: Router,
     private articleCrudService: ArticleCrudService,
     private activatedRoute: ActivatedRoute,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private crudService:CrudService
   ) {
     this.config = { uiColor: '#f2f2f2' };
   }
@@ -59,6 +62,15 @@ export class AddEditArticleComponent implements OnInit {
   }
 
   getArticle(article_id) {
+    // this.crudService.getSingle(article_id,"article").then(data=>{
+     
+    //   this.aricleData =  data.data()
+    //   this.aricleData.id =  data.id
+    //   this.setArticleFormValues(this.aricleData)
+    // },e=>{
+    //   console.log(e)
+    // })
+    
     this.apiService.startLoader()
     this.apiService.get(`articles/${article_id}.json`).then(articleData => {
       this.setArticleFormValues(articleData)
@@ -71,7 +83,8 @@ export class AddEditArticleComponent implements OnInit {
       body: articleData?.body,
       date: articleData?.date,
       author: articleData?.author,
-      category:articleData?.category
+      category:articleData?.category,
+      isPublic:articleData.isPublic ? articleData.isPublic :false
     })
   }
 
@@ -114,12 +127,9 @@ export class AddEditArticleComponent implements OnInit {
       author: this.articleForm.value.author,
       category: this.articleForm.value.category,
       date: this.articleForm.value.date,
-      isPublic: false,
-      imgUrl: imgUrl
+      isPublic: this.articleForm.value.isPublic,
+      imgUrl: imgUrl,
     }
-
-    console.log(articleObject)
-    
 
     if (this.article_id) {
       this.updateArticle(articleObject)
@@ -134,10 +144,22 @@ export class AddEditArticleComponent implements OnInit {
     await this.apiService.post("articles.json", articleObject).then(result => {
       this.router.navigateByUrl("/admin/article-list")
     })
+    // this.crudService.create(articleObject,"article").then(data=>{
+    //   this.apiService.stopLoader()
+    //   console.log(data)
+    // },e=>{
+    //   console.log(e)
+    //   this.apiService.stopLoader()
+    // })
   }
 
   updateArticle(articleObject) {
     this.apiService.startLoader()
+    // this.crudService.update(articleObject,"article",this.article_id).then(data=>{
+    //   console.log(data)
+    // },e=>{
+    //   console.log(e)
+    // })
     this.apiService.put(`articles/${this.article_id}.json`, articleObject).then(data => {
       this.router.navigateByUrl("/admin/article-list")
     })

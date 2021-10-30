@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ArticleCrudService } from '@app/admin/services/article services/article-crud.service';
 import { ApiService } from '@app/shared/services/api.service';
+import { CrudService } from '@app/shared/services/crud.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -15,7 +16,8 @@ export class ArticleListComponent implements OnInit {
   constructor(private articleCrudService: ArticleCrudService,
     private router: Router,
     private apiService: ApiService,
-    private toastrService:ToastrService) { }
+    private toastrService:ToastrService,
+    private crudService:CrudService) { }
 
   ngOnInit(): void {
     this.getArticleList()
@@ -25,6 +27,22 @@ export class ArticleListComponent implements OnInit {
     this.apiService.startLoader()
     const result = await this.apiService.get("articles.json")
     this.articleList = this.formatData(result)
+    // this.crudService.getAll("article").subscribe(data => {
+    //   console.log(data)
+    //   this.articleList = data.map(e => {
+    //     return {
+    //       id: e.payload.doc.id,
+    //       title: e.payload.doc.data()['title'],
+    //       body: e.payload.doc.data()['body'],
+    //       category: e.payload.doc.data()['category'],
+    //       date: e.payload.doc.data()['date'],
+    //       imgUrl : e.payload.doc.data()['imgUrl'],
+    //       author : e.payload.doc.data()['author'],
+    //     };
+    //   })
+     
+    //   console.log(this.articleList)
+    // });
   }
 
   formatData(data) {
@@ -42,9 +60,17 @@ export class ArticleListComponent implements OnInit {
   }
 
   async deleteArticle(article) {
+    
+    // this.crudService.delete(article.id,"article").then(data=>{
+    //   console.log(data);
+    //   this.getArticleList()
+    // },e=>{
+    //   console.log(e)
+    // })
     this.apiService.startLoader()
     const result = await this.apiService.delete(`articles/${article.key}.json`)
-    this.getArticleList()
+    this.getArticleList();
+
   }
 
   addArticle(){
