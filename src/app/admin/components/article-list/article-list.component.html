@@ -25,7 +25,7 @@
                     <tr *ngFor="let article of articleList; let i=index" class="table-light">
                         <td> {{i+1}} </td>
                         <td>{{article?.title}}</td>
-                        <td>{{article?.date | date:'MMM d, y hh:mm a'}}</td>
+                        <td>{{formatDate(article?.date) | date:'MMM d, y hh:mm a'}}</td>
                         <td>{{article?.author}}</td>
                         <td>{{article?.category}}</td>
                         <td>

@@ -6,6 +6,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { UserRoutingModule } from '@app/user/user-routing.module';
+import { SafePipe } from './pipes/SafePipe.pipe';
 
 
 
@@ -13,7 +14,8 @@ import { UserRoutingModule } from '@app/user/user-routing.module';
 @NgModule({
   declarations: [
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    SafePipe
   ],
   imports: [
     CommonModule,
@@ -22,11 +24,13 @@ import { UserRoutingModule } from '@app/user/user-routing.module';
   exports: [
     HeaderComponent,
     FooterComponent,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    SafePipe
   ],
   providers: [
     ApiService,
     LocalStorageService,
+    
   ],
 })
 export class SharedModule { }

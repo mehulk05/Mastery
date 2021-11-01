@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { DatabaseReference } from '@angular/fire/database/interfaces';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { UserCrudService } from '@app/admin/services/user-services/user-crud.service';
 import { ApiService } from '@app/shared/services/api.service';
+import { CrudService } from '@app/shared/services/crud.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-edit-user',
@@ -13,11 +16,14 @@ export class AddEditUserComponent implements OnInit {
 
   userForm: FormGroup;
   user_id: any;
+  userData: any;
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private apiService: ApiService,
+    private crudService:CrudService,
+    private toastService:ToastrService,
+    private userCrudService:UserCrudService,
   ) {
   }
 
@@ -26,7 +32,7 @@ export class AddEditUserComponent implements OnInit {
       if (data && data.id) {
         this.user_id = data.id
         let key  = this.user_id.replace(/\./g, ',');
-        this.getUser(key)
+        this.getUser(this.user_id)
       }
 
     })
@@ -43,11 +49,45 @@ export class AddEditUserComponent implements OnInit {
     });
   }
 
-  getUser(user_id) {
-    this.apiService.startLoader()
-    this.apiService.get(`users/${user_id}.json`).then(userData => {
-      this.setUserFormValues(userData)
+  
+  createUser(userData){
+    this.userCrudService.startLoader()
+    this.userCrudService.create(userData,"users").then(data=>{
+      this.router.navigateByUrl("/admin/user-list")
+    },e=>{
+      this.userCrudService.stopLoader()
+      this.toastService.error("Error Creating User", "Error")
     })
+  }
+
+  getUser(key){
+    this.userCrudService.startLoader()
+    this.userCrudService.getSingle(key,"users").then(data=>{
+      console.log(data)
+      this.userData =  data.data()
+      console.log(data.data())
+      // this.userData.id =  "12"
+      this.setUserFormValues(this.userData)
+      this.userCrudService.stopLoader()
+    },e=>{
+      console.log(e)
+      this.toastService.error("Error Fetching Users", "Error")
+      this.userCrudService.stopLoader()
+    })
+  }
+
+  updateUser(userData){
+    this.userCrudService.startLoader()
+    this.userCrudService.delete(this.user_id,"users").then(data=>{
+      this.userCrudService.create(userData, "users").then(data => {
+        this.router.navigateByUrl("/admin/user-list")
+      }, e => {
+        console.log(e)
+        this.userCrudService.stopLoader()
+        this.toastService.error("Error Updating User", "Error")
+      })
+    })
+   
   }
 
   setUserFormValues(userData) {
@@ -55,7 +95,7 @@ export class AddEditUserComponent implements OnInit {
       email:userData?.email,
       password:userData?.password,
       date:userData?.date,
-      role:userData.role
+      role:userData?.role
     })
   }
 
@@ -76,24 +116,7 @@ export class AddEditUserComponent implements OnInit {
     }
   }
 
-  async createUser(userData) {
-    let key  = userData.email.replace(/\./g, ',');
-    this.apiService.startLoader()
-    await this.apiService.put(`users/${key}.json`, userData).then(result => {
-      this.router.navigateByUrl("/admin/user-list")
-    })
-  }
-
-  async updateUser(userData) {
-    let newkey  = userData.email.replace(/\./g, ',');
-    let oldkey = this.user_id.replace(/\./g, ',');
-    this.apiService.startLoader()
-    const result  = await this.apiService.delete(`users/${oldkey}.json`)
-    this.apiService.put(`users/${newkey}.json`, userData).then(data => {
-      this.router.navigateByUrl("/admin/user-list")
-    })
-  }
-
+  
   get f() {
     return this.userForm.controls;
   }
@@ -101,4 +124,32 @@ export class AddEditUserComponent implements OnInit {
   goBack() {
     this.router.navigateByUrl("/admin/user-list")
   }
+
+
+  // Fire base real Time
+  // async createUser(userData) {
+  //   let key  = userData.email.replace(/\./g, ',');
+  //   this.apiService.startLoader()
+  //   await this.apiService.put(`users/${key}.json`, userData).then(result => {
+  //     this.router.navigateByUrl("/admin/user-list")
+  //   })
+  // }
+
+  // async updateUser(userData) {
+  //   let newkey  = userData.email.replace(/\./g, ',');
+  //   let oldkey = this.user_id.replace(/\./g, ',');
+  //   this.apiService.startLoader()
+  //   const result  = await this.apiService.delete(`users/${oldkey}.json`)
+  //   this.apiService.put(`users/${newkey}.json`, userData).then(data => {
+  //     this.router.navigateByUrl("/admin/user-list")
+  //   })
+  // }
+
+  // getUser(user_id) {
+  //   this.apiService.startLoader()
+  //   this.apiService.get(`users/${user_id}.json`).then(userData => {
+  //     this.setUserFormValues(userData)
+  //   })
+  // }
+
 }

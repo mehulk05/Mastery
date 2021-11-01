@@ -10,6 +10,13 @@
             <li *ngIf="isAuthenticated">
                 <a routerLinkActive="active" routerLink="/admin/article-list"> Article</a>
             </li>
+
+            <li *ngIf="isAuthenticated">
+                <a routerLinkActive="active" routerLink="/admin/book-list"> Book</a>
+            </li>
+            <li *ngIf="isAuthenticated">
+                <a routerLinkActive="active" routerLink="/admin/video-list"> Videos</a>
+            </li>
             <!-- <li *ngIf="isAuthenticated">
                 <a routerLinkActive="active" routerLink="/admin/" [routerLinkActiveOptions]="{exact: true}"> Vidoes</a>
             </li>
@@ -48,6 +55,9 @@
                 </li>
                 <li *ngIf="isAuthenticated">
                     <a routerLinkActive="active" routerLink="/admin/article-list"> Article</a>
+                </li>
+                <li *ngIf="isAuthenticated">
+                    <a routerLinkActive="active" routerLink="/admin/video-list"> Videos</a>
                 </li>
                 <!-- <li *ngIf="isAuthenticated">
                     <a routerLinkActive="active" routerLink="/admin/" [routerLinkActiveOptions]="{exact: true}"> Vidoes</a>

@@ -15,6 +15,10 @@ import { CKEditorModule } from 'ckeditor4-angular';
 import { AuthGuard } from '@app/shared/services/auth-guard.service';
 import { ViewArticleComponent } from './components/view-article/view-article.component';
 import { ForgetPasswordComponent } from './components/reusable/forget-password/forget-password.component';
+import { AddEditBookComponent } from './components/add-edit-book/add-edit-book.component';
+import { AddEditVideosComponent } from './components/add-edit-videos/add-edit-videos.component';
+import { BookListComponent } from './components/book-list/book-list.component';
+import { VideoListComponent } from './components/video-list/video-list.component';
 
 
 @NgModule({
@@ -28,7 +32,11 @@ import { ForgetPasswordComponent } from './components/reusable/forget-password/f
     ArticleListComponent,
     UserListComponent,
     ViewArticleComponent,
-    ForgetPasswordComponent
+    ForgetPasswordComponent,
+    AddEditBookComponent,
+    AddEditVideosComponent,
+    BookListComponent,
+    VideoListComponent
   ],
   imports: [
     

@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserCrudService } from '@app/admin/services/user-services/user-crud.service';
 import { ApiService } from '@app/shared/services/api.service';
+import { CrudService } from '@app/shared/services/crud.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-user-list',
@@ -12,18 +15,31 @@ export class UserListComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private apiService: ApiService) { }
+    private apiService: ApiService, private crudService: CrudService,
+    private userCrudService:UserCrudService,
+    private toastrService: ToastrService) { }
 
   ngOnInit(): void {
     this.getAllUserList()
   }
 
   async getAllUserList() {
-    this.apiService.startLoader()
-    const result = await this.apiService.get("users.json")
-    console.log(result)
-    this.UserList = this.formatData(result)
-    console.log(this.UserList)
+    this.userCrudService.startLoader()
+    this.userCrudService.getAll("users").subscribe(data => {
+      this.userCrudService.stopLoader()
+      this.UserList = data.map(e => {
+        return {
+          key: e.payload.doc.id,
+          email: e.payload.doc.data()['email'],
+          password: e.payload.doc.data()['password'],
+          date: e.payload.doc.data()['date'],
+
+        };
+      })
+    },e=>{
+      this.userCrudService.stopLoader()
+      this.toastrService.error("Error Fetching Users", "Error")
+    });
   }
   
   formatData(data) {
@@ -53,14 +69,34 @@ export class UserListComponent implements OnInit {
   }
 
   async deleteUser(userData) {
-    this.apiService.startLoader()
-    let key  = userData.email.replace(/\./g, ',');
-    const result = await this.apiService.delete(`users/${key}.json`)
-    this.getAllUserList()
+    this.userCrudService.startLoader()
+      this.userCrudService.delete(userData.email,"users").then(data=>{
+      this.userCrudService.stopLoader()
+      this.getAllUserList();
+    },e=>{
+      this.userCrudService.stopLoader()
+      this.toastrService.error("Error Fetching Users", "Error")
+    })
   }
 
   addUser(){
     this.router.navigateByUrl("/admin/add-user")
   }
+
+
+  // async getAllUserList() {
+  //   this.apiService.startLoader()
+  //   const result = await this.apiService.get("users.json")
+  //   console.log(result)
+  //   this.UserList = this.formatData(result)
+  //   console.log(this.UserList)
+  // }
+
+  // async deleteUser(userData) {
+  //   this.apiService.startLoader()
+  //   let key  = userData.email.replace(/\./g, ',');
+  //   const result = await this.apiService.delete(`users/${key}.json`)
+  //   this.getAllUserList()
+  // }
 }
 

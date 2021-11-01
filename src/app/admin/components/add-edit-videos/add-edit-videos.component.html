@@ -1,0 +1,78 @@
+<div class="container">
+    <div class="title-section">
+        <h5>
+            User List
+        </h5>
+
+        <button class="btn btn-add btn-primary" (click)="goBack()">Go Back</button>
+    </div>
+    <div class="add-form">
+        <form class="login-box" [formGroup]="videoForm" (ngSubmit)="submitForm()">
+            <div class="form-row row">
+                <div class="col-md-12">
+                    <label>Title<span class="error-red">*</span></label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" formControlName="title">
+                        <div class="error" *ngIf="f.title.invalid && ( (f.title.dirty || f.title.touched))">
+                            <div *ngIf="f.title.errors.required">
+                                Title is required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row row">
+                <div class="col-md-12">
+                    <label>Creator Name<span class="error-red">*</span></label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" formControlName="creator">
+                        <div class="error" *ngIf="f.creator.invalid && ( (f.creator.dirty || f.creator.touched))">
+                            <div *ngIf="f.creator.errors.required">
+                                creator name is required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row row">
+                <div class="col-md-12">
+                    <label>Video url<span class="error-red">*</span></label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" formControlName="url" (blur)="onBlurVideoFeild()">
+                        <div class="error" *ngIf="f.url.invalid && ( (f.url.dirty || f.url.touched))">
+                            <div *ngIf="f.url.errors.required">
+                                Video url is required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row row">
+                <div class="col-md-12">
+                    <label>Thumbnail url<span class="error-red">*</span></label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" formControlName="thumbnail">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row row img-preview" *ngIf="f.thumbnail.value && !isLoading">
+                <div class="col-md-12">
+
+                    <div class="form-group">
+                        <img src={{f.thumbnail.value}} width="400">
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-button">
+                <button type="submit" class="btn btn-common  btn-success butn">Save</button>
+                <button type="button" class="btn btn-common  btn-danger butn" (click)="goBack()">Cancel</button>
+            </div>
+
+        </form>
+    </div>
+</div>

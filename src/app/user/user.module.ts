@@ -15,6 +15,8 @@ import { ArticleDetailComponent } from './components/article-detail/article-deta
 import { UserHeaderComponent } from './components/user-header/user-header.component';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { ToastrModule } from 'ngx-toastr';
+import { VideoListingComponent } from './components/video-listing/video-listing.component';
+import { BookListingComponent } from './components/book-listing/book-listing.component';
 
 
 
@@ -26,7 +28,9 @@ import { ToastrModule } from 'ngx-toastr';
     ForgetPasswordComponent,
     UserWrappperComponent,
     ArticleDetailComponent,
-    UserHeaderComponent
+    UserHeaderComponent,
+    VideoListingComponent,
+    BookListingComponent
   ],
   imports: [
     CommonModule,

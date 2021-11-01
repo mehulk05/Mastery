@@ -1,0 +1,43 @@
+<div class="container">
+    <div class="card list-section">
+        <div class="title-section">
+            <h5>
+                Video List
+            </h5>
+
+            <button class="btn btn-add btn-primary" (click)="addVideo()">Add Video</button>
+        </div>
+        <div class="table table-responsive">
+            <table class="table table-striped my-0 table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">creator</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr *ngFor="let video of videoList; let i=index" class="table-light">
+                        <td> {{i+1}} </td>
+                        <td>{{video?.title}}</td>
+                        <td>{{formatDate(video?.date) | date:'MMM d, y hh:mm a'}}</td>
+                        <td>{{video?.creator}}</td>
+
+                        <td>
+                            <a href="javascript:void(0)" class="primary" (click)="viewVideo(video)">
+                                View
+                            </a>
+                            <a href="javascript:void(0)" (click)="editVideo(video)">
+                                Edit
+                            </a>
+                            <a href="javascript:void(0)" (click)="deleteVideo(video)" style="color: red;">
+                                Delete
+                            </a>
+                        </td>
+            </table>
+        </div>
+    </div>
+</div>

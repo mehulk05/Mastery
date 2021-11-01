@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '@app/shared/services/api.service';
 import { UserAuthService } from '@app/shared/services/user-auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -14,7 +15,8 @@ export class UserAuthComponent implements OnInit {
 
   constructor(private apiService: ApiService,
     private userAuth:UserAuthService,
-    private router:Router) { }
+    private router:Router,
+    private toastService:ToastrService) { }
 
   ngOnInit(): void {
     
@@ -22,7 +24,7 @@ export class UserAuthComponent implements OnInit {
 
   isLoading = false;
   error: string = null;
-  isPorfileset: boolean = false;
+  
 
 
   onSubmit(form: NgForm) {
@@ -33,10 +35,10 @@ export class UserAuthComponent implements OnInit {
     const email = form.value.email;
     const password = form.value.password;
     this.userAuth.login(email,password).then((userData:any) => {
+      userData = userData.data()
       console.log(userData)
-
       if(!userData){
-        console.log("wrong")
+        this.toastService.error("Error While Login", "Error")
       }
       else{
         if(userData.password === password ){
@@ -47,12 +49,11 @@ export class UserAuthComponent implements OnInit {
           var seconds = today.getTime()
           userData.seconds = seconds
           localStorage.setItem("userSideData",JSON.stringify(userData))
-          console.log("true password")
           this.router.navigateByUrl("/user/article-list")
           
         }
         else{
-          console.log("wrong pass")
+          this.toastService.error("Email or Passowrd is incorrect", "Error")
         }
       }
       })

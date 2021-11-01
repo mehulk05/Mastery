@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { ApiService } from './api.service';
@@ -11,7 +12,7 @@ export class UserAuthService {
   user = new BehaviorSubject<any>(null);
   tokenExpirationTimer
   constructor(
-    private router:Router, private apiService:ApiService
+    private router:Router, private apiService:ApiService,private firestore: AngularFirestore
   ) { }
 
   async autoLogin() {
@@ -33,8 +34,7 @@ export class UserAuthService {
   }
 
   login(email,password){
-    let key = email.replace(/\./g, ',');
-     return this.apiService.get(`users/${key}.json`)
+     return this.firestore.collection("users").doc(email).ref.get()
   }
 
   logout() {

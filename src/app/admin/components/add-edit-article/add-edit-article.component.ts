@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ArticleCrudService } from '@app/admin/services/article services/article-crud.service';
 import { ApiService } from '@app/shared/services/api.service';
 import { CrudService } from '@app/shared/services/crud.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-edit-article',
@@ -22,7 +23,8 @@ export class AddEditArticleComponent implements OnInit {
     private articleCrudService: ArticleCrudService,
     private activatedRoute: ActivatedRoute,
     private apiService: ApiService,
-    private crudService:CrudService
+    private crudService:CrudService,
+    private toastService: ToastrService
   ) {
     this.config = { uiColor: '#f2f2f2' };
   }
@@ -62,19 +64,18 @@ export class AddEditArticleComponent implements OnInit {
   }
 
   getArticle(article_id) {
-    // this.crudService.getSingle(article_id,"article").then(data=>{
-     
-    //   this.aricleData =  data.data()
-    //   this.aricleData.id =  data.id
-    //   this.setArticleFormValues(this.aricleData)
-    // },e=>{
-    //   console.log(e)
-    // })
-    
-    this.apiService.startLoader()
-    this.apiService.get(`articles/${article_id}.json`).then(articleData => {
-      this.setArticleFormValues(articleData)
+    this.crudService.startLoader()
+    this.crudService.getSingle(article_id,"article").then(data=>{
+      this.aricleData =  data.data()
+      this.aricleData.id =  data.id
+      this.setArticleFormValues(this.aricleData)
+      this.crudService.stopLoader()
+    },e=>{
+      console.log(e)
+      this.toastService.error("Error Fetching Article", "Error")
+      this.crudService.stopLoader()
     })
+
   }
 
   setArticleFormValues(articleData) {
@@ -140,28 +141,26 @@ export class AddEditArticleComponent implements OnInit {
   }
 
   async createArticle(articleObject) {
-    this.apiService.startLoader()
-    await this.apiService.post("articles.json", articleObject).then(result => {
+    this.crudService.startLoader()
+    this.crudService.create(articleObject,"article").then(data=>{
       this.router.navigateByUrl("/admin/article-list")
+    },e=>{
+      console.log(e)
+      this.crudService.stopLoader()
+      this.toastService.error("Error Creating Article", "Error")
     })
-    // this.crudService.create(articleObject,"article").then(data=>{
-    //   this.apiService.stopLoader()
-    //   console.log(data)
-    // },e=>{
-    //   console.log(e)
-    //   this.apiService.stopLoader()
-    // })
   }
 
   updateArticle(articleObject) {
-    this.apiService.startLoader()
-    // this.crudService.update(articleObject,"article",this.article_id).then(data=>{
-    //   console.log(data)
-    // },e=>{
-    //   console.log(e)
-    // })
-    this.apiService.put(`articles/${this.article_id}.json`, articleObject).then(data => {
+    this.crudService.startLoader()
+    this.crudService.update(articleObject,"article",this.article_id).then(data=>{
+      console.log(data)
       this.router.navigateByUrl("/admin/article-list")
+ 
+    },e=>{
+      console.log(e)
+      this.toastService.error("Error Updating Article", "Error")
+      this.crudService.stopLoader()
     })
   }
 
@@ -173,4 +172,26 @@ export class AddEditArticleComponent implements OnInit {
     this.router.navigateByUrl("/admin/article-list")
   }
 
+
+  // getArticle(article_id) {
+  //   this.apiService.startLoader()
+  //   this.apiService.get(`articles/${article_id}.json`).then(articleData => {
+  //     this.setArticleFormValues(articleData)
+  //   })
+  // }
+
+  
+  // updateArticle(articleObject) {
+  //   this.apiService.startLoader()
+  //   this.apiService.put(`articles/${this.article_id}.json`, articleObject).then(data => {
+  //     this.router.navigateByUrl("/admin/article-list")
+  //   })
+  // }
+
+  // async createArticle(articleObject) {
+  //   this.apiService.startLoader()
+  //   await this.apiService.post("articles.json", articleObject).then(result => {
+  //     this.router.navigateByUrl("/admin/article-list")
+  //   })
+  // }
 }

@@ -1,0 +1,95 @@
+<div class="container">
+    <div class="title-section">
+        <h5>
+            Add Books
+        </h5>
+
+        <button class="btn btn-add btn-primary" (click)="goBack()">Go Back</button>
+    </div>
+    <div class="add-form">
+        <form class="login-box" [formGroup]="bookForm" (ngSubmit)="submitForm()">
+            <div class="form-row row">
+                <div class="col-md-12">
+                    <label>Title<span class="error-red">*</span></label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" formControlName="title">
+                        <div class="error" *ngIf="f.title.invalid && ( (f.title.dirty || f.title.touched))">
+                            <div *ngIf="f.title.errors.required">
+                                Title is required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row row">
+                <div class="col-md-12">
+                    <label>Description<span class="error-red">*</span></label>
+                    <div class="form-group">
+                        <textarea class="form-control" rows="4" formControlName="description">
+
+                        </textarea>
+
+                        <div class="error" *ngIf="f.description.invalid && ( (f.description.dirty || f.description.touched))">
+                            <div *ngIf="f.description.errors.required">
+                                description is required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row row">
+                <div class="col-md-12">
+                    <label>Author Name<span class="error-red">*</span></label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" formControlName="author">
+                        <div class="error" *ngIf="f.author.invalid && ( (f.author.dirty || f.author.touched))">
+                            <div *ngIf="f.author.errors.required">
+                                Author name is required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row row">
+                <div class="col-md-12">
+                    <label>Book url<span class="error-red">*</span></label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" formControlName="url">
+                        <div class="error" *ngIf="f.url.invalid && ( (f.url.dirty || f.url.touched))">
+                            <div *ngIf="f.url.errors.required">
+                                Book url is required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row row">
+                <div class="col-md-12">
+                    <label>Thumbnail url<span class="error-red">*</span></label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" formControlName="thumbnail">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row row img-preview" *ngIf="f.thumbnail.value && !isLoading">
+                <div class="col-md-12">
+
+                    <div class="form-group">
+                        <img src={{f.thumbnail.value}} width="400">
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-button">
+                <button type="submit" class="btn btn-common  btn-success butn">Save</button>
+                <button type="button" class="btn btn-common  btn-danger butn" (click)="goBack()">Cancel</button>
+            </div>
+
+        </form>
+    </div>
+</div>
