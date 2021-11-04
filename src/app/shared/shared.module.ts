@@ -5,7 +5,6 @@ import { LocalStorageService } from './services/local-storage.service';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import { SafePipe } from './pipes/SafePipe.pipe';
 
 
 
@@ -14,7 +13,6 @@ import { SafePipe } from './pipes/SafePipe.pipe';
   declarations: [
     HeaderComponent,
     FooterComponent,
-    SafePipe
   ],
   imports: [
     CommonModule,
@@ -24,7 +22,6 @@ import { SafePipe } from './pipes/SafePipe.pipe';
     HeaderComponent,
     FooterComponent,
     NgxSpinnerModule,
-    SafePipe
   ],
   providers: [
     ApiService,

@@ -13,7 +13,7 @@
             <div class="col-lg-6 col-md-6 col-sm-12">
                 <div class="column-coloumn">
 
-                    <iframe width="100%" height="300" [src]="video.url | safe"></iframe>
+                    <iframe width="100%" height="300" [src]="byPassURL(video.url )"></iframe>
                     <div class="card-body">
                         <h5 class="card-title">
                             <a class="ShowBlog_textfiordblue__2rKDb" href="javascript:void(0)" (click)="editArticle(video)">{{video.title}}</a>

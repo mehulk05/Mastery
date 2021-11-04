@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { ApiService } from '@app/shared/services/api.service';
 import { CrudService } from '@app/shared/services/crud.service';
@@ -14,7 +15,11 @@ export class VideoListingComponent implements OnInit {
   searchText
   videoList = []
 
-  constructor(private apiService: ApiService, private router: Router, private crudService: CrudService, private toastrService: ToastrService) { }
+  constructor(private apiService: ApiService, 
+    private router: Router, 
+    private crudService: CrudService,
+     private toastrService: ToastrService,
+     private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     this.loadVideos()
@@ -50,5 +55,9 @@ export class VideoListingComponent implements OnInit {
 
   editArticle(video){
     window.open(video.url, '_blank')
+  }
+
+  byPassURL(url){
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 }
