@@ -23,7 +23,6 @@ import { AddEditLiveEventsComponent } from './components/add-edit-live-events/ad
 import { EventListComponent } from './components/event-list/event-list.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
-import { SafePipe } from '@app/shared/pipes/SafePipe.pipe';
 
 @NgModule({
   declarations: [
@@ -43,7 +42,6 @@ import { SafePipe } from '@app/shared/pipes/SafePipe.pipe';
     VideoListComponent,
     AddEditLiveEventsComponent,
     EventListComponent,
-    SafePipe
   ],
   imports: [
     

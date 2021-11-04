@@ -21,7 +21,7 @@ import { LiveEventsComponent } from './components/live-events/live-events.compon
 import { ScheduleAllModule, RecurrenceEditorAllModule } from '@syncfusion/ej2-angular-schedule';
 import { NumericTextBoxAllModule, TextBoxAllModule } from '@syncfusion/ej2-angular-inputs';
 import { DropDownListAllModule, MultiSelectAllModule } from '@syncfusion/ej2-angular-dropdowns';
-import { SafePipe } from '@app/shared/pipes/SafePipe.pipe';
+
 
 
 @NgModule({
@@ -36,7 +36,6 @@ import { SafePipe } from '@app/shared/pipes/SafePipe.pipe';
     VideoListingComponent,
     BookListingComponent,
     LiveEventsComponent,
-    SafePipe
   ],
   imports: [
     CommonModule,

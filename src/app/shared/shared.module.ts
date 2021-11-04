@@ -14,7 +14,7 @@ import { SafePipe } from './pipes/SafePipe.pipe';
   declarations: [
     HeaderComponent,
     FooterComponent,
-
+    SafePipe
   ],
   imports: [
     CommonModule,
@@ -24,6 +24,7 @@ import { SafePipe } from './pipes/SafePipe.pipe';
     HeaderComponent,
     FooterComponent,
     NgxSpinnerModule,
+    SafePipe
   ],
   providers: [
     ApiService,
