@@ -1,16 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiService } from '@app/shared/services/api.service';
 import { CrudService } from '@app/shared/services/crud.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-book-list',
-  templateUrl: './book-list.component.html',
-  styleUrls: ['./book-list.component.css']
+  selector: 'app-event-list',
+  templateUrl: './event-list.component.html',
+  styleUrls: ['./event-list.component.css']
 })
-export class BookListComponent implements OnInit {
-  bookList = []
+export class EventListComponent implements OnInit {
+  eventList = []
 
   constructor(
     private router: Router,
@@ -18,27 +17,30 @@ export class BookListComponent implements OnInit {
     private toastrService: ToastrService) { }
 
   ngOnInit(): void {
-    this.getBooks()
+    this.getEvents()
   }
 
-  async getBooks() {
+  async getEvents() {
     this.crudService.startLoader()
-    this.crudService.getAll("books").subscribe(data => {
+    this.crudService.getAll("events").subscribe(data => {
       this.crudService.stopLoader()
-      this.bookList = data.map(e => {
+      this.eventList = data.map(e => {
         return {
           key: e.payload.doc.id,
           title: e.payload.doc.data()['title'],
-          description: e.payload.doc.data()['description'],
           url: e.payload.doc.data()['url'],
-          author: e.payload.doc.data()['author'],
+          organizer: e.payload.doc.data()['organizer'],
           date: e.payload.doc.data()['date'],
-          thumbnail: e.payload.doc.data()['thumbnail'],
+          startTime: e.payload.doc.data()['startTime'],
+          endTime: e.payload.doc.data()['endTime'],
         };
+        
       })
-    }, e => {
       this.crudService.stopLoader()
-      this.toastrService.error("Error Fetching Book", "Error")
+    }
+    ,e=>{
+      this.crudService.stopLoader()
+      this.toastrService.error("Error Fetching Events", "Error")
     });
   }
 
@@ -52,31 +54,27 @@ export class BookListComponent implements OnInit {
     return returnData
   }
 
-  formatDate(date) {
+  formatDate(date){
     let formatedDate = date.toDate()
     return formatedDate
   }
-
-  editBook(book) {
-    this.router.navigateByUrl("/admin/edit-book/" + book.key)
+  
+  editEvent(event) {
+    this.router.navigateByUrl("/admin/edit-event/" + event.key)
   }
 
-  async deleteBook(book) {
+  async deleteEvent(event) {
     this.crudService.startLoader()
-    this.crudService.delete(book.key, "books").then(data => {
+      this.crudService.delete(event.key,"events").then(data=>{
       this.crudService.stopLoader()
-      this.getBooks();
-    }, e => {
+      this.getEvents();
+    },e=>{
       this.crudService.stopLoader()
-      this.toastrService.error("Error Fetching Book", "Error")
+      this.toastrService.error("Error Deleting event", "Error")
     })
   }
 
-  addBook() {
-    this.router.navigateByUrl("/admin/add-book")
-  }
-
-  viewBook(book) {
-    window.open(book.url, '_blank')
+  addEvent() {
+    this.router.navigateByUrl("/admin/add-event")
   }
 }

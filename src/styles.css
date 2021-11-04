@@ -69,6 +69,7 @@
 .add-form .flex-button {
     display: flex;
     justify-content: flex-end;
+    margin-top: 20px;
 }
 
 .add-form .flex-button button {

@@ -40,7 +40,6 @@ export class ArticleListComponent implements OnInit {
         };
       })
       this.crudService.stopLoader()
-      console.log(this.articleList)
     },e=>{
       this.crudService.stopLoader()
     });
@@ -75,9 +74,7 @@ export class ArticleListComponent implements OnInit {
   }
 
   onCheckBoxChange(e,article){
-    // this.toastrService.success("tite","hello")
     var flag = e.target.checked;
-    console.log(flag,article)
     var alertMessage = "";
     article.isPublic =  flag
     if(flag)
@@ -85,43 +82,28 @@ export class ArticleListComponent implements OnInit {
       else
         alertMessage = "Article visibility changed to private successfully";
     this.updateArticle(article, alertMessage)
-    // this.apiService.put(`articles/${article.key}.json`, article).then(data => {
-    //   console.log(data)
-    //   var alertMessage = "";
-    //   if(flag)
-    //     alertMessage = "Article visibility changed to public uccessfully";
-    //   else
-    //     alertMessage = "Article visibility changed to private successfully";
-    //   this.toastrService.clear();  
-    //   this.toastrService.success(alertMessage,"Success");  
-    // },
-    // error => {
-    //   this.toastrService.error("Error Updating Article  visibility", error);
-    // });
   }
 
   updateArticle(articleObject,msg) {
     this.crudService.startLoader()
     this.crudService.update(articleObject,"article",articleObject.key).then(data=>{
-      console.log(data)
+      this.toastService.success(msg,"Success")
       this.getArticleList()
- 
+      
     },e=>{
-      console.log(e)
       this.toastService.error("Error Updating Article", "Error")
       this.crudService.stopLoader()
     })
   }
 
-  // async getArticleList() {
-  //   this.apiService.startLoader()
-  //   const result = await this.apiService.get("articles.json")
-  //   this.articleList = this.formatData(result)
-  // }
-
-  // async deleteArticle(article) {
-  //   this.apiService.startLoader()
-  //   const result = await this.apiService.delete(`articles/${article.key}.json`)
-  //   this.getArticleList();
-  // }
+  deleteArticle(article){
+    this.crudService.startLoader()
+      this.crudService.delete(article.key,"article").then(data=>{
+      this.crudService.stopLoader()
+      this.getArticleList();
+    },e=>{
+      this.crudService.stopLoader()
+      this.toastrService.error("Error Fetching Articles", "Error")
+    })
+  }
 }

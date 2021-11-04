@@ -19,7 +19,10 @@ import { AddEditBookComponent } from './components/add-edit-book/add-edit-book.c
 import { AddEditVideosComponent } from './components/add-edit-videos/add-edit-videos.component';
 import { BookListComponent } from './components/book-list/book-list.component';
 import { VideoListComponent } from './components/video-list/video-list.component';
-
+import { AddEditLiveEventsComponent } from './components/add-edit-live-events/add-edit-live-events.component';
+import { EventListComponent } from './components/event-list/event-list.component';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 
 @NgModule({
   declarations: [
@@ -36,7 +39,9 @@ import { VideoListComponent } from './components/video-list/video-list.component
     AddEditBookComponent,
     AddEditVideosComponent,
     BookListComponent,
-    VideoListComponent
+    VideoListComponent,
+    AddEditLiveEventsComponent,
+    EventListComponent
   ],
   imports: [
     
@@ -44,8 +49,9 @@ import { VideoListComponent } from './components/video-list/video-list.component
     AdminRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    CKEditorModule
-    
+    CKEditorModule,
+    BsDatepickerModule.forRoot(),
+    TimepickerModule.forRoot()
   ],
   providers:[AuthGuard]
 })

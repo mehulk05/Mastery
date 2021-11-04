@@ -3,12 +3,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '@app/shared/services/auth-guard.service';
 import { AddEditArticleComponent } from './components/add-edit-article/add-edit-article.component';
 import { AddEditBookComponent } from './components/add-edit-book/add-edit-book.component';
+import { AddEditLiveEventsComponent } from './components/add-edit-live-events/add-edit-live-events.component';
 import { AddEditUserComponent } from './components/add-edit-user/add-edit-user.component';
 import { AddEditVideosComponent } from './components/add-edit-videos/add-edit-videos.component';
 import { AdminAuthComponent } from './components/admin-auth/admin-auth.component';
 import { AdminWrapperComponent } from './components/admin-wrapper/admin-wrapper.component';
 import { ArticleListComponent } from './components/article-list/article-list.component';
 import { BookListComponent } from './components/book-list/book-list.component';
+import { EventListComponent } from './components/event-list/event-list.component';
 import { ForgetPasswordComponent } from './components/reusable/forget-password/forget-password.component';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { VideoListComponent } from './components/video-list/video-list.component';
@@ -68,17 +70,30 @@ const routes: Routes = [
         path: 'add-video',
         component: AddEditVideosComponent,
         canActivate:[AuthGuard]
-        
+      },
+      {
+        path: 'add-event',
+        component: AddEditLiveEventsComponent,
+        canActivate:[AuthGuard]
       },
       {
         path: 'edit-video/:id',
         component: AddEditVideosComponent,
         canActivate:[AuthGuard]
-        
+      },
+      {
+        path: 'edit-event/:id',
+        component: AddEditLiveEventsComponent,
+        canActivate:[AuthGuard]
       },
       {
         path: 'article-list',
         component: ArticleListComponent,
+        canActivate:[AuthGuard]
+      },
+      {
+        path: 'event-list',
+        component: EventListComponent,
         canActivate:[AuthGuard]
       },
 

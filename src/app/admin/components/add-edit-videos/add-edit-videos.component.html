@@ -1,7 +1,7 @@
 <div class="container">
     <div class="title-section">
         <h5>
-            User List
+            Add Video
         </h5>
 
         <button class="btn btn-add btn-primary" (click)="goBack()">Go Back</button>
@@ -44,6 +44,9 @@
                         <div class="error" *ngIf="f.url.invalid && ( (f.url.dirty || f.url.touched))">
                             <div *ngIf="f.url.errors.required">
                                 Video url is required.
+                            </div>
+                            <div *ngIf="f.url.errors.pattern">
+                                Video Url is Invalid
                             </div>
                         </div>
                     </div>

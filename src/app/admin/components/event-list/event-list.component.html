@@ -1,0 +1,44 @@
+<div class="container">
+    <div class="card list-section">
+        <div class="title-section">
+            <h5>
+                Event List
+            </h5>
+            <button class="btn btn-add btn-primary" (click)="addEvent()">Add Event</button>
+        </div>
+        <div class="table table-responsive">
+            <table class="table table-striped my-0 table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Start Time</th>
+                        <th scope="col">End Time</th>
+                        <th scope="col">Author</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr *ngFor="let event of eventList; let i=index" class="table-light">
+                        <td> {{i+1}} </td>
+                        <td>{{event?.title}}</td>
+                        <td>{{formatDate(event?.date) | date:'MMM d, y'}}</td>
+                        <td>{{formatDate(event?.startTime)| date:'hh:mm a'}}</td>
+                        <td>{{formatDate(event?.endTime)| date:'hh:mm a'}}</td>
+                        <td>{{event?.organizer}}</td>
+
+                        <td>
+
+                            <a href="javascript:void(0)" (click)="editEvent(event)">
+                                Edit
+                            </a>
+                            <a href="javascript:void(0)" (click)="deleteEvent(event)" style="color: red;">
+                                Delete
+                            </a>
+                        </td>
+            </table>
+        </div>
+    </div>
+</div>

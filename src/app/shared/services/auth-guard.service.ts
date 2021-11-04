@@ -21,21 +21,9 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
     let token = JSON.parse(localStorage.getItem("userData"))
-    console.log(token)
     if (token) {
       return true
     }
     this.router.navigateByUrl("/admin/auth")
-    // this.router.navigate(["admin/auth"], {
-    //   queryParams: { returnUrl: state.url }
-    // });
   }
-  // if (this.authService.user) {
-  //     return true;
-  //   } else {
-  //     this.router.navigate(["admin/auth"], {
-  //         queryParams: { returnUrl: state.url }
-  //       });
-  //   }
-  // }
 }

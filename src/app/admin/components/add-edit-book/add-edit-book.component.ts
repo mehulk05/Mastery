@@ -11,6 +11,9 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./add-edit-book.component.css']
 })
 export class AddEditBookComponent implements OnInit {
+
+  urlPattern = new RegExp(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/)
+
   bookForm: FormGroup;
   book_id: any;
   firestoreKey = "books"
@@ -40,8 +43,8 @@ export class AddEditBookComponent implements OnInit {
     this.bookForm = this.fb.group({
 
       title: ["", Validators.required],
-      description:[""],
-      url: ["", Validators.required],
+      description: [""],
+      url: ["", [Validators.required,Validators.pattern(this.urlPattern)]],
       thumbnail: [""],
       date: [new Date()],
       author: ["user"],
@@ -51,11 +54,7 @@ export class AddEditBookComponent implements OnInit {
   getBook(book_id) {
     this.isLoading = true
     this.crudService.startLoader()
-    // this.apiService.get(`videos/${user_id}.json`).then(userData => {
-    //   this.setUserFormValues(userData)
-    // })
     this.crudService.getSingle(book_id, this.firestoreKey).then(data => {
-      console.log(data.data())
       this.crudService.stopLoader()
       this.bookData = data.data()
       this.bookData.key = data.id
@@ -71,7 +70,7 @@ export class AddEditBookComponent implements OnInit {
   setBookFormValues(bookData) {
     this.bookForm.patchValue({
       title: bookData?.title,
-      description:bookData?.description,
+      description: bookData?.description,
       url: bookData?.url,
       thumbnail: bookData?.thumbnail,
       date: bookData?.date,
@@ -79,7 +78,7 @@ export class AddEditBookComponent implements OnInit {
     })
   }
 
- 
+
   submitForm() {
     let bookObject = {
       title: this.bookForm.value.title,
@@ -87,7 +86,7 @@ export class AddEditBookComponent implements OnInit {
       date: this.bookForm.value.date,
       url: this.bookForm.value.url,
       thumbnail: this.bookForm.value.thumbnail,
-      description:this.bookForm.value.description
+      description: this.bookForm.value.description
     }
 
     if (this.book_id) {
@@ -109,17 +108,11 @@ export class AddEditBookComponent implements OnInit {
 
   }
 
-
   updateBook(bookObject) {
     this.crudService.startLoader()
-    // this.apiService.put(`videos/${this.video_id}.json`, videoObject).then(data => {
-    //   this.router.navigateByUrl("/admin/video-list")
-    // })
-
     this.crudService.update(bookObject, this.firestoreKey, this.book_id).then(data => {
       this.router.navigateByUrl("/admin/book-list")
     }, e => {
-      console.log(e)
       this.crudService.stopLoader()
       this.toastService.error("Error Creating Book", "Error")
     })

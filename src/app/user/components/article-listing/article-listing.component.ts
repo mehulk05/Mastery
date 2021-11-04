@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '@app/shared/services/api.service';
+import { CrudService } from '@app/shared/services/crud.service';
 
 @Component({
   selector: 'app-article-listing',
@@ -11,19 +12,42 @@ export class ArticleListingComponent implements OnInit {
   searchText
   articleList = []
 
-  constructor(private apiService:ApiService,private router:Router) { }
+  constructor(private crudService:CrudService, private router:Router) { }
 
   ngOnInit(): void {
-    console.log(this.searchText)
     this.loadArticles()
   }
 
+  // async loadArticles() {
+  //   this.apiService.startLoader()
+  //   const result = await this.apiService.get("articles.json")
+  //   let articleList = this.formatData(result)
+  //  this.articleList = await this.formarArticleBody(articleList)
+  // }
+
   async loadArticles() {
-    this.apiService.startLoader()
-    const result = await this.apiService.get("articles.json")
-    let articleList = this.formatData(result)
-   this.articleList = await this.formarArticleBody(articleList)
-    console.log(this.articleList)
+    this.crudService.startLoader()
+    this.crudService.getAll("article").subscribe(data => {
+      this.articleList = data.map(e => {
+        let desc
+        desc = this.extractContent(e.payload.doc.data()['body'])
+        let imgUrl =  e.payload.doc.data()['imgUrl'] ? e.payload.doc.data()['imgUrl'] : 'https://neilpatel.com/wp-content/uploads/2017/08/blog.jpg'
+        return {
+          key: e.payload.doc.id,
+          title: e.payload.doc.data()['title'],
+          body: e.payload.doc.data()['body'],
+          category: e.payload.doc.data()['category'],
+          date: e.payload.doc.data()['date'],
+          shortDesc:desc,
+          imgUrl : imgUrl,
+          author : e.payload.doc.data()['author'],
+          isPublic:e.payload.doc.data()["isPublic"]
+        };
+      })
+      this.crudService.stopLoader()
+    },e=>{
+      this.crudService.stopLoader()
+    });
   }
 
   formarArticleBody(articles){

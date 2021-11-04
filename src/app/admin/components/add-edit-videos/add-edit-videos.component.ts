@@ -11,6 +11,8 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./add-edit-videos.component.css']
 })
 export class AddEditVideosComponent implements OnInit {
+  urlPattern = new RegExp(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/)
+
   videoForm: FormGroup;
   video_id: any;
   firestoreKey = "videos"
@@ -41,7 +43,7 @@ export class AddEditVideosComponent implements OnInit {
     this.videoForm = this.fb.group({
 
       title: ["", Validators.required],
-      url: ["", Validators.required],
+      url: ["",[ Validators.required,Validators.pattern(this.urlPattern)]],
       thumbnail: [""],
       date: [new Date()],
       creator: ["user"],
@@ -51,9 +53,7 @@ export class AddEditVideosComponent implements OnInit {
   getVideo(video_id) {
     this.isLoading = true
     this.crudService.startLoader()
-    // this.apiService.get(`videos/${user_id}.json`).then(userData => {
-    //   this.setUserFormValues(userData)
-    // })
+
     this.crudService.getSingle(video_id, this.firestoreKey).then(data => {
       this.crudService.stopLoader()
       this.videoData = data.data()
@@ -77,13 +77,10 @@ export class AddEditVideosComponent implements OnInit {
     })
   }
   async onBlurVideoFeild() {
-    console.log("here")
     let videoUrl = this.videoForm.value.url
 
     if (videoUrl) {
       var thumbnail = await this.get_youtube_thumbnail(videoUrl, 'medium');
-      console.log(thumbnail)
-
       this.videoForm.patchValue({
         thumbnail: thumbnail
       })
@@ -151,14 +148,9 @@ export class AddEditVideosComponent implements OnInit {
 
   updateVideo(videoObject) {
     this.crudService.startLoader()
-    // this.apiService.put(`videos/${this.video_id}.json`, videoObject).then(data => {
-    //   this.router.navigateByUrl("/admin/video-list")
-    // })
-
     this.crudService.update(videoObject, this.firestoreKey, this.video_id).then(data => {
       this.router.navigateByUrl("/admin/video-list")
     }, e => {
-      console.log(e)
       this.crudService.stopLoader()
       this.toastService.error("Error Creating Video", "Error")
     })

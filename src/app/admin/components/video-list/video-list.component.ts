@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiService } from '@app/shared/services/api.service';
 import { CrudService } from '@app/shared/services/crud.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -14,7 +13,6 @@ export class VideoListComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private apiService: ApiService,
     private crudService: CrudService,
     private toastrService: ToastrService) { }
 
@@ -36,7 +34,7 @@ export class VideoListComponent implements OnInit {
           thumbnail: e.payload.doc.data()['thumbnail'],
         };
       })
-    },e=>{
+    }, e => {
       this.crudService.stopLoader()
       this.toastrService.error("Error Fetching Video", "Error")
     });
@@ -52,7 +50,7 @@ export class VideoListComponent implements OnInit {
     return returnData
   }
 
-  formatDate(date){
+  formatDate(date) {
     let formatedDate = date.toDate()
     return formatedDate
   }
@@ -62,16 +60,13 @@ export class VideoListComponent implements OnInit {
 
   async deleteVideo(video) {
     this.crudService.startLoader()
-      this.crudService.delete(video.key,"videos").then(data=>{
+    this.crudService.delete(video.key, "videos").then(data => {
       this.crudService.stopLoader()
       this.getVideos();
-    },e=>{
+    }, e => {
       this.crudService.stopLoader()
       this.toastrService.error("Error Fetching Video", "Error")
     })
-    // const result = await this.apiService.delete(`videos/${video.key}.json`)
-  
-
   }
 
   addVideo() {

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '@app/shared/services/api.service';
+import { CrudService } from '@app/shared/services/crud.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-view-article',
@@ -11,10 +13,12 @@ export class ViewArticleComponent implements OnInit {
   articleData: any
   article_id = null;
   url = encodeURIComponent(window.location.href)
-  constructor(private activatedRoute: ActivatedRoute, private apiService: ApiService, private router: Router) { }
+  constructor(private activatedRoute: ActivatedRoute, 
+    private crudService: CrudService, 
+    private router: Router,
+    private toastService: ToastrService) { }
 
   ngOnInit(): void {
-    console.log(this.url)
     this.activatedRoute.params.subscribe(data => {
       if (data && data.id) {
         this.article_id = data.id
@@ -23,15 +27,18 @@ export class ViewArticleComponent implements OnInit {
     })
   }
 
+
   getArticle(article_id) {
-    this.apiService.startLoader()
-    this.apiService.get(`articles/${article_id}.json`).then((articleData: any) => {
-      this.articleData = articleData
-      let body = articleData.body.split("<p>&nbsp;</p>").join("")
-      this.articleData.body = body
+    this.crudService.startLoader()
+    this.crudService.getSingle(article_id,"article").then(data=>{
+      this.articleData =  data.data()
+      this.articleData.id =  data.id
+      this.crudService.stopLoader()
+    },e=>{
+      this.toastService.error("Error Fetching Article", "Error")
+      this.crudService.stopLoader()
     })
   }
-
   shareLink() {
     let title = this.articleData.title
     let text = this.articleData.title
@@ -43,12 +50,11 @@ export class ViewArticleComponent implements OnInit {
           text,
           url
         })
-        .then(() => console.log("Shared!"))
+        .then(() => console.log(""))
         .catch(err => console.error(err));
     }
   }
   goBack() {
-    console.log("here")
     this.router.navigateByUrl("/admin/article-list")
   }
 

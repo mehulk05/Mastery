@@ -71,11 +71,9 @@ export class AddEditArticleComponent implements OnInit {
       this.setArticleFormValues(this.aricleData)
       this.crudService.stopLoader()
     },e=>{
-      console.log(e)
       this.toastService.error("Error Fetching Article", "Error")
       this.crudService.stopLoader()
     })
-
   }
 
   setArticleFormValues(articleData) {
@@ -105,7 +103,7 @@ export class AddEditArticleComponent implements OnInit {
     console.log(img.height,img.width)
     return {ht:img.height,width:img.width,url:url}
     
-}
+} 
 
   submitForm() {
     let body = this.articleForm.value.body
@@ -172,7 +170,7 @@ export class AddEditArticleComponent implements OnInit {
     this.router.navigateByUrl("/admin/article-list")
   }
 
-
+  // Firebase Realtime operation
   // getArticle(article_id) {
   //   this.apiService.startLoader()
   //   this.apiService.get(`articles/${article_id}.json`).then(articleData => {
@@ -193,5 +191,17 @@ export class AddEditArticleComponent implements OnInit {
   //   await this.apiService.post("articles.json", articleObject).then(result => {
   //     this.router.navigateByUrl("/admin/article-list")
   //   })
+  // }
+
+    // async getArticleList() {
+  //   this.apiService.startLoader()
+  //   const result = await this.apiService.get("articles.json")
+  //   this.articleList = this.formatData(result)
+  // }
+
+  // async deleteArticle(article) {
+  //   this.apiService.startLoader()
+  //   const result = await this.apiService.delete(`articles/${article.key}.json`)
+  //   this.getArticleList();
   // }
 }

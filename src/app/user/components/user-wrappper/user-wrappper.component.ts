@@ -11,7 +11,6 @@ export class UserWrappperComponent implements OnInit {
   constructor(private userService:UserAuthService) { }
 
   ngOnInit(): void {
-    console.log("calling")
     this.userService.autoLogin()
   }
 

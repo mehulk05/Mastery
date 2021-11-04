@@ -36,7 +36,6 @@ export class UserAuthComponent implements OnInit {
     const password = form.value.password;
     this.userAuth.login(email,password).then((userData:any) => {
       userData = userData.data()
-      console.log(userData)
       if(!userData){
         this.toastService.error("Error While Login", "Error")
       }

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '@app/shared/services/api.service';
+import { CrudService } from '@app/shared/services/crud.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-article-detail',
@@ -11,10 +13,9 @@ export class ArticleDetailComponent implements OnInit {
   articleData: any
   article_id = null;
   url = encodeURIComponent(window.location.href)
-  constructor(private activatedRoute: ActivatedRoute, private apiService: ApiService, private router: Router) { }
+  constructor(private activatedRoute: ActivatedRoute,private toastService:ToastrService, private crudService: CrudService, private router: Router) { }
 
   ngOnInit(): void {
-    console.log(this.url)
     this.activatedRoute.params.subscribe(data => {
       if (data && data.id) {
         this.article_id = data.id
@@ -23,19 +24,28 @@ export class ArticleDetailComponent implements OnInit {
     })
   }
 
+  // getArticle(article_id) {
+  //   this.apiService.startLoader()
+  //   this.apiService.get(`articles/${article_id}.json`).then((articleData: any) => {
+  //     this.articleData = articleData
+  //     console.log(articleData)
+  //     let body = articleData.body.split("<p>&nbsp;</p>").join("")
+  //     console.log(body)
+  //     this.articleData.body = body
+  //   })
+  // }
+
   getArticle(article_id) {
-    this.apiService.startLoader()
-    this.apiService.get(`articles/${article_id}.json`).then((articleData: any) => {
-      this.articleData = articleData
-      console.log(articleData)
-      let body = articleData.body.split("<p>&nbsp;</p>").join("")
-      // let body  =  articleData.body.replace(/&nbsp;/g, '');
-      // body =  body.replaceAll(/<p>​<\/p>/gi,'8');
-      console.log(body)
-      this.articleData.body = body
+    this.crudService.startLoader()
+    this.crudService.getSingle(article_id,"article").then(data=>{
+      this.articleData =  data.data()
+      this.articleData.id =  data.id
+      this.crudService.stopLoader()
+    },e=>{
+      this.toastService.error("Error Fetching Article", "Error")
+      this.crudService.stopLoader()
     })
   }
-
   shareLink() {
     let title = this.articleData.title
     let text = this.articleData.title
@@ -47,12 +57,11 @@ export class ArticleDetailComponent implements OnInit {
           text,
           url
         })
-        .then(() => console.log("Shared!"))
+        .then(() => console.log(""))
         .catch(err => console.error(err));
     }
   }
   goBack() {
-    console.log("here")
     this.router.navigateByUrl("/user/article-list")
   }
 

@@ -11,8 +11,9 @@
             <h4>{{articleData?.title}}</h4>
             <p class="datetime">
                 <span>
-                    {{articleData?.date | date:'d MMM, y hh:mm a'}}
+                    {{(articleData?.date).toDate() | date:'d MMM, y hh:mm a'}}
                 </span>
+                <br>
                 <span>
                    <b>By</b>  {{articleData?.author}}
                 </span>

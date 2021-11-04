@@ -16,7 +16,7 @@ export class UserListComponent implements OnInit {
   constructor(
     private router: Router,
     private apiService: ApiService, private crudService: CrudService,
-    private userCrudService:UserCrudService,
+    private userCrudService: UserCrudService,
     private toastrService: ToastrService) { }
 
   ngOnInit(): void {
@@ -36,12 +36,12 @@ export class UserListComponent implements OnInit {
 
         };
       })
-    },e=>{
+    }, e => {
       this.userCrudService.stopLoader()
       this.toastrService.error("Error Fetching Users", "Error")
     });
   }
-  
+
   formatData(data) {
     let returnData = []
     for (const key in data) {
@@ -52,34 +52,22 @@ export class UserListComponent implements OnInit {
     return returnData
   }
 
-  // formatData(data) {
-  //   let returnData = []
-  //   for (const key in data) {
-  //     if (data.hasOwnProperty(key)) {
-  //       let key2 = data[key]
-  //       let values = key2[Object.keys(key2)[0]]
-  //       returnData.push({ ...values, key ,key2});
-  //     }
-  //   }
-  //   return returnData
-  // }
-
   editUser(user) {
     this.router.navigateByUrl("/admin/edit-user/" + user.email)
   }
 
   async deleteUser(userData) {
     this.userCrudService.startLoader()
-      this.userCrudService.delete(userData.email,"users").then(data=>{
+    this.userCrudService.delete(userData.email, "users").then(data => {
       this.userCrudService.stopLoader()
       this.getAllUserList();
-    },e=>{
+    }, e => {
       this.userCrudService.stopLoader()
       this.toastrService.error("Error Fetching Users", "Error")
     })
   }
 
-  addUser(){
+  addUser() {
     this.router.navigateByUrl("/admin/add-user")
   }
 
@@ -97,6 +85,18 @@ export class UserListComponent implements OnInit {
   //   let key  = userData.email.replace(/\./g, ',');
   //   const result = await this.apiService.delete(`users/${key}.json`)
   //   this.getAllUserList()
+  // }
+
+  // formatData(data) {
+  //   let returnData = []
+  //   for (const key in data) {
+  //     if (data.hasOwnProperty(key)) {
+  //       let key2 = data[key]
+  //       let values = key2[Object.keys(key2)[0]]
+  //       returnData.push({ ...values, key ,key2});
+  //     }
+  //   }
+  //   return returnData
   // }
 }
 

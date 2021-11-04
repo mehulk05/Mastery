@@ -4,9 +4,7 @@
     <nav class="main-navigation__header-nav">
         <ul class="nav-links">
 
-            <li *ngIf="isAuthenticated">
-                <a routerLinkActive="active" routerLink="/admin/user-list" [routerLinkActiveOptions]="{exact: true}"> Users</a>
-            </li>
+
             <li *ngIf="isAuthenticated">
                 <a routerLinkActive="active" routerLink="/admin/article-list"> Article</a>
             </li>
@@ -14,20 +12,21 @@
             <li *ngIf="isAuthenticated">
                 <a routerLinkActive="active" routerLink="/admin/book-list"> Book</a>
             </li>
+
+
+            <li *ngIf="isAuthenticated">
+                <a routerLinkActive="active" routerLink="/admin/event-list"> Events</a>
+            </li>
+
+
+            <li *ngIf="isAuthenticated">
+                <a routerLinkActive="active" routerLink="/admin/user-list" [routerLinkActiveOptions]="{exact: true}"> Users</a>
+            </li>
+
+
             <li *ngIf="isAuthenticated">
                 <a routerLinkActive="active" routerLink="/admin/video-list"> Videos</a>
             </li>
-            <!-- <li *ngIf="isAuthenticated">
-                <a routerLinkActive="active" routerLink="/admin/" [routerLinkActiveOptions]="{exact: true}"> Vidoes</a>
-            </li>
-
-            <li *ngIf="isAuthenticated">
-                <a routerLinkActive="active" routerLink="/admin/" [routerLinkActiveOptions]="{exact: true}"> Books</a>
-            </li>
-
-            <li *ngIf="isAuthenticated">
-                <a routerLinkActive="active" routerLink="/admin/" [routerLinkActiveOptions]="{exact: true}"> Shows</a>
-            </li> -->
 
             <li><a *ngIf="!isAuthenticated" routerLinkActive="active" routerLink="/admin/auth">Login/Register</a></li>
             <li><button *ngIf="isAuthenticated" (click)="onLogout()">Logout </button></li>
@@ -50,22 +49,27 @@
         <nav>{{isAuthenticated}}
             <ul id="navigation" (click)="openMenu()">
 
-                <li *ngIf="isAuthenticated">
-                    <a routerLinkActive="active" routerLink="/admin/user-list" [routerLinkActiveOptions]="{exact: true}"> Users</a>
-                </li>
+
                 <li *ngIf="isAuthenticated">
                     <a routerLinkActive="active" routerLink="/admin/article-list"> Article</a>
                 </li>
                 <li *ngIf="isAuthenticated">
-                    <a routerLinkActive="active" routerLink="/admin/video-list"> Videos</a>
-                </li>
-                <!-- <li *ngIf="isAuthenticated">
-                    <a routerLinkActive="active" routerLink="/admin/" [routerLinkActiveOptions]="{exact: true}"> Vidoes</a>
+                    <a routerLinkActive="active" routerLink="/admin/book-list"> Book</a>
                 </li>
 
+
                 <li *ngIf="isAuthenticated">
-                    <a routerLinkActive="active" routerLink="/admin/" [routerLinkActiveOptions]="{exact: true}"> Books</a>
-                </li> -->
+                    <a routerLinkActive="active" routerLink="/admin/event-list"> Events</a>
+                </li>
+
+
+                <li *ngIf="isAuthenticated">
+                    <a routerLinkActive="active" routerLink="/admin/user-list" [routerLinkActiveOptions]="{exact: true}"> Users</a>
+                </li>
+                <li *ngIf="isAuthenticated">
+                    <a routerLinkActive="active" routerLink="/admin/video-list"> Videos</a>
+                </li>
+
 
                 <li *ngIf="!isAuthenticated"><a routerLinkActive="active" routerLink="/admin/auth">Login/Register</a></li>
                 <li *ngIf="isAuthenticated"><button (click)="onLogout()">Logout </button></li>

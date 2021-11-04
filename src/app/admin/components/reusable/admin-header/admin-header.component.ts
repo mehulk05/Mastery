@@ -17,8 +17,6 @@ export class AdminHeaderComponent implements OnInit {
     this.authService.autoLogin();
     this.userSub = this.authService.user.subscribe(user => {
       this.isAuthenticated = !!user;
-      console.log(!user);
-      console.log(!!user, this.isAuthenticated);
     });
   }
 

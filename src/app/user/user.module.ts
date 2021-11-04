@@ -17,7 +17,10 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { ToastrModule } from 'ngx-toastr';
 import { VideoListingComponent } from './components/video-listing/video-listing.component';
 import { BookListingComponent } from './components/book-listing/book-listing.component';
-
+import { LiveEventsComponent } from './components/live-events/live-events.component';
+import { ScheduleAllModule, RecurrenceEditorAllModule } from '@syncfusion/ej2-angular-schedule';
+import { NumericTextBoxAllModule, TextBoxAllModule } from '@syncfusion/ej2-angular-inputs';
+import { DropDownListAllModule, MultiSelectAllModule } from '@syncfusion/ej2-angular-dropdowns';
 
 
 @NgModule({
@@ -30,7 +33,8 @@ import { BookListingComponent } from './components/book-listing/book-listing.com
     ArticleDetailComponent,
     UserHeaderComponent,
     VideoListingComponent,
-    BookListingComponent
+    BookListingComponent,
+    LiveEventsComponent
   ],
   imports: [
     CommonModule,
@@ -39,6 +43,8 @@ import { BookListingComponent } from './components/book-listing/book-listing.com
     HttpClientModule,SharedModule,
     Ng2SearchPipeModule,
     ToastrModule.forRoot(), 
+    ScheduleAllModule, RecurrenceEditorAllModule, NumericTextBoxAllModule,TextBoxAllModule,DropDownListAllModule,
+    MultiSelectAllModule,
   ],
   providers:[UserAuthGuard]
 })

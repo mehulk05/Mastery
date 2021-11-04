@@ -1,7 +1,7 @@
 <div class="container">
     <div class="title-section">
         <h5>
-            Add Books
+            Add Book
         </h5>
 
         <button class="btn btn-add btn-primary" (click)="goBack()">Go Back</button>
@@ -61,6 +61,9 @@
                         <div class="error" *ngIf="f.url.invalid && ( (f.url.dirty || f.url.touched))">
                             <div *ngIf="f.url.errors.required">
                                 Book url is required.
+                            </div>
+                            <div *ngIf="f.url.errors.pattern">
+                                Url is Invalid
                             </div>
                         </div>
                     </div>

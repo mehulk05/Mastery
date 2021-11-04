@@ -40,7 +40,6 @@ export class BookListingComponent implements OnInit {
           description:e.payload.doc.data()['description']
         };
       })
-      console.log(this.bookList)
     }, e => {
       this.crudService.stopLoader()
       this.toastrService.error("Error Fetching Book", "Error")

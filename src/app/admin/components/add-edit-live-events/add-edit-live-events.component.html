@@ -1,0 +1,126 @@
+<div class="container">
+    <div class="title-section">
+        <h5>
+            Add Event
+        </h5>
+
+        <button class="btn btn-add btn-primary" (click)="goBack()">Go Back</button>
+    </div>
+    <div class="add-form">
+        <form class="login-box" [formGroup]="eventForm" (ngSubmit)="submitForm()">
+            <div class="form-row row">
+                <div class="col-md-12">
+                    <label>Title<span class="error-red">*</span></label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" formControlName="title">
+                        <div class="error" *ngIf="f.title.invalid && ( (f.title.dirty || f.title.touched))">
+                            <div *ngIf="f.title.errors.required">
+                                Title is required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row row">
+                <div class="col-md-12">
+                    <label>Organized by<span class="error-red">*</span></label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" formControlName="organizer">
+                        <div class="error" *ngIf="f.organizer.invalid && ( (f.organizer.dirty || f.organizer.touched))">
+                            <div *ngIf="f.organizer.errors.required">
+                                organizer name is required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="">
+
+
+                <div class="form-row row wrapper-dt-time">
+                    <div class="wrapper1">
+                        <label>Date <span class="error-red">*</span></label>
+                        <div class="form-group">
+                            <!-- <input type="date" class="form-control" formControlName="date"> -->
+                            <input type="text" placeholder="Datepicker" class="form-control" [bsConfig]="bsConfig" bsDatepicker formControlName="date" [minDate]="todayDate">
+
+                            <div class="error" *ngIf="f.date.invalid && ( (f.date.dirty || f.date.touched))">
+                                <div *ngIf="f.date.errors.required">
+                                    Date is required.
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div class="wrapper1">
+                        <label>Start Time<span class="error-red">*</span></label>
+                        <div class="form-group">
+                            <timepicker formControlName="startTime" [showMeridian]="false" [mousewheel]="true" [max]="eventForm.value.endTime" value="todayDate" [arrowkeys]="true"></timepicker>
+                            <!-- <input type="time" class="form-control" formControlName="startTime"> -->
+                            <div class="error" *ngIf="f.startTime.invalid && ( (f.startTime.dirty || f.startTime.touched))">
+                                <div *ngIf="f.startTime.errors.required">
+                                    Start Time is incorrect or it should be before end date.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="wrapper1">
+                        <label>End Time<span class="error-red">*</span></label>
+                        <div class="form-group">
+
+                            <timepicker formControlName="endTime" [showMeridian]="false" [min]="eventForm.value.startTime" [mousewheel]="true" [arrowkeys]="true"></timepicker>
+                            <div class="error" *ngIf="f.endTime.invalid && ( (f.endTime.dirty || f.endTime.touched))">
+                                <div *ngIf="f.endTime.errors.required">
+                                    End Time is inccorrect or it should be more than start date.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+
+
+            <div class="form-row row">
+                <div class="col-md-12">
+                    <label>Event  url<span class="error-red">*</span></label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" formControlName="url">
+                        <div class="error" *ngIf="f.url.invalid && ( (f.url.dirty || f.url.touched))">
+                            <div *ngIf="f.url.errors.required">
+                                Book url is required.
+                            </div>
+                            <div *ngIf="f.url.errors.pattern">
+                                Event Url is Invalid
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- <pre>{{eventForm.get('title').valid}}</pre>
+            <pre>{{eventForm.get('organizer').valid}}</pre>
+            <pre>{{eventForm.get('date').valid}}</pre>
+            <pre>{{eventForm.get('startTime').valid}}</pre>
+            <pre>{{eventForm.get('endTime').valid}}</pre>
+            <pre>{{eventForm.get('url').valid}}</pre> -->
+
+            <div class="flex-button">
+                <button type="submit" class="btn btn-common  btn-success butn" [disabled]="eventForm.invalid">Save</button>
+                <button type="button" class="btn btn-common  btn-danger butn" (click)="goBack()">Cancel</button>
+            </div>
+
+        </form>
+    </div>
+</div>

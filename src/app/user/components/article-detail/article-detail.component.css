@@ -67,3 +67,7 @@ p.datetime {
     font-weight: 500;
     color: rgb(105 110 120)
 }
+
+.detail-img img {
+    max-width: 100%;
+}

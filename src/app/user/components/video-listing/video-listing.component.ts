@@ -28,7 +28,6 @@ export class VideoListingComponent implements OnInit {
       this.videoList = data.map(e => {
         let url =  e.payload.doc.data()['url']
         url = url.replace("watch?v=","embed/")
-        console.log(url)
         return {
           key: e.payload.doc.id,
           title: e.payload.doc.data()['title'],

@@ -106,7 +106,6 @@ export class AuthService {
         new Date().getTime();
       this.autoLogout(expirationDuration);
     }
-    console.log(loadedUser,userData)
   }
 
   logout() {
@@ -129,7 +128,6 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     this.user.subscribe(userdata => {
-      console.log(userdata)
       this.userdata = userdata
     })
     if (this.userdata !== null) {
