@@ -100,7 +100,6 @@ export class AddEditArticleComponent implements OnInit {
     getMeta(url){   
     var img = new Image();
     img.src = url
-    console.log(img.height,img.width)
     return {ht:img.height,width:img.width,url:url}
     
 } 
@@ -143,7 +142,6 @@ export class AddEditArticleComponent implements OnInit {
     this.crudService.create(articleObject,"article").then(data=>{
       this.router.navigateByUrl("/admin/article-list")
     },e=>{
-      console.log(e)
       this.crudService.stopLoader()
       this.toastService.error("Error Creating Article", "Error")
     })
@@ -152,11 +150,9 @@ export class AddEditArticleComponent implements OnInit {
   updateArticle(articleObject) {
     this.crudService.startLoader()
     this.crudService.update(articleObject,"article",this.article_id).then(data=>{
-      console.log(data)
       this.router.navigateByUrl("/admin/article-list")
  
     },e=>{
-      console.log(e)
       this.toastService.error("Error Updating Article", "Error")
       this.crudService.stopLoader()
     })

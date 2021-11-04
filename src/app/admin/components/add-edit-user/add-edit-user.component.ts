@@ -63,14 +63,11 @@ export class AddEditUserComponent implements OnInit {
   getUser(key){
     this.userCrudService.startLoader()
     this.userCrudService.getSingle(key,"users").then(data=>{
-      console.log(data)
       this.userData =  data.data()
-      console.log(data.data())
       // this.userData.id =  "12"
       this.setUserFormValues(this.userData)
       this.userCrudService.stopLoader()
     },e=>{
-      console.log(e)
       this.toastService.error("Error Fetching Users", "Error")
       this.userCrudService.stopLoader()
     })
@@ -82,7 +79,6 @@ export class AddEditUserComponent implements OnInit {
       this.userCrudService.create(userData, "users").then(data => {
         this.router.navigateByUrl("/admin/user-list")
       }, e => {
-        console.log(e)
         this.userCrudService.stopLoader()
         this.toastService.error("Error Updating User", "Error")
       })

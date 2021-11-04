@@ -54,13 +54,11 @@ export class AdminAuthComponent implements OnInit {
 
     authObs.subscribe(
       resData => {
-        console.log(resData);
          this.isLoading = false
             this.ngxLoader.hide();
             this.router.navigate(["admin/article-list"]);
       },
       errorMessage => {
-        console.log(errorMessage);
         this.error = errorMessage;
         this.isLoading = false;
         this.ngxLoader.hide();

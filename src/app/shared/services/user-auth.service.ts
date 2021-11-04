@@ -22,13 +22,11 @@ export class UserAuthService {
       return;
     }
     const userData:any = await this.login(userDataOld.email, userDataOld.password)
-    console.log(userData)
     if (userData.email && userData.password) {
       this.user.next(userData)
       this.isAuthenticated = true
       const expirationDuration =
       userDataOld.seconds - new Date().getTime();
-        console.log(expirationDuration)
       this.autoLogout(expirationDuration);
     }
   }
@@ -41,7 +39,6 @@ export class UserAuthService {
 
     this.user.next(null)
     this.isAuthenticated= false
-    console.log("hhere")
     this.router.navigate(['/user/user-auth']);
     localStorage.clear()
     if (this.tokenExpirationTimer) {

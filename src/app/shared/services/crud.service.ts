@@ -24,7 +24,6 @@ export class CrudService {
    return this.firestore.collection(key).doc(id).ref.get()
   }
   update(dateObject: any, key,id) {
-    console.log(dateObject,key)
     delete dateObject.id;
     return this.firestore.doc(key + "/" + id).update(dateObject);
   }
