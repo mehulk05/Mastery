@@ -38,7 +38,7 @@
             </div>
 
             <div class="fileupload">
-                <label>
+                <!-- <label>
                     <input
                       type="file"
                       class="text-nowrap text-truncate"
@@ -48,7 +48,9 @@
 
                 <button class="btn btn-success btn-sm" [disabled]="!selectedFiles" (click)="upload()">
                     Upload
-                  </button>
+                  </button> -->
+
+
 
                 <div *ngIf="currentFileUpload" class="progress mt-2">
                     <div class="progress-bar progress-bar-info" role="progressbar" attr.aria-valuenow="{{ percentage }}" aria-valuemin="0" aria-valuemax="100" [ngStyle]="{ width: percentage + '%' }">
@@ -57,10 +59,17 @@
                 </div>
             </div>
             <div class="form-row row">
+                <div class="image-upload">
+                    <label for="file-input">
+                      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSa0qEV_mEF19gs68CDaSmZ4e0kssbxyOAMbw&usqp=CAU"/>
+                    </label>
+
+                    <input id="file-input" type="file" (change)="selectFile($event)" />
+                </div>
                 <div class="col-md-12">
                     <label>Body<span class="error-red">*</span></label>
                     <div class="form-group">
-                        <ckeditor [config]="config" data="<p>Some initial data</p>" type="classic" formControlName="body"></ckeditor>
+                        <ckeditor #myckeditor [config]="config" data="<p>Some initial data</p>" type="classic" formControlName="body"></ckeditor>
                         <div class="error" *ngIf="f.body.invalid && ( (f.body.dirty || f.body.touched))">
                             <div *ngIf="f.body.errors.required">
                                 Body is required.

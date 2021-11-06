@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { AngularFireStorage } from '@angular/fire/storage';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ArticleCrudService } from '@app/admin/services/article services/article-crud.service';
@@ -6,6 +7,7 @@ import { ApiService } from '@app/shared/services/api.service';
 import { CrudService } from '@app/shared/services/crud.service';
 import { FileUpload, FileuploadService } from '@app/shared/services/fileupload.service';
 import { ToastrService } from 'ngx-toastr';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-edit-article',
@@ -23,13 +25,16 @@ export class AddEditArticleComponent implements OnInit {
   currentFileUpload: FileUpload;
   percentage: number;
 
+  @ViewChild('myckeditor') myckeditor:any;
+  downloadURL: any;
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private crudService:CrudService,
     private toastService: ToastrService,
-    private uploadService:FileuploadService
+    private uploadService:FileuploadService,
+    private storage: AngularFireStorage
   ) {
     this.config = { uiColor: '#f2f2f2' };
   }
@@ -44,16 +49,16 @@ export class AddEditArticleComponent implements OnInit {
     })
     this.createArticleForm()
     this.config.extraPlugins = 'colorbutton , justify'
-    this.config = {
-      extraPlugins: 'uploadimage',
-      uploadUrl: 'https://ckeditor.com/apps/ckfinder/3.4.5/core/connector/php/connector.php?command=QuickUpload&type=Files&responseType=json',
+    // this.config = {
+    //   extraPlugins: 'uploadimage',
+    //   uploadUrl: 'https://ckeditor.com/apps/ckfinder/3.4.5/core/connector/php/connector.php?command=QuickUpload&type=Files&responseType=json',
 
-      // Configure your file manager integration. This example uses CKFinder 3 for PHP.
-      filebrowserBrowseUrl: 'https://ckeditor.com/apps/ckfinder/3.4.5/ckfinder.html',
-      filebrowserImageBrowseUrl: 'https://ckeditor.com/apps/ckfinder/3.4.5/ckfinder.html?type=Images',
-      filebrowserUploadUrl: 'https://ckeditor.com/apps/ckfinder/3.4.5/core/connector/php/connector.php?command=QuickUpload&type=Files',
-      filebrowserImageUploadUrl: 'https://ckeditor.com/apps/ckfinder/3.4.5/core/connector/php/connector.php?command=QuickUpload&type=Images'
-    }
+    //   // Configure your file manager integration. This example uses CKFinder 3 for PHP.
+    //   filebrowserBrowseUrl: 'https://ckeditor.com/apps/ckfinder/3.4.5/ckfinder.html',
+    //   filebrowserImageBrowseUrl: 'https://ckeditor.com/apps/ckfinder/3.4.5/ckfinder.html?type=Images',
+    //   filebrowserUploadUrl: 'https://ckeditor.com/apps/ckfinder/3.4.5/core/connector/php/connector.php?command=QuickUpload&type=Files',
+    //   filebrowserImageUploadUrl: 'https://ckeditor.com/apps/ckfinder/3.4.5/core/connector/php/connector.php?command=QuickUpload&type=Images'
+    // }
   }
 
   createArticleForm() {
@@ -172,8 +177,38 @@ export class AddEditArticleComponent implements OnInit {
   }
 
   selectFile(event): void {
+    this.percentage=0
     this.selectedFiles = event.target.files;
+    const file = event.target.files[0];
+    this.currentFileUpload = new FileUpload(file);
+    const filePath = `RoomsImages`;
+    const fileRef = this.storage.ref(filePath);
+    const task = this.storage.upload(`RoomsImages/`, file);
+    task
+      .snapshotChanges()
+      .pipe(
+        finalize(() => {
+          this.downloadURL = fileRef.getDownloadURL();
+          this.downloadURL.subscribe(url => {
+            if (url) {
+              this.fb = url;
+            }
+            this.addUrlToEditor(this.fb)
+            task.percentageChanges().subscribe(percentage=>{
+              this.percentage = Math.round(percentage);
+              this.percentage = percentage
+            })
+          });
+        })
+      )
+      .subscribe(url => {
+        if (url) {
+          this.selectedFiles = null;
+          event.target.value = "";
+        }
+      });
   }
+
 
   upload(): void {
     const file = this.selectedFiles.item(0);
@@ -184,12 +219,21 @@ export class AddEditArticleComponent implements OnInit {
       percentage => {
         this.percentage = Math.round(percentage);
         this.uploadService.downloadUrl.subscribe(data=>{
+          this.addUrlToEditor(data)
         })
       },
       error => {
         console.log("error",error);
       }
     );
+  }
+
+  addUrlToEditor(url){
+    var style = " <img src='"+url +"'  style='max-width: 100%;' class='img-responsive'>";
+
+   let innerHtml = this.articleForm.value.body
+    this.myckeditor.instance.insertHtml(style)
+    this.articleForm.patchValue({ 'body': innerHtml });
   }
   // Firebase Realtime operation
   // getArticle(article_id) {

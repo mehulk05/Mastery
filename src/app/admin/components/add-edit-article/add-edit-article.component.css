@@ -3,7 +3,38 @@
     border: 1px solid gainsboro
 }
 
-.ng-invalid.ng-touched ::ng-deep .cke_chrome,
+.ng-invalid.ng-touched,
 input.ng-invalid.ng-touched {
     border-color: red;
+}
+
+.image-upload>input {
+    display: none;
+}
+
+.image-upload img {
+    max-width: 30px;
+    padding: 5px;
+}
+
+.image-upload {
+    position: absolute;
+    right: 1em;
+    top: 2.5em;
+    z-index: 1;
+}
+
+.form-row.row {
+    position: relative;
+}
+
+@media screen and (max-width:767px) {
+    .image-upload {
+        right: 0.7em;
+    }
+}
+
+:ng-deep img {
+    max-width: 100%;
+    height: auto !important;
 }
