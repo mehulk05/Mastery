@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ArticleCrudService } from '@app/admin/services/article services/article-crud.service';
 import { ApiService } from '@app/shared/services/api.service';
 import { CrudService } from '@app/shared/services/crud.service';
+import { FileUpload, FileuploadService } from '@app/shared/services/fileupload.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -17,14 +18,18 @@ export class AddEditArticleComponent implements OnInit {
   aricleData:any
   config: any;
   author = JSON.parse(localStorage.getItem("userData"))
+
+  selectedFiles: FileList;
+  currentFileUpload: FileUpload;
+  percentage: number;
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private articleCrudService: ArticleCrudService,
     private activatedRoute: ActivatedRoute,
-    private apiService: ApiService,
     private crudService:CrudService,
-    private toastService: ToastrService
+    private toastService: ToastrService,
+    private uploadService:FileuploadService
   ) {
     this.config = { uiColor: '#f2f2f2' };
   }
@@ -166,6 +171,26 @@ export class AddEditArticleComponent implements OnInit {
     this.router.navigateByUrl("/admin/article-list")
   }
 
+  selectFile(event): void {
+    this.selectedFiles = event.target.files;
+  }
+
+  upload(): void {
+    const file = this.selectedFiles.item(0);
+    this.selectedFiles = undefined;
+
+    this.currentFileUpload = new FileUpload(file);
+    this.uploadService.pushFileToStorage(this.currentFileUpload).subscribe(
+      percentage => {
+        this.percentage = Math.round(percentage);
+        this.uploadService.downloadUrl.subscribe(data=>{
+        })
+      },
+      error => {
+        console.log("error",error);
+      }
+    );
+  }
   // Firebase Realtime operation
   // getArticle(article_id) {
   //   this.apiService.startLoader()

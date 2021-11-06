@@ -28,9 +28,7 @@ export class ArticleDetailComponent implements OnInit {
   //   this.apiService.startLoader()
   //   this.apiService.get(`articles/${article_id}.json`).then((articleData: any) => {
   //     this.articleData = articleData
-  //     console.log(articleData)
   //     let body = articleData.body.split("<p>&nbsp;</p>").join("")
-  //     console.log(body)
   //     this.articleData.body = body
   //   })
   // }

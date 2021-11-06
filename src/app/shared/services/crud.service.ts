@@ -31,6 +31,9 @@ export class CrudService {
     return this.firestore.doc(key + "/" + objId).delete();
   }
 
+  addAbout(key,data){
+    return this.firestore.collection(key).add(data);
+  }
   startLoader() {
     this.ngxLoader.show();
   }

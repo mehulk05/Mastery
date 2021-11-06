@@ -21,6 +21,7 @@ import { LiveEventsComponent } from './components/live-events/live-events.compon
 import { ScheduleAllModule, RecurrenceEditorAllModule } from '@syncfusion/ej2-angular-schedule';
 import { NumericTextBoxAllModule, TextBoxAllModule } from '@syncfusion/ej2-angular-inputs';
 import { DropDownListAllModule, MultiSelectAllModule } from '@syncfusion/ej2-angular-dropdowns';
+import { AboutComponent } from './components/about/about.component';
 
 
 
@@ -36,6 +37,7 @@ import { DropDownListAllModule, MultiSelectAllModule } from '@syncfusion/ej2-ang
     VideoListingComponent,
     BookListingComponent,
     LiveEventsComponent,
+    AboutComponent,
   ],
   imports: [
     CommonModule,

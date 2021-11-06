@@ -90,8 +90,8 @@
 }
 
 .search-hero {
-    max-width: 500px;
-    padding-bottom: 50px;
+    max-width: 600px;
+    padding-bottom: 30px;
     margin: auto;
 }
 
@@ -104,11 +104,11 @@
     border-radius: 12px;
     box-shadow: 0 10px 35px rgb(0 0 0 / 18%);
     color: #6c757d;
-    height: 4rem;
+    height: 3.3rem;
     outline: none;
     font-size: 16px;
     font-weight: 500;
-    padding: 1rem 1rem 1rem 2rem;
+    padding: 1rem 1rem 1rem 3rem;
     width: calc(100% - 4rem);
     line-height: normal;
 }
@@ -121,7 +121,7 @@
     color: rgba(108, 117, 125, .6);
     margin-left: 15px;
     position: absolute;
-    top: 3.2em;
+    top: 2.5em;
     transition: all .2s ease-in-out;
 }
 
@@ -198,6 +198,15 @@
     width: 100%;
     background-position: center;
     background-size: contain;
+}
+
+.container1 {
+    max-width: 95%;
+    margin: 0 auto;
+}
+
+.row.lisitng {
+    justify-content: center;
 }
 
 @media screen and (max-width:767px) {

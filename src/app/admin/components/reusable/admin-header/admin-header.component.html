@@ -10,6 +10,10 @@
             </li>
 
             <li *ngIf="isAuthenticated">
+                <a routerLinkActive="active" routerLink="/admin/about"> About</a>
+            </li>
+
+            <li *ngIf="isAuthenticated">
                 <a routerLinkActive="active" routerLink="/admin/book-list"> Book</a>
             </li>
 
@@ -20,7 +24,8 @@
 
 
             <li *ngIf="isAuthenticated">
-                <a routerLinkActive="active" routerLink="/admin/user-list" [routerLinkActiveOptions]="{exact: true}"> Users</a>
+                <a routerLinkActive="active" routerLink="/admin/user-list" [routerLinkActiveOptions]="{exact: true}">
+                    Users</a>
             </li>
 
 
@@ -53,6 +58,11 @@
                 <li *ngIf="isAuthenticated">
                     <a routerLinkActive="active" routerLink="/admin/article-list"> Article</a>
                 </li>
+
+                <li *ngIf="isAuthenticated">
+                    <a routerLinkActive="active" routerLink="/admin/about"> About</a>
+                </li>
+
                 <li *ngIf="isAuthenticated">
                     <a routerLinkActive="active" routerLink="/admin/book-list"> Book</a>
                 </li>
@@ -71,7 +81,8 @@
                 </li>
 
 
-                <li *ngIf="!isAuthenticated"><a routerLinkActive="active" routerLink="/admin/auth">Login/Register</a></li>
+                <li *ngIf="!isAuthenticated"><a routerLinkActive="active" routerLink="/admin/auth">Login/Register</a>
+                </li>
                 <li *ngIf="isAuthenticated"><button (click)="onLogout()">Logout </button></li>
             </ul>
         </nav>

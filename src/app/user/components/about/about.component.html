@@ -1,0 +1,19 @@
+<div class="container">
+    <div class="card list-section">
+        <div class="title-section">
+            <h5>
+                {{aboutSection?.title || 'About Section'}}
+            </h5>
+        </div>
+
+        <div class="preview mt-4">
+            <ng-container *ngIf="!aboutSection?.body">
+                <p> THis is About Section</p>
+            </ng-container>
+            <div class="about-view" [innerHtml]="aboutSection?.body">
+
+            </div>
+        </div>
+
+    </div>
+</div>

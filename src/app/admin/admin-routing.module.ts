@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '@app/shared/services/auth-guard.service';
+import { AboutViewComponent } from './components/about-view/about-view.component';
 import { AddEditArticleComponent } from './components/add-edit-article/add-edit-article.component';
 import { AddEditBookComponent } from './components/add-edit-book/add-edit-book.component';
 import { AddEditLiveEventsComponent } from './components/add-edit-live-events/add-edit-live-events.component';
@@ -10,6 +11,7 @@ import { AdminAuthComponent } from './components/admin-auth/admin-auth.component
 import { AdminWrapperComponent } from './components/admin-wrapper/admin-wrapper.component';
 import { ArticleListComponent } from './components/article-list/article-list.component';
 import { BookListComponent } from './components/book-list/book-list.component';
+import { EditAboutComponent } from './components/edit-about/edit-about.component';
 import { EventListComponent } from './components/event-list/event-list.component';
 import { ForgetPasswordComponent } from './components/reusable/forget-password/forget-password.component';
 import { UserListComponent } from './components/user-list/user-list.component';
@@ -25,6 +27,18 @@ const routes: Routes = [
       {
         path:"auth",
         component:AdminAuthComponent,
+
+      },
+
+      {
+        path:"about",
+        component:AboutViewComponent,
+
+      },
+
+      {
+        path:"edit-about/:id",
+        component:EditAboutComponent,
 
       },
       {

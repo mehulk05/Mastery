@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { BookListComponent } from '@app/admin/components/book-list/book-list.component';
 import { VideoListComponent } from '@app/admin/components/video-list/video-list.component';
 import { UserAuthGuard } from '@app/shared/services/userauth-gaurd.service';
+import { AboutComponent } from './components/about/about.component';
 import { ArticleDetailComponent } from './components/article-detail/article-detail.component';
 import { ArticleListingComponent } from './components/article-listing/article-listing.component';
 import { BookListingComponent } from './components/book-listing/book-listing.component';
@@ -17,6 +18,11 @@ const routes: Routes = [
     component: UserWrappperComponent,
     children: [
       { path: '', redirectTo: 'article-list', pathMatch: 'full' },
+      {
+        path:"about",
+        component:AboutComponent,
+        
+      },
       {
         path:"user-auth",
         component:UserAuthComponent,

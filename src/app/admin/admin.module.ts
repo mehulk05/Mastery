@@ -23,6 +23,8 @@ import { AddEditLiveEventsComponent } from './components/add-edit-live-events/ad
 import { EventListComponent } from './components/event-list/event-list.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
+import { AboutViewComponent } from './components/about-view/about-view.component';
+import { EditAboutComponent } from './components/edit-about/edit-about.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,8 @@ import { TimepickerModule } from 'ngx-bootstrap/timepicker';
     VideoListComponent,
     AddEditLiveEventsComponent,
     EventListComponent,
+    AboutViewComponent,
+    EditAboutComponent,
   ],
   imports: [
     

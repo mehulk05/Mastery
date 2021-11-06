@@ -73,7 +73,7 @@ export class LiveEventsComponent implements OnInit {
         Subject: data.title,
         StartTime: data.startTime.toDate(),
         EndTime: data.endTime.toDate(),
-        url: "abc",
+        url: data.url,
 
       });
       id++;
