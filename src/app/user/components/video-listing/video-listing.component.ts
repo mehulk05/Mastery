@@ -32,7 +32,11 @@ export class VideoListingComponent implements OnInit {
       this.crudService.stopLoader()
       this.videoList = data.map(e => {
         let url =  e.payload.doc.data()['url']
-        url = url.replace("watch?v=","embed/")
+        const videoId = this.getVideoId(url);
+        if(videoId){
+          url  = "https://www.youtube.com/embed/" + videoId
+        }
+
         return {
           key: e.payload.doc.id,
           title: e.payload.doc.data()['title'],
@@ -47,6 +51,15 @@ export class VideoListingComponent implements OnInit {
       this.toastrService.error("Error Fetching Video", "Error")
     });
   }
+
+   getVideoId(url) {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url?.match(regExp);
+
+    return (match && match[2].length === 11)
+      ? match[2]
+      : null;
+}
 
   formatDate(date){
     let formatedDate = date.toDate()
