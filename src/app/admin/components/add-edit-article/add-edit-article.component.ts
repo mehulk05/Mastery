@@ -94,7 +94,8 @@ export class AddEditArticleComponent implements OnInit {
       date: articleData?.date,
       author: articleData?.author,
       category:articleData?.category,
-      isPublic:articleData.isPublic ? articleData.isPublic :false
+      isPublic:articleData.isPublic ? articleData.isPublic :false,
+      uuid:articleData?.uuid
     })
   }
 
@@ -160,6 +161,7 @@ export class AddEditArticleComponent implements OnInit {
   }
 
   updateArticle(articleObject) {
+    console.log(articleObject)
     this.crudService.startLoader()
     this.crudService.update(articleObject,"article",this.article_id).then(data=>{
       this.router.navigateByUrl("/admin/article-list")

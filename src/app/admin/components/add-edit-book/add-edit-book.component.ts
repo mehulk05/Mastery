@@ -75,7 +75,8 @@ export class AddEditBookComponent implements OnInit {
       url: bookData?.url,
       thumbnail: bookData?.thumbnail,
       date: bookData?.date,
-      author: bookData.author
+      author: bookData.author,
+      uuid:bookData?.uuid
     })
   }
 

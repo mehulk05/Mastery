@@ -94,7 +94,8 @@ export class AddEditUserComponent implements OnInit {
       email:userData?.email,
       password:userData?.password,
       date:userData?.date,
-      role:userData?.role
+      role:userData?.role,
+      uuid:userData?.uuid
     })
   }
 

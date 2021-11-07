@@ -74,7 +74,8 @@ export class AddEditVideosComponent implements OnInit {
       url: videoData?.url,
       thumbnail: videoData?.thumbnail,
       date: videoData?.date,
-      creator: videoData.creator
+      creator: videoData.creator,
+      uuid:videoData?.uuid
     })
   }
   async onBlurVideoFeild() {

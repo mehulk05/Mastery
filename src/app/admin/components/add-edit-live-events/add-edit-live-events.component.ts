@@ -91,7 +91,8 @@ export class AddEditLiveEventsComponent implements OnInit {
       date: eventData?.date.toDate(),
       organizer: eventData.organizer,
       startTime: eventData?.startTime.toDate(),
-      endTime: eventData?.endTime.toDate()
+      endTime: eventData?.endTime.toDate(),
+      uuid:eventData?.uuid
     })
   }
 
