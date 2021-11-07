@@ -250,6 +250,12 @@
     .social.contact-us.mb-4 {
         margin-bottom: 10px !important;
     }
+    .mobile-only-icon {
+        top: 6px !important
+    }
+    .headerMenu.open::before {
+        top: 40px !important
+    }
 }
 
 @media screen and (max-width:767px) {
