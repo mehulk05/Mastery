@@ -1,15 +1,15 @@
 <header class="main-header">
 
-    <h1 class="main-navigation__title"><a href="#/">Blog Book</a></h1>
+
+
+
     <nav class="main-navigation__header-nav">
         <ul class="nav-links">
-
-
             <li *ngIf="isAuthenticated">
                 <a routerLinkActive="active" routerLink="/admin/article-list"> Article</a>
             </li>
 
-            <li *ngIf="isAuthenticated">
+            <li *ngIf="isAuthenticated && isAdmin">
                 <a routerLinkActive="active" routerLink="/admin/about"> About</a>
             </li>
 
@@ -59,7 +59,7 @@
                     <a routerLinkActive="active" routerLink="/admin/article-list"> Article</a>
                 </li>
 
-                <li *ngIf="isAuthenticated">
+                <li *ngIf="isAuthenticated && isAdmin">
                     <a routerLinkActive="active" routerLink="/admin/about"> About</a>
                 </li>
 

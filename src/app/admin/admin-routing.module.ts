@@ -12,11 +12,14 @@ import { AdminWrapperComponent } from './components/admin-wrapper/admin-wrapper.
 import { ArticleListComponent } from './components/article-list/article-list.component';
 import { BookListComponent } from './components/book-list/book-list.component';
 import { EditAboutComponent } from './components/edit-about/edit-about.component';
+import { EditDontateComponent } from './components/edit-dontate/edit-dontate.component';
 import { EventListComponent } from './components/event-list/event-list.component';
 import { ForgetPasswordComponent } from './components/reusable/forget-password/forget-password.component';
+import { UserAuthComponent } from './components/user-auth/user-auth.component';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { VideoListComponent } from './components/video-list/video-list.component';
 import { ViewArticleComponent } from './components/view-article/view-article.component';
+import { ViewDonateComponent } from './components/view-donate/view-donate.component';
 
 const routes: Routes = [
   {
@@ -27,6 +30,12 @@ const routes: Routes = [
       {
         path:"auth",
         component:AdminAuthComponent,
+
+      },
+
+      {
+        path:"user-auth",
+        component:UserAuthComponent,
 
       },
 
@@ -46,6 +55,18 @@ const routes: Routes = [
         component: AddEditUserComponent,
         canActivate:[AuthGuard]
       },
+      {
+        path: 'view-donate',
+        component: ViewDonateComponent,
+        canActivate:[AuthGuard]
+      },
+
+      {
+        path: 'edit-donate/:id',
+        component: EditDontateComponent,
+        canActivate:[AuthGuard]
+      },
+
       {
         path: 'user-list',
         component: UserListComponent,

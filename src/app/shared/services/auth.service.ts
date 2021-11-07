@@ -8,7 +8,6 @@ import { throwError, Subject, BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from '@app/user/models/user.model';
 import { NgxSpinnerService } from 'ngx-spinner';
-
 export interface AuthResponseData {
   kind: string;
   idToken: string;
@@ -23,7 +22,7 @@ export interface AuthResponseData {
   providedIn: 'root'
 })
 export class AuthService {
-  user = new BehaviorSubject<User>(null);
+  user = new BehaviorSubject<any>(null);
   private tokenExpirationTimer: any;
 
   key =environment.firebase.apiKey
@@ -82,14 +81,25 @@ export class AuthService {
   }
 
   autoLogin() {
-    const userData: {
-      email: string;
-      id: string;
-      _token: string;
-      _tokenExpirationDate: string;
-    } = JSON.parse(localStorage.getItem('userData'));
+  
+    // const userData: {
+    //   email: string;
+    //   id: string;
+    //   _token: string;
+    //   seconds:string,
+    //   _tokenExpirationDate: string;
+    // } = JSON.parse(localStorage.getItem('userData'));
+    const userData = JSON.parse(localStorage.getItem('userData'));
     if (!userData) {
       return;
+    }
+    console.log(userData)
+    if(userData.seconds){
+      console.log(userData)
+      this.user.next(userData);
+      const expirationDuration =
+      userData.seconds - new Date().getTime();
+      this.autoLogout(expirationDuration);
     }
 
     const loadedUser = new User(
@@ -98,7 +108,7 @@ export class AuthService {
       userData._token,
       new Date(userData._tokenExpirationDate)
     );
-
+    
     if (loadedUser.token) {
       this.user.next(loadedUser);
       const expirationDuration =
@@ -144,6 +154,7 @@ export class AuthService {
   ) {
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
     const user = new User(email, userId, token, expirationDate);
+    user.role = "Admin"
     this.user.next(user);
     this.autoLogout(expiresIn * 1000);
     localStorage.setItem('userData', JSON.stringify(user));

@@ -10,6 +10,9 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class EventListComponent implements OnInit {
   eventList = []
+  isUser = JSON.parse(localStorage.getItem("userData")).role == "user"
+  uuid =  JSON.parse(localStorage.getItem("userData")).uuid
+  isAdmin = JSON.parse(localStorage.getItem("userData")).role != "user"
 
   constructor(
     private router: Router,
@@ -22,9 +25,9 @@ export class EventListComponent implements OnInit {
 
   async getEvents() {
     this.crudService.startLoader()
-    this.crudService.getAll("events").subscribe(data => {
+    this.crudService.getAll("events").subscribe(async data => {
       this.crudService.stopLoader()
-      this.eventList = data.map(e => {
+      this.eventList =await  data.map(e => {
         return {
           key: e.payload.doc.id,
           title: e.payload.doc.data()['title'],
@@ -33,9 +36,15 @@ export class EventListComponent implements OnInit {
           date: e.payload.doc.data()['date'],
           startTime: e.payload.doc.data()['startTime'],
           endTime: e.payload.doc.data()['endTime'],
+          uuid:e.payload.doc.data()["uuid"]
         };
         
       })
+      if(this.isUser){
+        this.eventList = this.eventList.filter(data=>{
+          return data.uuid == this.uuid
+        })
+      }
       this.crudService.stopLoader()
     }
     ,e=>{

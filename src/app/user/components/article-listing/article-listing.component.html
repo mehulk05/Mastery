@@ -8,8 +8,11 @@
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg></div>
     </div>
+
+
+
     <div class="row lisitng" *ngIf="(articleList  | filter: searchText) as result">
-        <ng-container *ngFor="let aritcle of result">
+        <ng-container *ngFor="let aritcle of result | paginate:config">
             <div class="col-lg-3 col-md-6 col-sm-12">
                 <div class="article-column">
                     <div class="article-image" [style.backgroundImage]="'url('+aritcle?.imgUrl+')'">
@@ -30,7 +33,10 @@
                     </div>
                 </div>
             </div>
-        </ng-container>
 
+        </ng-container>
+        <div class="pagination-page">
+            <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+        </div>
     </div>
 </div>

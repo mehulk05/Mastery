@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { UserAuthService } from '@app/shared/services/user-auth.service';
 import { Subscription } from 'rxjs';
 
@@ -11,7 +12,7 @@ export class UserHeaderComponent implements OnInit {
   isAuthenticated = false;
   private userSub: Subscription;
   isMenuOpen:boolean =false
-  constructor(private userAuthService:UserAuthService) { }
+  constructor(private userAuthService:UserAuthService,private router:Router) { }
 
   ngOnInit(): void {
     this.userSub = this.userAuthService.user.subscribe(data=>{
@@ -29,5 +30,8 @@ export class UserHeaderComponent implements OnInit {
 
   openMenu(){
     this.isMenuOpen =!this.isMenuOpen
+  }
+  gotoDonate(){
+    this.router.navigateByUrl("/user/donate")
   }
 }

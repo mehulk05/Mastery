@@ -11,8 +11,14 @@ import { CrudService } from '@app/shared/services/crud.service';
 export class ArticleListingComponent implements OnInit {
   searchText
   articleList = []
-
-  constructor(private crudService:CrudService, private router:Router) { }
+  config: any;
+  constructor(private crudService:CrudService, private router:Router) { 
+    this.config = {
+      itemsPerPage: 4,
+      currentPage: 1,
+      totalItems: this.articleList.length
+    };
+  }
 
   ngOnInit(): void {
     this.loadArticles()
@@ -91,4 +97,7 @@ export class ArticleListingComponent implements OnInit {
     this.router.navigateByUrl("/user/article-detail/" + article.key)
   }
 
+  pageChanged(event){
+    this.config.currentPage = event;
+  }
 }

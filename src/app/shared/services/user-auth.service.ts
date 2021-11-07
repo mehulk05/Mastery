@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { ApiService } from './api.service';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,18 +13,20 @@ export class UserAuthService {
   user = new BehaviorSubject<any>(null);
   tokenExpirationTimer
   constructor(
-    private router:Router, private apiService:ApiService,private firestore: AngularFirestore
+    private router:Router, private authService:AuthService,private firestore: AngularFirestore
   ) { }
 
   async autoLogin() {
     
-    let userDataOld = JSON.parse(localStorage.getItem('userSideData'));
+    let userDataOld = JSON.parse(localStorage.getItem('userData'));
     if (!userDataOld) {
       return;
     }
     const userData:any = await this.login(userDataOld.email, userDataOld.password)
+    console.log(userData)
     if (userData.email && userData.password) {
       this.user.next(userData)
+      this.authService.user.next(userData)
       this.isAuthenticated = true
       const expirationDuration =
       userDataOld.seconds - new Date().getTime();
@@ -39,7 +42,7 @@ export class UserAuthService {
 
     this.user.next(null)
     this.isAuthenticated= false
-    this.router.navigate(['/user/user-auth']);
+    this.router.navigate(['/admin/user-auth']);
     localStorage.clear()
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);

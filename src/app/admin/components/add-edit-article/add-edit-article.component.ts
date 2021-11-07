@@ -62,6 +62,7 @@ export class AddEditArticleComponent implements OnInit {
   }
 
   createArticleForm() {
+    console.log(this.author)
     this.articleForm = this.fb.group({
       id: [""],
       title: ["", Validators.required],
@@ -69,7 +70,8 @@ export class AddEditArticleComponent implements OnInit {
       date: [new Date()],
       author: [this.author.email],
       category:[""],
-      isPublic:[false]
+      isPublic:[false],
+      uuid:[this.author?.uuid]
     });
   }
 
@@ -137,6 +139,7 @@ export class AddEditArticleComponent implements OnInit {
       date: this.articleForm.value.date,
       isPublic: this.articleForm.value.isPublic,
       imgUrl: imgUrl,
+      uuid:this.articleForm.value.uuid
     }
 
     if (this.article_id) {

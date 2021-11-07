@@ -93,6 +93,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    height: 100%;
 }
 
 .contact-detail h3 {

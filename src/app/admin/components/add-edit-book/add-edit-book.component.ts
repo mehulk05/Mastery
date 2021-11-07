@@ -13,7 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 export class AddEditBookComponent implements OnInit {
 
   urlPattern = new RegExp(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/)
-
+  author = JSON.parse(localStorage.getItem("userData"))
   bookForm: FormGroup;
   book_id: any;
   firestoreKey = "books"
@@ -48,6 +48,7 @@ export class AddEditBookComponent implements OnInit {
       thumbnail: [""],
       date: [new Date()],
       author: ["user"],
+      uuid:[this.author?.uuid]
     });
   }
 
@@ -86,7 +87,8 @@ export class AddEditBookComponent implements OnInit {
       date: this.bookForm.value.date,
       url: this.bookForm.value.url,
       thumbnail: this.bookForm.value.thumbnail,
-      description: this.bookForm.value.description
+      description: this.bookForm.value.description,
+      uuid:this.bookForm.value.uuid
     }
 
     if (this.book_id) {

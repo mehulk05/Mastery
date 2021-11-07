@@ -10,6 +10,9 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class VideoListComponent implements OnInit {
   videoList = []
+  isUser = JSON.parse(localStorage.getItem("userData")).role == "user"
+  uuid =  JSON.parse(localStorage.getItem("userData")).uuid
+  isAdmin = JSON.parse(localStorage.getItem("userData")).role != "user"
 
   constructor(
     private router: Router,
@@ -22,9 +25,9 @@ export class VideoListComponent implements OnInit {
 
   async getVideos() {
     this.crudService.startLoader()
-    this.crudService.getAll("videos").subscribe(data => {
+    this.crudService.getAll("videos").subscribe(async data => {
       this.crudService.stopLoader()
-      this.videoList = data.map(e => {
+      this.videoList = await data.map(e => {
         return {
           key: e.payload.doc.id,
           title: e.payload.doc.data()['title'],
@@ -32,8 +35,16 @@ export class VideoListComponent implements OnInit {
           creator: e.payload.doc.data()['creator'],
           date: e.payload.doc.data()['date'],
           thumbnail: e.payload.doc.data()['thumbnail'],
+          uuid:e.payload.doc.data()["uuid"]
         };
+        
       })
+      if(this.isUser){
+        this.videoList = this.videoList.filter(data=>{
+          return data.uuid == this.uuid
+        })
+      }
+      this.crudService.stopLoader()
     }, e => {
       this.crudService.stopLoader()
       this.toastrService.error("Error Fetching Video", "Error")

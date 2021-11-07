@@ -12,6 +12,9 @@ import { ToastrService } from 'ngx-toastr';
 export class BookListComponent implements OnInit {
   bookList = []
 
+  isUser = JSON.parse(localStorage.getItem("userData")).role == "user"
+  uuid =  JSON.parse(localStorage.getItem("userData")).uuid
+  isAdmin = JSON.parse(localStorage.getItem("userData")).role != "user"
   constructor(
     private router: Router,
     private crudService: CrudService,
@@ -23,9 +26,9 @@ export class BookListComponent implements OnInit {
 
   async getBooks() {
     this.crudService.startLoader()
-    this.crudService.getAll("books").subscribe(data => {
+    this.crudService.getAll("books").subscribe(async data => {
       this.crudService.stopLoader()
-      this.bookList = data.map(e => {
+      this.bookList =await  data.map(e => {
         return {
           key: e.payload.doc.id,
           title: e.payload.doc.data()['title'],
@@ -34,11 +37,22 @@ export class BookListComponent implements OnInit {
           author: e.payload.doc.data()['author'],
           date: e.payload.doc.data()['date'],
           thumbnail: e.payload.doc.data()['thumbnail'],
+          uuid:e.payload.doc.data()["uuid"]
         };
+
       })
-    }, e => {
+      if(this.isUser){
+        this.bookList = this.bookList.filter(data=>{
+          return data.uuid == this.uuid
+        })
+      }
+   
+   
       this.crudService.stopLoader()
-      this.toastrService.error("Error Fetching Book", "Error")
+    },
+    e => {
+      this.crudService.stopLoader()
+      this.toastrService.error("Error Fetching Book", "Error") 
     });
   }
 

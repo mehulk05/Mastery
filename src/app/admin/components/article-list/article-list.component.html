@@ -7,7 +7,7 @@
 
             <button class="btn btn-add btn-primary" (click)="addArticle()">Add Article</button>
         </div>
-        <div class="table table-responsive">
+        <div class="table table-responsive" *ngIf="isAdmin">
             <table class="table table-striped my-0 table-hover">
                 <thead>
                     <tr>
@@ -42,6 +42,42 @@
                                     </label>
                             </ng-template>
                         </td>
+                        <td>
+                            <a href="javascript:void(0)" class="primary" (click)="ViewArticle(article)">
+                                View
+                            </a>
+                            <a href="javascript:void(0)" (click)="editArticle(article)">
+                                Edit
+                            </a>
+                            <a href="javascript:void(0)" (click)="deleteArticle(article)" style="color: red;">
+                                Delete
+                            </a>
+                        </td>
+            </table>
+        </div>
+
+        <div class="table table-responsive" *ngIf="isUser">
+            <table class="table table-striped my-0 table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Author</th>
+                        <th scope="col">Category</th>
+
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr *ngFor="let article of articleList; let i=index" class="table-light">
+                        <td> {{i+1}} </td>
+                        <td>{{article?.title}}</td>
+                        <td>{{formatDate(article?.date) | date:'MMM d, y hh:mm a'}}</td>
+                        <td>{{article?.author}}</td>
+                        <td>{{article?.category}}</td>
+
                         <td>
                             <a href="javascript:void(0)" class="primary" (click)="ViewArticle(article)">
                                 View

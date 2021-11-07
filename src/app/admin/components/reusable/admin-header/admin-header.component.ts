@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '@app/shared/services/auth.service';
+import { UserAuthService } from '@app/shared/services/user-auth.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -11,17 +13,39 @@ export class AdminHeaderComponent implements OnInit {
   isAuthenticated = false;
   private userSub: Subscription;
   isMenuOpen:boolean =false
-  constructor(private authService:AuthService) { }
+
+  isUser = JSON.parse(localStorage.getItem("userData"))?.role == "user"
+
+  isAdmin = JSON.parse(localStorage.getItem("userData"))?.role != "user"
+  
+  constructor(
+    private router: Router,
+    private authService:AuthService,private userAuthService:UserAuthService) { }
 
   ngOnInit(): void {
     this.authService.autoLogin();
     this.userSub = this.authService.user.subscribe(user => {
+      console.log(user)
       this.isAuthenticated = !!user;
     });
   }
 
   onLogout() {
-    this.authService.logout();
+    this.isUser = JSON.parse(localStorage.getItem("userData"))?.role == "user"
+    this.isAdmin = JSON.parse(localStorage.getItem("userData"))?.role != "user"
+    if(this.isAdmin){
+      this.authService.logout();
+    }
+    else{
+      this.userAuthService.logout()
+      //this.authService.logout();
+    }
+    
+  }
+
+  gotoDonate()
+  {
+    this.router.navigateByUrl("/admin/view-donate")
   }
 
   ngOnDestroy() {

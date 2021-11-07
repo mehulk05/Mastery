@@ -11,13 +11,19 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class BookListingComponent implements OnInit {
 
-  
+  config:any
   searchText
   bookList = []
 
   constructor(private apiService: ApiService,
     private crudService: CrudService, 
-    private toastrService: ToastrService) { }
+    private toastrService: ToastrService) { 
+      this.config = {
+        itemsPerPage: 4,
+        currentPage: 1,
+        totalItems: this.bookList.length
+      };
+    }
 
   ngOnInit(): void {
     this.loadBooks()
@@ -53,5 +59,8 @@ export class BookListingComponent implements OnInit {
 
   viewBook(book){
     window.open(book.url, '_blank')
+  }
+  pageChanged(event){
+    this.config.currentPage = event;
   }
 }

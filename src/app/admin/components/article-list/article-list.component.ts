@@ -12,22 +12,59 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ArticleListComponent implements OnInit {
   articleList = []
+  isUser = JSON.parse(localStorage.getItem("userData")).role == "user"
+  uuid =  JSON.parse(localStorage.getItem("userData")).uuid
+  isAdmin = JSON.parse(localStorage.getItem("userData")).role != "user"
 
   constructor(private articleCrudService: ArticleCrudService,
     private router: Router,
-    private apiService: ApiService,
     private toastrService:ToastrService,
     private crudService:CrudService,
     private toastService: ToastrService) { }
 
   ngOnInit(): void {
-    this.getArticleList()
+    console.log(this.isUser)
+    if(this.isUser){
+      this.getUserSpecificArticle()
+    }
+    else{
+      this.getArticleList()
+    }
+    
+  }
+  
+   getUserSpecificArticle(){
+    this.crudService.startLoader()
+    this.crudService.getAll("article").subscribe( async data => {
+      
+      this.articleList = await  data.map(e => {   
+          return {
+            key: e.payload.doc.id,
+            title: e.payload.doc.data()['title'],
+            body: e.payload.doc.data()['body'],
+            category: e.payload.doc.data()['category'],
+            date: e.payload.doc.data()['date'],
+            imgUrl : e.payload.doc.data()['imgUrl'],
+            author : e.payload.doc.data()['author'],
+            isPublic:e.payload.doc.data()["isPublic"],
+            uuid:e.payload.doc.data()["uuid"]
+          
+        }
+      })
+      this.articleList = this.articleList.filter(data=>{
+        return data.uuid == this.uuid
+      })
+      this.crudService.stopLoader()
+    },e=>{
+      this.crudService.stopLoader()
+    });
   }
 
   async getArticleList() {
     this.crudService.startLoader()
     this.crudService.getAll("article").subscribe(data => {
-      this.articleList = data.map(e => {
+
+      this.articleList = data.map(e => {      
         return {
           key: e.payload.doc.id,
           title: e.payload.doc.data()['title'],

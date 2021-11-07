@@ -6,14 +6,12 @@ import { AuthService } from '@app/shared/services/auth.service';
 import { UserAuthService } from '@app/shared/services/user-auth.service';
 import { ToastrService } from 'ngx-toastr';
 
-
 @Component({
   selector: 'app-user-auth',
   templateUrl: './user-auth.component.html',
   styleUrls: ['./user-auth.component.css']
 })
 export class UserAuthComponent implements OnInit {
-
   constructor(private apiService: ApiService,
     private userAuth:UserAuthService,
     private router:Router,

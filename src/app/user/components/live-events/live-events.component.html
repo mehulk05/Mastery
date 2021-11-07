@@ -19,7 +19,8 @@
                                 <br>
                                 <div class="e-subject">{{data.Subject}}</div>
                             </div>
-                            <div class="e-date-time">3:05 AM - 5:35 AM</div>
+                            <div class="e-date-time">{{data.StartTime | date : 'hh:mm a'}} - {{data.EndTime | date : 'hh:mm a'}}</div>
+
                             <div>
                                 <a href="{{data.url}}" target="_blank">Join Now</a>
                             </div>

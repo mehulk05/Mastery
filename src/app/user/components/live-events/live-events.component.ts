@@ -67,7 +67,9 @@ export class LiveEventsComponent implements OnInit {
   }
   setEventsOnCalender(eventList) {
     let event = []
+
     eventList.map((data, id) => {
+     
       event.push({
         Id: id,
         Subject: data.title,

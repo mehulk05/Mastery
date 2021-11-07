@@ -12,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class AddEditVideosComponent implements OnInit {
   urlPattern = new RegExp(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/)
-
+  author = JSON.parse(localStorage.getItem("userData"))
   videoForm: FormGroup;
   video_id: any;
   firestoreKey = "videos"
@@ -47,6 +47,7 @@ export class AddEditVideosComponent implements OnInit {
       thumbnail: [""],
       date: [new Date()],
       creator: ["user"],
+      uuid:[this.author?.uuid]
     });
   }
 
@@ -123,7 +124,8 @@ export class AddEditVideosComponent implements OnInit {
       creator: this.videoForm.value.creator,
       date: this.videoForm.value.date,
       url: this.videoForm.value.url,
-      thumbnail: this.videoForm.value.thumbnail
+      thumbnail: this.videoForm.value.thumbnail,
+      uuid:this.videoForm.value.uuid
     }
 
     if (this.video_id) {

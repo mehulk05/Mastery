@@ -14,12 +14,18 @@ export class VideoListingComponent implements OnInit {
 
   searchText
   videoList = []
-
+config:any
   constructor(private apiService: ApiService, 
     private router: Router, 
     private crudService: CrudService,
      private toastrService: ToastrService,
-     private sanitizer: DomSanitizer) { }
+     private sanitizer: DomSanitizer) { 
+      this.config = {
+        itemsPerPage: 4,
+        currentPage: 1,
+        totalItems: this.videoList.length
+      };
+     }
 
   ngOnInit(): void {
     this.loadVideos()
@@ -72,5 +78,8 @@ export class VideoListingComponent implements OnInit {
 
   byPassURL(url){
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+  pageChanged(event){
+    this.config.currentPage = event;
   }
 }

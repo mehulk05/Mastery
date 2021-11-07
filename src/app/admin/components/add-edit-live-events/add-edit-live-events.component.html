@@ -44,7 +44,7 @@
                         <label>Date <span class="error-red">*</span></label>
                         <div class="form-group">
                             <!-- <input type="date" class="form-control" formControlName="date"> -->
-                            <input type="text" placeholder="Datepicker" class="form-control" [bsConfig]="bsConfig" bsDatepicker formControlName="date" [minDate]="todayDate">
+                            <input type="text" placeholder="Datepicker" (bsValueChange)="onValueChange($event)" class="form-control" [bsConfig]="bsConfig" bsDatepicker formControlName="date" [minDate]="todayDate">
 
                             <div class="error" *ngIf="f.date.invalid && ( (f.date.dirty || f.date.touched))">
                                 <div *ngIf="f.date.errors.required">

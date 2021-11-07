@@ -9,7 +9,7 @@
             </svg></div>
     </div>
     <div class="row lisitng" *ngIf="(bookList  | filter: searchText) as result">
-        <ng-container *ngFor="let book of result">
+        <ng-container *ngFor="let book of result | paginate:config">
             <div class="col-lg-3 col-md-6 col-sm-12">
                 <div class="column-coloumn">
                     <div class="article-image" [style.backgroundImage]="'url('+book?.thumbnail+')'">
@@ -36,6 +36,9 @@
                 </div>
             </div>
         </ng-container>
+        <div class="pagination-page">
+            <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+        </div>
 
     </div>
 </div>

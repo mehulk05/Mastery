@@ -9,7 +9,7 @@
             </svg></div>
     </div>
     <div class="row lisitng" *ngIf="(videoList  | filter: searchText) as result">
-        <ng-container *ngFor="let video of result">
+        <ng-container *ngFor="let video of result  | paginate:config">
             <div class="col-lg-3 col-md-6 col-sm-12">
                 <div class="column-coloumn">
 
@@ -27,5 +27,8 @@
             </div>
         </ng-container>
 
+        <div class="pagination-page">
+            <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+        </div>
     </div>
 </div>

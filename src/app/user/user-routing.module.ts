@@ -7,6 +7,7 @@ import { AboutComponent } from './components/about/about.component';
 import { ArticleDetailComponent } from './components/article-detail/article-detail.component';
 import { ArticleListingComponent } from './components/article-listing/article-listing.component';
 import { BookListingComponent } from './components/book-listing/book-listing.component';
+import { DonateComponent } from './components/donate/donate.component';
 import { LiveEventsComponent } from './components/live-events/live-events.component';
 import { UserAuthComponent } from './components/user-auth/user-auth.component';
 import { UserWrappperComponent } from './components/user-wrappper/user-wrappper.component';
@@ -27,6 +28,10 @@ const routes: Routes = [
         path:"user-auth",
         component:UserAuthComponent,
         
+      },
+      {
+        path:"donate",
+        component:DonateComponent,
       },
       {
         path: 'article-detail/:id',

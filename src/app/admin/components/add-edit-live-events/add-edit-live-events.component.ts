@@ -14,7 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 export class AddEditLiveEventsComponent implements OnInit {
 
   urlPattern = new RegExp(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/)
-
+  author = JSON.parse(localStorage.getItem("userData"))
   todayDate = new Date()
   endTime = new Date()
   defaultTime = new Date()
@@ -48,6 +48,13 @@ export class AddEditLiveEventsComponent implements OnInit {
     this.createEventForm()
   }
 
+  onValueChange(value){
+    console.log(value)
+    this.eventForm.patchValue({
+      startTime: new Date(value),
+      endTime:new Date(value)
+    })
+  }
   createEventForm() {
     this.eventForm = this.fb.group({
 
@@ -56,7 +63,8 @@ export class AddEditLiveEventsComponent implements OnInit {
       startTime: [new Date(), Validators.required],
       date: [new Date(), Validators.required],
       endTime: [this.endTime, Validators.required],
-      url: ["", [Validators.required, Validators.pattern(this.urlPattern)]]
+      url: ["", [Validators.required, Validators.pattern(this.urlPattern)]],
+      uuid:[this.author?.uuid]
     });
   }
 
@@ -91,6 +99,7 @@ export class AddEditLiveEventsComponent implements OnInit {
 
   submitForm() {
 
+    
     let eventObject = {
       title: this.eventForm.value.title,
       organizer: this.eventForm.value.organizer,
@@ -98,7 +107,10 @@ export class AddEditLiveEventsComponent implements OnInit {
       url: this.eventForm.value.url,
       startTime: this.eventForm.value.startTime,
       endTime: this.eventForm.value.endTime,
+      uuid:this.eventForm.value.uuid
     }
+
+    console.log(eventObject)
 
     if (eventObject.startTime > eventObject.endTime) {
       this.toastService.warning("end Time should be greater than start date")

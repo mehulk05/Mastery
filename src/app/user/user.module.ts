@@ -22,6 +22,8 @@ import { ScheduleAllModule, RecurrenceEditorAllModule } from '@syncfusion/ej2-an
 import { NumericTextBoxAllModule, TextBoxAllModule } from '@syncfusion/ej2-angular-inputs';
 import { DropDownListAllModule, MultiSelectAllModule } from '@syncfusion/ej2-angular-dropdowns';
 import { AboutComponent } from './components/about/about.component';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { DonateComponent } from './components/donate/donate.component';
 
 
 
@@ -38,6 +40,7 @@ import { AboutComponent } from './components/about/about.component';
     BookListingComponent,
     LiveEventsComponent,
     AboutComponent,
+    DonateComponent,
   ],
   imports: [
     CommonModule,
@@ -48,6 +51,7 @@ import { AboutComponent } from './components/about/about.component';
     ToastrModule.forRoot(), 
     ScheduleAllModule, RecurrenceEditorAllModule, NumericTextBoxAllModule,TextBoxAllModule,DropDownListAllModule,
     MultiSelectAllModule,
+    NgxPaginationModule
   ],
   providers:[UserAuthGuard]
 })

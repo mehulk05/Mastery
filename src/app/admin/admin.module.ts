@@ -25,6 +25,9 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { AboutViewComponent } from './components/about-view/about-view.component';
 import { EditAboutComponent } from './components/edit-about/edit-about.component';
+import { UserAuthComponent } from './components/user-auth/user-auth.component';
+import { ViewDonateComponent } from './components/view-donate/view-donate.component';
+import { EditDontateComponent } from './components/edit-dontate/edit-dontate.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +49,9 @@ import { EditAboutComponent } from './components/edit-about/edit-about.component
     EventListComponent,
     AboutViewComponent,
     EditAboutComponent,
+    UserAuthComponent,
+    ViewDonateComponent,
+    EditDontateComponent,
   ],
   imports: [
     

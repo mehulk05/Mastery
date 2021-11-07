@@ -6,6 +6,7 @@ import { UserCrudService } from '@app/admin/services/user-services/user-crud.ser
 import { ApiService } from '@app/shared/services/api.service';
 import { CrudService } from '@app/shared/services/crud.service';
 import { ToastrService } from 'ngx-toastr';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-add-edit-user',
@@ -46,11 +47,13 @@ export class AddEditUserComponent implements OnInit {
       password: ["", Validators.required],
       date: [new Date()],
       role: ["user"],
+      uuid:[uuidv4()]
     });
   }
 
   
   createUser(userData){
+    console.log(userData)
     this.userCrudService.startLoader()
     this.userCrudService.create(userData,"users").then(data=>{
       this.router.navigateByUrl("/admin/user-list")
@@ -102,6 +105,7 @@ export class AddEditUserComponent implements OnInit {
       password: this.userForm.value.password,
       date: this.userForm.value.date,
       role: this.userForm.value.role,
+      uuid:this.userForm.value.uuid
     }
 
     if (this.user_id) {

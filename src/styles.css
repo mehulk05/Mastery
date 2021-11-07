@@ -209,10 +209,46 @@
     justify-content: center;
 }
 
+.pagination-page {
+    width: 100%;
+    position: relative;
+    display: block;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.header-wrapper button {
+    background: #fdc800;
+    color: #fff;
+    border: none;
+    margin-left: 2em;
+    padding: 0.5rem;
+}
+
+.header-wrapper {
+    display: flex;
+    height: 100%;
+    align-items: center;
+}
+
 @media screen and (max-width:767px) {
     .search-hero input {
         margin: 0;
         width: 100%;
+    }
+    .main-navigation__title {
+        font-size: 24px;
+    }
+    .header-wrapper button {
+        margin-left: 1em;
+    }
+    .social.vertical-center {
+        margin-top: 1em;
+    }
+    .social.contact-us.mb-4 {
+        margin-bottom: 10px !important;
     }
 }
 

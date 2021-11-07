@@ -1,5 +1,6 @@
 export class User {
     uid: string;
+  role: string;
     constructor(
       public email: string,
       public id: string,
