@@ -38,7 +38,10 @@ export class UserAuthComponent implements OnInit {
     this.userAuth.login(email,password).then((userData:any) => {
       userData = userData.data()
       if(!userData){
+        this.apiService.stopLoader()
         this.toastService.error("Error While Login", "Error")
+        this.router.navigateByUrl("/admin/user-auth")
+          
       }
       else{
         if(userData.password === password ){
@@ -54,9 +57,12 @@ export class UserAuthComponent implements OnInit {
           
         }
         else{
+          this.apiService.stopLoader()
           this.toastService.error("Email or Passowrd is incorrect", "Error")
         }
       }
+      },e=>{
+        console.log(e)
       })
     
     form.reset();

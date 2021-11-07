@@ -33,11 +33,12 @@ export class ArticleListingComponent implements OnInit {
 
   async loadArticles() {
     this.crudService.startLoader()
-    this.crudService.getAll("article").subscribe(data => {
-      this.articleList = data.map(e => {
+    this.crudService.getAll("article").subscribe(async data => {
+      this.articleList = await data.map(e => {
         let desc
         desc = this.extractContent(e.payload.doc.data()['body'])
         let imgUrl =  e.payload.doc.data()['imgUrl'] ? e.payload.doc.data()['imgUrl'] : 'https://neilpatel.com/wp-content/uploads/2017/08/blog.jpg'
+  
         return {
           key: e.payload.doc.id,
           title: e.payload.doc.data()['title'],
@@ -50,6 +51,11 @@ export class ArticleListingComponent implements OnInit {
           isPublic:e.payload.doc.data()["isPublic"]
         };
       })
+      this.articleList =  this.articleList.filter(data=>{
+        console.log(data)
+        return data.isPublic == true
+      })
+      console.log(this.articleList)
       this.crudService.stopLoader()
     },e=>{
       this.crudService.stopLoader()

@@ -24,7 +24,7 @@
                         <td> {{i+1}} </td>
                         <td>{{article?.email}}</td>
                         <td>{{article?.password}}</td>
-                        <td>{{article?.date | date:'MMM d, y hh:mm a'}}</td>
+                        <td>{{article?.date.toDate() | date:'MMM d, y hh:mm a'}}</td>
                         <td>
                             <a href="javascript:void(0)" (click)="editUser(article)">
                                 <i class="fas fa-pencil-alt ms-text-primary"></i> Edit

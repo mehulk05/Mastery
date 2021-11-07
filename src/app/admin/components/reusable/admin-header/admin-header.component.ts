@@ -21,15 +21,19 @@ export class AdminHeaderComponent implements OnInit {
   constructor(
     private router: Router,
     private authService:AuthService,private userAuthService:UserAuthService) {
-      this.isUser = JSON.parse(localStorage.getItem("userData"))?.role == "user"
 
-      this.isAdmin = JSON.parse(localStorage.getItem("userData"))?.role != "user"
      }
 
   ngOnInit(): void {
     this.authService.autoLogin();
     this.userSub = this.authService.user.subscribe(user => {
       console.log(user)
+      if(user && user.role == "user"){
+        this.isAdmin = false
+      }
+      else{
+        this.isAdmin = JSON.parse(localStorage.getItem("userData"))?.role != "user"
+      }
       this.isAuthenticated = !!user;
       console.log(this.isAdmin)
     });
