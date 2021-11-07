@@ -23,7 +23,7 @@ export class UserAuthService {
       return;
     }
     const userData:any = await this.login(userDataOld.email, userDataOld.password)
-    console.log(userData)
+
     if (userData.email && userData.password) {
       this.user.next(userData)
       this.authService.user.next(userData)

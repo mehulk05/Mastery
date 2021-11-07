@@ -62,7 +62,6 @@ export class AddEditArticleComponent implements OnInit {
   }
 
   createArticleForm() {
-    console.log(this.author)
     this.articleForm = this.fb.group({
       id: [""],
       title: ["", Validators.required],

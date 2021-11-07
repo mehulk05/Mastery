@@ -23,7 +23,7 @@ export class ArticleListComponent implements OnInit {
     private toastService: ToastrService) { }
 
   ngOnInit(): void {
-    console.log(this.isUser)
+
     if(this.isUser){
       this.getUserSpecificArticle()
     }

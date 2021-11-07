@@ -49,7 +49,6 @@ export class AddEditLiveEventsComponent implements OnInit {
   }
 
   onValueChange(value){
-    console.log(value)
     this.eventForm.patchValue({
       startTime: new Date(value),
       endTime:new Date(value)
@@ -110,7 +109,6 @@ export class AddEditLiveEventsComponent implements OnInit {
       uuid:this.eventForm.value.uuid
     }
 
-    console.log(eventObject)
 
     if (eventObject.startTime > eventObject.endTime) {
       this.toastService.warning("end Time should be greater than start date")

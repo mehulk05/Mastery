@@ -93,9 +93,8 @@ export class AuthService {
     if (!userData) {
       return;
     }
-    console.log(userData)
+    
     if(userData.seconds){
-      console.log(userData)
       this.user.next(userData);
       const expirationDuration =
       userData.seconds - new Date().getTime();

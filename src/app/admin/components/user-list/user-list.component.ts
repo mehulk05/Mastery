@@ -75,9 +75,8 @@ export class UserListComponent implements OnInit {
   // async getAllUserList() {
   //   this.apiService.startLoader()
   //   const result = await this.apiService.get("users.json")
-  //   console.log(result)
   //   this.UserList = this.formatData(result)
-  //   console.log(this.UserList)
+
   // }
 
   // async deleteUser(userData) {
