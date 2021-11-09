@@ -28,6 +28,7 @@ import { EditAboutComponent } from './components/edit-about/edit-about.component
 import { UserAuthComponent } from './components/user-auth/user-auth.component';
 import { ViewDonateComponent } from './components/view-donate/view-donate.component';
 import { EditDontateComponent } from './components/edit-dontate/edit-dontate.component';
+import { SuperAdminAuthGuard } from '@app/shared/services/super-admin-guard.service';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,6 @@ import { EditDontateComponent } from './components/edit-dontate/edit-dontate.com
     BsDatepickerModule.forRoot(),
     TimepickerModule.forRoot()
   ],
-  providers:[AuthGuard]
+  providers:[AuthGuard, SuperAdminAuthGuard]
 })
 export class AdminModule { }

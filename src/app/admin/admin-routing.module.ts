@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '@app/shared/services/auth-guard.service';
+import { SuperAdminAuthGuard } from '@app/shared/services/super-admin-guard.service';
 import { AboutViewComponent } from './components/about-view/about-view.component';
 import { AddEditArticleComponent } from './components/add-edit-article/add-edit-article.component';
 import { AddEditBookComponent } from './components/add-edit-book/add-edit-book.component';
@@ -42,7 +43,7 @@ const routes: Routes = [
       {
         path:"about",
         component:AboutViewComponent,
-
+        canActivate:[SuperAdminAuthGuard]
       },
 
       {
@@ -53,7 +54,7 @@ const routes: Routes = [
       {
         path: 'add-user',
         component: AddEditUserComponent,
-        canActivate:[AuthGuard]
+        canActivate:[SuperAdminAuthGuard]
       },
       {
         path: 'view-donate',
@@ -62,15 +63,9 @@ const routes: Routes = [
       },
 
       {
-        path: 'edit-donate/:id',
-        component: EditDontateComponent,
-        canActivate:[AuthGuard]
-      },
-
-      {
         path: 'user-list',
         component: UserListComponent,
-        canActivate:[AuthGuard]
+        canActivate:[SuperAdminAuthGuard]
       },
 
       {
@@ -80,7 +75,7 @@ const routes: Routes = [
       {
         path: 'edit-user/:id',
         component: AddEditUserComponent,
-        canActivate:[AuthGuard]
+        canActivate:[SuperAdminAuthGuard]
       },
       {
         path: 'add-article',

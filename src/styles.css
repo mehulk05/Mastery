@@ -219,7 +219,7 @@
     margin: 0 auto;
 }
 
-.header-wrapper button {
+button.donate-btn {
     background: #fdc800;
     color: #fff;
     border: none;
@@ -237,7 +237,24 @@
     display: none !important;
 }
 
+.header-wrapper {
+    width: 100%;
+    justify-content: space-between;
+}
+
+
+/* .header-wrapper .donate-btn {
+    display: none;
+} */
+
 @media screen and (max-width:767px) {
+    .header-wrapper .donate-btn {
+        display: block;
+    }
+    .header-wrapper {
+        width: 90%;
+        justify-content: space-between;
+    }
     .search-hero input {
         margin: 0;
         width: 100%;
@@ -255,7 +272,7 @@
         margin-bottom: 10px !important;
     }
     .mobile-only-icon {
-        top: 6px !important
+        top: 11px !important
     }
     .headerMenu.open::before {
         top: 40px !important

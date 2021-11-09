@@ -67,6 +67,11 @@ a.fa.fa-share-alt {
     color: white;
 }
 
+.fa-tumblr {
+    background: #2c4762;
+    color: white;
+}
+
 p.datetime {
     font-size: 14px;
     font-weight: 500;
