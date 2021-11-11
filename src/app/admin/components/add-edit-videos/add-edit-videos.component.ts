@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from '@app/shared/services/api.service';
 import { CrudService } from '@app/shared/services/crud.service';
+import { LocalStorageService } from '@app/shared/services/local-storage.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -12,7 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class AddEditVideosComponent implements OnInit {
   urlPattern = new RegExp(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/)
-  author = JSON.parse(localStorage.getItem("userData"))
+  author :any
   videoForm: FormGroup;
   video_id: any;
   firestoreKey = "videos"
@@ -24,11 +25,18 @@ export class AddEditVideosComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private apiService: ApiService,
     private crudService: CrudService,
-    private toastService: ToastrService
+    private toastService: ToastrService,
+    
+ private localStorgaeService:LocalStorageService
   ) {
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    this.createVideoForm()
+  this.author = await this.localStorgaeService.getDataFromIndexedDB("userData")
+  this.videoForm.patchValue({
+    uuid: this.author.uuid,
+  })
     this.activatedRoute.params.subscribe(data => {
       if (data && data.id) {
         this.video_id = data.id
@@ -36,7 +44,7 @@ export class AddEditVideosComponent implements OnInit {
       }
 
     })
-    this.createVideoForm()
+  
   }
 
   createVideoForm() {

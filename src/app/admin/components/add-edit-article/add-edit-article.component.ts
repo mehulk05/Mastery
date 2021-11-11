@@ -6,6 +6,7 @@ import { ArticleCrudService } from '@app/admin/services/article services/article
 import { ApiService } from '@app/shared/services/api.service';
 import { CrudService } from '@app/shared/services/crud.service';
 import { FileUpload, FileuploadService } from '@app/shared/services/fileupload.service';
+import { LocalStorageService } from '@app/shared/services/local-storage.service';
 import { ToastrService } from 'ngx-toastr';
 import { finalize } from 'rxjs/operators';
 
@@ -17,29 +18,37 @@ import { finalize } from 'rxjs/operators';
 export class AddEditArticleComponent implements OnInit {
   articleForm: FormGroup;
   article_id: null;
-  aricleData:any
+  aricleData: any
   config: any;
-  author = JSON.parse(localStorage.getItem("userData"))
+  author: any
 
   selectedFiles: FileList;
   currentFileUpload: FileUpload;
   percentage: number;
 
-  @ViewChild('myckeditor') myckeditor:any;
+  @ViewChild('myckeditor') myckeditor: any;
   downloadURL: any;
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private crudService:CrudService,
+    private crudService: CrudService,
     private toastService: ToastrService,
-    private uploadService:FileuploadService,
-    private storage: AngularFireStorage
+    private uploadService: FileuploadService,
+    private storage: AngularFireStorage,
+    private localStorageService: LocalStorageService
   ) {
     this.config = { uiColor: '#f2f2f2' };
+
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    this.createArticleForm()
+    this.author = await this.localStorageService.getDataFromIndexedDB("userData")
+    this.articleForm.patchValue({
+      uuid: this.author.uuid,
+      author: this.author.email
+    })
     this.activatedRoute.params.subscribe(data => {
       if (data && data.id) {
         this.article_id = data.id
@@ -47,7 +56,7 @@ export class AddEditArticleComponent implements OnInit {
       }
 
     })
-    this.createArticleForm()
+
     this.config.extraPlugins = 'colorbutton , justify'
     // this.config = {
     //   extraPlugins: 'uploadimage',
@@ -67,21 +76,21 @@ export class AddEditArticleComponent implements OnInit {
       title: ["", Validators.required],
       body: ["", Validators.required],
       date: [new Date()],
-      author: [this.author.email],
-      category:[""],
-      isPublic:[false],
-      uuid:[this.author?.uuid]
+      author: [this.author?.email],
+      category: [""],
+      isPublic: [false],
+      uuid: [this.author?.uuid]
     });
   }
 
   getArticle(article_id) {
     this.crudService.startLoader()
-    this.crudService.getSingle(article_id,"article").then(data=>{
-      this.aricleData =  data.data()
-      this.aricleData.id =  data.id
+    this.crudService.getSingle(article_id, "article").then(data => {
+      this.aricleData = data.data()
+      this.aricleData.id = data.id
       this.setArticleFormValues(this.aricleData)
       this.crudService.stopLoader()
-    },e=>{
+    }, e => {
       this.toastService.error("Error Fetching Article", "Error")
       this.crudService.stopLoader()
     })
@@ -93,44 +102,44 @@ export class AddEditArticleComponent implements OnInit {
       body: articleData?.body,
       date: articleData?.date,
       author: articleData?.author,
-      category:articleData?.category,
-      isPublic:articleData.isPublic ? articleData.isPublic :false,
-      uuid:articleData?.uuid
+      category: articleData?.category,
+      isPublic: articleData.isPublic ? articleData.isPublic : false,
+      uuid: articleData?.uuid
     })
   }
 
   getImages(string) {
     const imgRex = /<img.*?src="(.*?)"[^>]+>/g;
     const images = [];
-      let img;
-      while ((img = imgRex.exec(string))) {
-         images.push(img[1]);
-      }
+    let img;
+    while ((img = imgRex.exec(string))) {
+      images.push(img[1]);
+    }
     return images;
-  }  
+  }
 
-    getMeta(url){   
+  getMeta(url) {
     var img = new Image();
     img.src = url
-    return {ht:img.height,width:img.width,url:url}
-    
-} 
+    return { ht: img.height, width: img.width, url: url }
+
+  }
 
   submitForm() {
     let body = this.articleForm.value.body
     let img = this.getImages(body)
 
-    let imgUrl ="https://neilpatel.com/wp-content/uploads/2017/08/blog.jpg"
+    let imgUrl = "https://neilpatel.com/wp-content/uploads/2017/08/blog.jpg"
 
-    if(img.length>0){
-      img.map(item=>{
-        let meta  = this.getMeta(item)
-        if(meta.width>300){
+    if (img.length > 0) {
+      img.map(item => {
+        let meta = this.getMeta(item)
+        if (meta.width > 300) {
           imgUrl = meta.url
         }
       })
     }
-    
+
     let articleObject = {
       title: this.articleForm.value.title,
       body: this.articleForm.value.body,
@@ -139,7 +148,7 @@ export class AddEditArticleComponent implements OnInit {
       date: this.articleForm.value.date,
       isPublic: this.articleForm.value.isPublic,
       imgUrl: imgUrl,
-      uuid:this.articleForm.value.uuid
+      uuid: this.articleForm.value.uuid
     }
 
     if (this.article_id) {
@@ -152,21 +161,20 @@ export class AddEditArticleComponent implements OnInit {
 
   async createArticle(articleObject) {
     this.crudService.startLoader()
-    this.crudService.create(articleObject,"article").then(data=>{
+    this.crudService.create(articleObject, "article").then(data => {
       this.router.navigateByUrl("/admin/article-list")
-    },e=>{
+    }, e => {
       this.crudService.stopLoader()
       this.toastService.error("Error Creating Article", "Error")
     })
   }
 
   updateArticle(articleObject) {
-    console.log(articleObject)
     this.crudService.startLoader()
-    this.crudService.update(articleObject,"article",this.article_id).then(data=>{
+    this.crudService.update(articleObject, "article", this.article_id).then(data => {
       this.router.navigateByUrl("/admin/article-list")
- 
-    },e=>{
+
+    }, e => {
       this.toastService.error("Error Updating Article", "Error")
       this.crudService.stopLoader()
     })
@@ -181,7 +189,7 @@ export class AddEditArticleComponent implements OnInit {
   }
 
   selectFile(event): void {
-    this.percentage=0
+    this.percentage = 0
     this.selectedFiles = event.target.files;
     const file = event.target.files[0];
     this.currentFileUpload = new FileUpload(file);
@@ -198,7 +206,7 @@ export class AddEditArticleComponent implements OnInit {
               this.fb = url;
             }
             this.addUrlToEditor(this.fb)
-            task.percentageChanges().subscribe(percentage=>{
+            task.percentageChanges().subscribe(percentage => {
               this.percentage = Math.round(percentage);
               this.percentage = percentage
             })
@@ -222,20 +230,20 @@ export class AddEditArticleComponent implements OnInit {
     this.uploadService.pushFileToStorage(this.currentFileUpload).subscribe(
       percentage => {
         this.percentage = Math.round(percentage);
-        this.uploadService.downloadUrl.subscribe(data=>{
+        this.uploadService.downloadUrl.subscribe(data => {
           this.addUrlToEditor(data)
         })
       },
       error => {
-        console.log("error",error);
+        console.log("error", error);
       }
     );
   }
 
-  addUrlToEditor(url){
-    var style = " <img src='"+url +"'  style='max-width: 100%;' class='img-responsive'>";
+  addUrlToEditor(url) {
+    var style = " <img src='" + url + "'  style='max-width: 100%;' class='img-responsive'>";
 
-   let innerHtml = this.articleForm.value.body
+    let innerHtml = this.articleForm.value.body
     this.myckeditor.instance.insertHtml(style)
     this.articleForm.patchValue({ 'body': innerHtml });
   }
@@ -247,7 +255,7 @@ export class AddEditArticleComponent implements OnInit {
   //   })
   // }
 
-  
+
   // updateArticle(articleObject) {
   //   this.apiService.startLoader()
   //   this.apiService.put(`articles/${this.article_id}.json`, articleObject).then(data => {
@@ -262,7 +270,7 @@ export class AddEditArticleComponent implements OnInit {
   //   })
   // }
 
-    // async getArticleList() {
+  // async getArticleList() {
   //   this.apiService.startLoader()
   //   const result = await this.apiService.get("articles.json")
   //   this.articleList = this.formatData(result)

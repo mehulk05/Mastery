@@ -9,6 +9,24 @@
             </svg></div>
     </div>
 
+    <div class="datetime">
+        <ng-container *ngIf="selectedDate">
+            <h6>Selected Date: {{selectedDate| date:'MMM, y'}}</h6>
+            <a href="javascript:void(0)" (click)="clearFilter()">Clear </a>
+            <hr>
+        </ng-container>
+
+        <ul *ngFor="let item of articleListByDate | keyvalue:keyDescOrder">
+            <li>
+                <b (click)="getArticleByDate(item,item.key)">{{item.key | date:'MMM, y'}} - ({{item.value.length}})</b>
+            </li>
+
+            <div *ngFor="let i of item.value">
+                <a href="javascript:void(0)" (click)="editArticle(i)"> {{i.title}}</a>
+
+            </div>
+        </ul>
+    </div>
 
 
     <div class="row lisitng" *ngIf="articleList.length>0 && (articleList  | filter: searchText) as result">

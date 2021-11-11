@@ -12,17 +12,19 @@ import {
   import { Observable } from 'rxjs';
   import { AuthService } from './auth.service';
 import { UserAuthService } from './user-auth.service';
+import { LocalStorageService } from './local-storage.service';
   
   @Injectable()
   export class SuperAdminAuthGuard implements CanActivate {
     constructor(private authService: AuthService, private userAuthService:UserAuthService, private router: Router,
+      private localStorageService:LocalStorageService
     ) { }
   
-    canActivate(route: ActivatedRouteSnapshot,
-      state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+    async canActivate(route: ActivatedRouteSnapshot,
+      state: RouterStateSnapshot): Promise<any> {
   
-      let token = JSON.parse(localStorage.getItem("userData"))
-
+     // let token = JSON.parse(localStorage.getItem("userData"))
+      const token:any = await this.localStorageService.getDataFromIndexedDB("userData")
       if (token && token.role == "Admin") {
         return true
       }

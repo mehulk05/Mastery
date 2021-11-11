@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '@app/shared/services/api.service';
 import { CrudService } from '@app/shared/services/crud.service';
+import { LocalStorageService } from '@app/shared/services/local-storage.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -12,15 +13,24 @@ import { ToastrService } from 'ngx-toastr';
 export class BookListComponent implements OnInit {
   bookList = []
 
-  isUser = JSON.parse(localStorage.getItem("userData")).role == "user"
-  uuid =  JSON.parse(localStorage.getItem("userData")).uuid
-  isAdmin = JSON.parse(localStorage.getItem("userData")).role != "user"
+  isUser
+  uuid
+  isAdmin
+  userData
+
   constructor(
     private router: Router,
     private crudService: CrudService,
-    private toastrService: ToastrService) { }
+    private toastrService: ToastrService,
 
-  ngOnInit(): void {
+    private localStorgaeService: LocalStorageService) { }
+
+  async ngOnInit(): Promise<void> {
+
+    this.userData = await this.localStorgaeService.getDataFromIndexedDB("userData")
+    this.isUser = this.userData.role == "user"
+    this.isAdmin = this.userData.role !== "user"
+    this.uuid = this.userData.uuid
     this.getBooks()
   }
 
@@ -28,7 +38,7 @@ export class BookListComponent implements OnInit {
     this.crudService.startLoader()
     this.crudService.getAll("books").subscribe(async data => {
       this.crudService.stopLoader()
-      this.bookList =await  data.map(e => {
+      this.bookList = await data.map(e => {
         return {
           key: e.payload.doc.id,
           title: e.payload.doc.data()['title'],
@@ -37,23 +47,23 @@ export class BookListComponent implements OnInit {
           author: e.payload.doc.data()['author'],
           date: e.payload.doc.data()['date'],
           thumbnail: e.payload.doc.data()['thumbnail'],
-          uuid:e.payload.doc.data()["uuid"]
+          uuid: e.payload.doc.data()["uuid"]
         };
 
       })
-      if(this.isUser){
-        this.bookList = this.bookList.filter(data=>{
+      if (this.isUser) {
+        this.bookList = this.bookList.filter(data => {
           return data.uuid == this.uuid
         })
       }
-   
-   
+
+
       this.crudService.stopLoader()
     },
-    e => {
-      this.crudService.stopLoader()
-      this.toastrService.error("Error Fetching Book", "Error") 
-    });
+      e => {
+        this.crudService.stopLoader()
+        this.toastrService.error("Error Fetching Book", "Error")
+      });
   }
 
   formatData(data) {

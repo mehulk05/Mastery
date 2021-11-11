@@ -20,14 +20,14 @@ export class AdminAuthComponent implements OnInit {
     this.authService.logout()
   }
 
-  isLoginMode = true;
+
   isLoading = false;
   error: string = null;
   isPorfileset: boolean = false;
 
-  onSwitchMode() {
-    this.isLoginMode = !this.isLoginMode;
-  }
+  // onSwitchMode() {
+  //   this.isLoginMode = !this.isLoginMode;
+  // }
 
   onSubmit(form: NgForm) {
     if (!form.valid) {
@@ -45,11 +45,10 @@ export class AdminAuthComponent implements OnInit {
     this.isLoading = true;
     this.ngxLoader.show();
     
-    if (this.isLoginMode) {
       authObs = this.authService.login(email, password);
-    } else {
-      authObs = this.authService.signup(email, password);
-    }
+    // } else {
+    //   authObs = this.authService.signup(email, password);
+    // }
 
 
     authObs.subscribe(

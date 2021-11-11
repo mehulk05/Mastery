@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from '@app/shared/services/api.service';
 import { CrudService } from '@app/shared/services/crud.service';
+import { LocalStorageService } from '@app/shared/services/local-storage.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -13,7 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 export class AddEditBookComponent implements OnInit {
 
   urlPattern = new RegExp(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/)
-  author = JSON.parse(localStorage.getItem("userData"))
+  author :any
   bookForm: FormGroup;
   book_id: any;
   firestoreKey = "books"
@@ -24,11 +25,18 @@ export class AddEditBookComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private crudService: CrudService,
-    private toastService: ToastrService
+    private toastService: ToastrService,
+    private localStorgaeService:LocalStorageService
   ) {
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    this.createBookForm()
+    this.author =  await this.localStorgaeService.getDataFromIndexedDB("userData")
+    this.bookForm.patchValue({
+      uuid: this.author.uuid,
+      author:this.author.email
+    })
     this.activatedRoute.params.subscribe(data => {
       if (data && data.id) {
         this.book_id = data.id
@@ -36,7 +44,7 @@ export class AddEditBookComponent implements OnInit {
       }
 
     })
-    this.createBookForm()
+    
   }
 
   createBookForm() {
@@ -47,7 +55,7 @@ export class AddEditBookComponent implements OnInit {
       url: ["", [Validators.required,Validators.pattern(this.urlPattern)]],
       thumbnail: [""],
       date: [new Date()],
-      author: ["user"],
+      author: [""],
       uuid:[this.author?.uuid]
     });
   }

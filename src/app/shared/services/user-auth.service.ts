@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { ApiService } from './api.service';
 import { AuthService } from './auth.service';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +14,13 @@ export class UserAuthService {
   user = new BehaviorSubject<any>(null);
   tokenExpirationTimer
   constructor(
+    private localStorageService:LocalStorageService,
     private router:Router, private authService:AuthService,private firestore: AngularFirestore
   ) { }
 
   async autoLogin() {
-    
-    let userDataOld = JSON.parse(localStorage.getItem('userData'));
+    const userDataOld:any = await  this.localStorageService.getDataFromIndexedDB("userData")
+    //let userDataOld = JSON.parse(localStorage.getItem('userData'));
     if (!userDataOld) {
       return;
     }
@@ -41,6 +43,7 @@ export class UserAuthService {
   logout() {
 
     this.user.next(null)
+    this.authService.user.next(null)
     this.isAuthenticated= false
     this.router.navigate(['/admin/user-auth']);
     localStorage.clear()
@@ -48,6 +51,7 @@ export class UserAuthService {
       clearTimeout(this.tokenExpirationTimer);
     }
     this.tokenExpirationTimer = null;
+    this.localStorageService.clearDataFromIndexedDB()
   }
 
   autoLogout(expirationDuration: number) {

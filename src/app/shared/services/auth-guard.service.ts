@@ -11,16 +11,17 @@ import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router,
+  constructor(private authService: AuthService, private router: Router,private localStorageService:LocalStorageService
   ) { }
 
-  canActivate(route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+ async canActivate(route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot): Promise<any>{
 
-    let token = JSON.parse(localStorage.getItem("userData"))
+    const token:any = await this.localStorageService.getDataFromIndexedDB("userData")
     if (token) {
       return true
     }

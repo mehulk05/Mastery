@@ -3,6 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
+  secretkey:'seretkey',
   firebase: {
     projectId: 'matery-5d74a',
     appId: '1:550238335312:web:2eabcd1bd5346db3173c55',

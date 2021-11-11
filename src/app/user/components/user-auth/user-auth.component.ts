@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '@app/shared/services/api.service';
 import { AuthService } from '@app/shared/services/auth.service';
+import { LocalStorageService } from '@app/shared/services/local-storage.service';
 import { UserAuthService } from '@app/shared/services/user-auth.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -18,7 +19,8 @@ export class UserAuthComponent implements OnInit {
     private userAuth:UserAuthService,
     private router:Router,
     private authService:AuthService,
-    private toastService:ToastrService) { }
+    private toastService:ToastrService,
+    private localStorageService:LocalStorageService) { }
 
   ngOnInit(): void {
     
@@ -37,7 +39,7 @@ export class UserAuthComponent implements OnInit {
     }
     const email = form.value.email;
     const password = form.value.password;
-    this.userAuth.login(email,password).then((userData:any) => {
+    this.userAuth.login(email,password).then(async (userData:any) => {
       userData = userData.data()
       if(!userData){
         this.toastService.error("Error While Login", "Error")
@@ -51,7 +53,8 @@ export class UserAuthComponent implements OnInit {
           var seconds = today.getTime()
           userData.seconds = seconds
           this.authService.user.next(userData)
-          localStorage.setItem("userData",JSON.stringify(userData))
+         // localStorage.setItem("userData",JSON.stringify(userData))
+          await this.localStorageService.setDataInIndexedDB("userData",userData)
           this.router.navigateByUrl("/admin/article-list")
           
         }

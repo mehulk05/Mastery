@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CrudService } from '@app/shared/services/crud.service';
+import { LocalStorageService } from '@app/shared/services/local-storage.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -10,16 +11,22 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class VideoListComponent implements OnInit {
   videoList = []
-  isUser = JSON.parse(localStorage.getItem("userData")).role == "user"
-  uuid =  JSON.parse(localStorage.getItem("userData")).uuid
-  isAdmin = JSON.parse(localStorage.getItem("userData")).role != "user"
+  isUser
+  uuid
+  isAdmin
+  userData
 
   constructor(
     private router: Router,
     private crudService: CrudService,
-    private toastrService: ToastrService) { }
+    private toastrService: ToastrService,
+    private localStorgaeService:LocalStorageService) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    this.userData = await this.localStorgaeService.getDataFromIndexedDB("userData")
+    this.isUser = this.userData.role==  "user"
+    this.isAdmin = this.userData.role !==  "user"
+    this.uuid = this.userData.uuid
     this.getVideos()
   }
 

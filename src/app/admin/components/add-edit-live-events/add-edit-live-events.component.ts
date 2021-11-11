@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from '@app/shared/services/api.service';
 import { CrudService } from '@app/shared/services/crud.service';
+import { LocalStorageService } from '@app/shared/services/local-storage.service';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 
@@ -14,7 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 export class AddEditLiveEventsComponent implements OnInit {
 
   urlPattern = new RegExp(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/)
-  author = JSON.parse(localStorage.getItem("userData"))
+
   todayDate = new Date()
   endTime = new Date()
   defaultTime = new Date()
@@ -23,21 +24,29 @@ export class AddEditLiveEventsComponent implements OnInit {
   event_id: any;
   firestoreKey = "events"
   eventData: any;
-  isLoading = false
+  isLoading = false;
+  author:any
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private apiService: ApiService,
     private crudService: CrudService,
-    private toastService: ToastrService
+    private toastService: ToastrService,
+    private localStorgaeService:LocalStorageService
+
   ) {
     this.todayDate.setDate(this.todayDate.getDate() - 0);
     this.endTime.setHours(this.todayDate.getHours() + 1);
     this.bsConfig = Object.assign({}, { containerClass: "theme-dark-blue" });
   }
 
-  ngOnInit(): void {
+ async  ngOnInit(): Promise<void> {
+  this.createEventForm()
+  this.author = await this.localStorgaeService.getDataFromIndexedDB("userData")
+  this.eventForm.patchValue({
+    uuid: this.author.uuid,
+  })
     this.activatedRoute.params.subscribe(data => {
       if (data && data.id) {
         this.event_id = data.id
@@ -45,7 +54,7 @@ export class AddEditLiveEventsComponent implements OnInit {
       }
 
     })
-    this.createEventForm()
+  
   }
 
   onValueChange(value){

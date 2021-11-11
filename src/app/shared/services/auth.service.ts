@@ -8,6 +8,7 @@ import { throwError, Subject, BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from '@app/user/models/user.model';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { LocalStorageService } from './local-storage.service';
 export interface AuthResponseData {
   kind: string;
   idToken: string;
@@ -25,18 +26,19 @@ export class AuthService {
   user = new BehaviorSubject<any>(null);
   private tokenExpirationTimer: any;
 
-  key =environment.firebase.apiKey
+  key = environment.firebase.apiKey
   userdata: User;
   constructor(private angularFireAuth: AngularFireAuth,
     private http: HttpClient,
     private router: Router,
+    private localStorageService: LocalStorageService,
     private ngxLoader: NgxSpinnerService,) {
   }
 
   signup(email: string, password: string) {
     return this.http
       .post<AuthResponseData>(
-        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key='+this.key
+        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=' + this.key
         ,
         {
           email: email,
@@ -60,7 +62,7 @@ export class AuthService {
   login(email: string, password: string) {
     return this.http
       .post<AuthResponseData>(
-        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key='+this.key,
+        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=' + this.key,
         {
           email: email,
           password: password,
@@ -80,8 +82,8 @@ export class AuthService {
       );
   }
 
-  autoLogin() {
-  
+  async autoLogin() {
+
     // const userData: {
     //   email: string;
     //   id: string;
@@ -89,15 +91,21 @@ export class AuthService {
     //   seconds:string,
     //   _tokenExpirationDate: string;
     // } = JSON.parse(localStorage.getItem('userData'));
-    const userData = JSON.parse(localStorage.getItem('userData'));
+    // let userData:any = JSON.parse(localStorage.getItem('userData'));
+
+    // let userData:any
+    const userData: any = await this.localStorageService.getDataFromIndexedDB("userData")
+    if (userData) {
+      this.user.next(userData);
+    }
+
     if (!userData) {
       return;
     }
-    
-    if(userData.seconds){
+    if (userData?.seconds) {
       this.user.next(userData);
       const expirationDuration =
-      userData.seconds - new Date().getTime();
+        userData.seconds - new Date().getTime();
       this.autoLogout(expirationDuration);
     }
 
@@ -107,32 +115,34 @@ export class AuthService {
       userData._token,
       new Date(userData._tokenExpirationDate)
     );
-    
+
     if (loadedUser.token) {
-      this.user.next(loadedUser);
+
       const expirationDuration =
         new Date(userData._tokenExpirationDate).getTime() -
         new Date().getTime();
+
       this.autoLogout(expirationDuration);
     }
   }
 
-  logout() {
+  async logout() {
     this.user.next(null);
     this.router.navigate(['/admin/auth']);
-    localStorage.removeItem('userData');
+    this.localStorageService.clearDataFromIndexedDB()
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);
     }
     this.tokenExpirationTimer = null;
   }
 
-  autoLogout(expirationDuration: number) {
+  async autoLogout(expirationDuration: number) {
     this.tokenExpirationTimer = setTimeout(() => {
       this.logout();
     }, expirationDuration);
+
   }
-  
+
 
 
   isLoggedIn(): boolean {
@@ -145,7 +155,7 @@ export class AuthService {
     }
   }
 
-  private handleAuthentication(
+  private async handleAuthentication(
     email: string,
     userId: string,
     token: string,
@@ -154,9 +164,12 @@ export class AuthService {
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
     const user = new User(email, userId, token, expirationDate);
     user.role = "Admin"
+    user.uuid = userId
     this.user.next(user);
     this.autoLogout(expiresIn * 1000);
-    localStorage.setItem('userData', JSON.stringify(user));
+    // localStorage.setItem('userData', JSON.stringify(user));
+    await this.localStorageService.setDataInIndexedDB("userData", user)
+
   }
 
   private handleError(errorRes: HttpErrorResponse) {
@@ -189,9 +202,9 @@ export class AuthService {
     });
   }
 
-  success(message){
+  success(message) {
     Swal.fire({
-      title:"Success",
+      title: "Success",
       text: message,
       icon: 'success',
       timer: 5000,
@@ -207,5 +220,5 @@ export class AuthService {
         this.success("Reset Password Mail sent");
       })
   }
-  
+
 }

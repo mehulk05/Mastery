@@ -65,3 +65,13 @@ svg {
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
 }
+
+.datetime ul li {
+    list-style-type: none;
+    color: rgb(18, 18, 66);
+    cursor: pointer;
+}
+
+.datetime ul a {
+    padding-left: 15px;
+}

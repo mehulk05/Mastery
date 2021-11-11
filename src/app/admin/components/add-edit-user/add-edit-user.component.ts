@@ -5,7 +5,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { UserCrudService } from '@app/admin/services/user-services/user-crud.service';
 import { ApiService } from '@app/shared/services/api.service';
 import { CrudService } from '@app/shared/services/crud.service';
+import { EncrDecrService } from '@app/shared/services/EncrDecrService.service';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from 'src/environments/environment';
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({
@@ -14,6 +16,7 @@ import { v4 as uuidv4 } from 'uuid';
   styleUrls: ['./add-edit-user.component.css']
 })
 export class AddEditUserComponent implements OnInit {
+  secretkey = environment.secretkey
 
   userForm: FormGroup;
   user_id: any;
@@ -22,63 +25,65 @@ export class AddEditUserComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private crudService:CrudService,
-    private toastService:ToastrService,
-    private userCrudService:UserCrudService,
+    private crudService: CrudService,
+    private toastService: ToastrService,
+    private userCrudService: UserCrudService,
+    private encryptService: EncrDecrService
   ) {
   }
 
   ngOnInit(): void {
+
+    this.createUserForm()
     this.activatedRoute.params.subscribe(data => {
       if (data && data.id) {
         this.user_id = data.id
-        let key  = this.user_id.replace(/\./g, ',');
+        let key = this.user_id.replace(/\./g, ',');
         this.getUser(this.user_id)
       }
 
     })
-    this.createUserForm()
+
   }
 
   createUserForm() {
     this.userForm = this.fb.group({
-      
+
       email: ["", Validators.required],
       password: ["", Validators.required],
       date: [new Date()],
       role: ["user"],
-      uuid:[uuidv4()]
+      uuid: [uuidv4()]
     });
   }
 
-  
-  createUser(userData){
-    console.log(userData)
+
+  createUser(userData) {
     this.userCrudService.startLoader()
-    this.userCrudService.create(userData,"users").then(data=>{
+    this.userCrudService.create(userData, "users").then(data => {
       this.router.navigateByUrl("/admin/user-list")
-    },e=>{
+    }, e => {
       this.userCrudService.stopLoader()
       this.toastService.error("Error Creating User", "Error")
     })
   }
 
-  getUser(key){
+  getUser(key) {
     this.userCrudService.startLoader()
-    this.userCrudService.getSingle(key,"users").then(data=>{
-      this.userData =  data.data()
+    this.userCrudService.getSingle(key, "users").then(data => {
+      this.userData = data.data()
       // this.userData.id =  "12"
       this.setUserFormValues(this.userData)
       this.userCrudService.stopLoader()
-    },e=>{
+    }, e => {
       this.toastService.error("Error Fetching Users", "Error")
       this.userCrudService.stopLoader()
     })
   }
 
-  updateUser(userData){
+  updateUser(userData) {
     this.userCrudService.startLoader()
-    this.userCrudService.delete(this.user_id,"users").then(data=>{
+    this.userCrudService.delete(this.user_id, "users").then(data => {
       this.userCrudService.create(userData, "users").then(data => {
         this.router.navigateByUrl("/admin/user-list")
       }, e => {
@@ -86,29 +91,31 @@ export class AddEditUserComponent implements OnInit {
         this.toastService.error("Error Updating User", "Error")
       })
     })
-   
+
   }
 
   setUserFormValues(userData) {
     this.userForm.patchValue({
-      email:userData?.email,
-      password:userData?.password,
-      date:userData?.date,
-      role:userData?.role,
-      uuid:userData?.uuid
+      email: userData?.email,
+      password: this.encryptService.get(this.secretkey, userData?.password),
+      date: userData?.date,
+      role: userData?.role,
+      uuid: userData?.uuid
     })
   }
 
 
   submitForm() {
+    let password = this.encryptService.set(this.secretkey, this.userForm.value.password);
     let userData = {
-      email : this.userForm.value.email,
-      password: this.userForm.value.password,
+      email: this.userForm.value.email,
+      password: password,
       date: this.userForm.value.date,
       role: this.userForm.value.role,
-      uuid:this.userForm.value.uuid
+      uuid: this.userForm.value.uuid
     }
 
+    let decrypt = this.encryptService.get(this.secretkey, password)
     if (this.user_id) {
       this.updateUser(userData)
     }
@@ -117,7 +124,7 @@ export class AddEditUserComponent implements OnInit {
     }
   }
 
-  
+
   get f() {
     return this.userForm.controls;
   }

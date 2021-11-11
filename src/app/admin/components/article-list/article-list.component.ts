@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ArticleCrudService } from '@app/admin/services/article services/article-crud.service';
 import { ApiService } from '@app/shared/services/api.service';
 import { CrudService } from '@app/shared/services/crud.service';
+import { LocalStorageService } from '@app/shared/services/local-storage.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -12,50 +13,57 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ArticleListComponent implements OnInit {
   articleList = []
-  isUser = JSON.parse(localStorage.getItem("userData")).role == "user"
-  uuid =  JSON.parse(localStorage.getItem("userData")).uuid
-  isAdmin = JSON.parse(localStorage.getItem("userData")).role != "user"
+  isUser 
+  uuid 
+  isAdmin 
 
+  userData: any
   constructor(private articleCrudService: ArticleCrudService,
     private router: Router,
-    private toastrService:ToastrService,
-    private crudService:CrudService,
-    private toastService: ToastrService) { }
+    private toastrService: ToastrService,
+    private crudService: CrudService,
+    private toastService: ToastrService,
+    private localStorgaeService: LocalStorageService
+  ) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    this.userData = await this.localStorgaeService.getDataFromIndexedDB("userData")
 
-    if(this.isUser){
+    this.isUser = this.userData.role == "user"
+    this.isAdmin = this.userData.role !== "user"
+    this.uuid = this.userData.uuid
+    if (this.isUser) {
       this.getUserSpecificArticle()
     }
-    else{
+    else {
       this.getArticleList()
     }
-    
+
   }
-  
-   getUserSpecificArticle(){
+
+  getUserSpecificArticle() {
     this.crudService.startLoader()
-    this.crudService.getAll("article").subscribe( async data => {
-      
-      this.articleList = await  data.map(e => {   
-          return {
-            key: e.payload.doc.id,
-            title: e.payload.doc.data()['title'],
-            body: e.payload.doc.data()['body'],
-            category: e.payload.doc.data()['category'],
-            date: e.payload.doc.data()['date'],
-            imgUrl : e.payload.doc.data()['imgUrl'],
-            author : e.payload.doc.data()['author'],
-            isPublic:e.payload.doc.data()["isPublic"],
-            uuid:e.payload.doc.data()["uuid"]
-          
+    this.crudService.getAll("article").subscribe(async data => {
+
+      this.articleList = await data.map(e => {
+        return {
+          key: e.payload.doc.id,
+          title: e.payload.doc.data()['title'],
+          body: e.payload.doc.data()['body'],
+          category: e.payload.doc.data()['category'],
+          date: e.payload.doc.data()['date'],
+          imgUrl: e.payload.doc.data()['imgUrl'],
+          author: e.payload.doc.data()['author'],
+          isPublic: e.payload.doc.data()["isPublic"],
+          uuid: e.payload.doc.data()["uuid"]
+
         }
       })
-      this.articleList = this.articleList.filter(data=>{
+      this.articleList = this.articleList.filter(data => {
         return data.uuid == this.uuid
       })
       this.crudService.stopLoader()
-    },e=>{
+    }, e => {
       this.crudService.stopLoader()
     });
   }
@@ -64,20 +72,20 @@ export class ArticleListComponent implements OnInit {
     this.crudService.startLoader()
     this.crudService.getAll("article").subscribe(data => {
 
-      this.articleList = data.map(e => {      
+      this.articleList = data.map(e => {
         return {
           key: e.payload.doc.id,
           title: e.payload.doc.data()['title'],
           body: e.payload.doc.data()['body'],
           category: e.payload.doc.data()['category'],
           date: e.payload.doc.data()['date'],
-          imgUrl : e.payload.doc.data()['imgUrl'],
-          author : e.payload.doc.data()['author'],
-          isPublic:e.payload.doc.data()["isPublic"]
+          imgUrl: e.payload.doc.data()['imgUrl'],
+          author: e.payload.doc.data()['author'],
+          isPublic: e.payload.doc.data()["isPublic"]
         };
       })
       this.crudService.stopLoader()
-    },e=>{
+    }, e => {
       this.crudService.stopLoader()
     });
   }
@@ -97,48 +105,48 @@ export class ArticleListComponent implements OnInit {
   }
 
 
-  formatDate(date){
+  formatDate(date) {
     let formatedDate = date.toDate()
     return formatedDate
   }
 
-  addArticle(){
+  addArticle() {
     this.router.navigateByUrl("/admin/add-article")
   }
 
-  ViewArticle(article){
+  ViewArticle(article) {
     this.router.navigateByUrl("/admin/view-article/" + article.key)
   }
 
-  onCheckBoxChange(e,article){
+  onCheckBoxChange(e, article) {
     var flag = e.target.checked;
     var alertMessage = "";
-    article.isPublic =  flag
-    if(flag)
-        alertMessage = "Article visibility changed to public uccessfully";
-      else
-        alertMessage = "Article visibility changed to private successfully";
+    article.isPublic = flag
+    if (flag)
+      alertMessage = "Article visibility changed to public uccessfully";
+    else
+      alertMessage = "Article visibility changed to private successfully";
     this.updateArticle(article, alertMessage)
   }
 
-  updateArticle(articleObject,msg) {
+  updateArticle(articleObject, msg) {
     this.crudService.startLoader()
-    this.crudService.update(articleObject,"article",articleObject.key).then(data=>{
-      this.toastService.success(msg,"Success")
+    this.crudService.update(articleObject, "article", articleObject.key).then(data => {
+      this.toastService.success(msg, "Success")
       this.getArticleList()
-      
-    },e=>{
+
+    }, e => {
       this.toastService.error("Error Updating Article", "Error")
       this.crudService.stopLoader()
     })
   }
 
-  deleteArticle(article){
+  deleteArticle(article) {
     this.crudService.startLoader()
-      this.crudService.delete(article.key,"article").then(data=>{
+    this.crudService.delete(article.key, "article").then(data => {
       this.crudService.stopLoader()
       this.getArticleList();
-    },e=>{
+    }, e => {
       this.crudService.stopLoader()
       this.toastrService.error("Error Fetching Articles", "Error")
     })

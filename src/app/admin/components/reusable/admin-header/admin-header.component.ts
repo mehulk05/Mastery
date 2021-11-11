@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@app/shared/services/auth.service';
+import { LocalStorageService } from '@app/shared/services/local-storage.service';
 import { UserAuthService } from '@app/shared/services/user-auth.service';
 import { Subscription } from 'rxjs';
 
@@ -12,48 +13,53 @@ import { Subscription } from 'rxjs';
 export class AdminHeaderComponent implements OnInit {
   isAuthenticated = false;
   private userSub: Subscription;
-  isMenuOpen:boolean =false
+  isMenuOpen: boolean = false
 
-  isUser = JSON.parse(localStorage.getItem("userData"))?.role == "user"
+  isUser
+  uuid
+  isAdmin
+  userData
 
-  isAdmin = JSON.parse(localStorage.getItem("userData"))?.role != "user"
-  
   constructor(
     private router: Router,
-    private authService:AuthService,private userAuthService:UserAuthService) {
+    private authService: AuthService, private userAuthService: UserAuthService,
+    private localStorgaeService: LocalStorageService) {
 
-     }
+  }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.authService.autoLogin();
+    this.userData = await this.localStorgaeService.getDataFromIndexedDB("userData")
+    if (this.userData) {
+      this.isUser = this.userData.role == "user"
+      this.isAdmin = this.userData.role !== "user"
+
+    }
+
     this.userSub = this.authService.user.subscribe(user => {
-      console.log(user)
-      if(user && user.role == "user"){
+      if (user && user.role == "user") {
         this.isAdmin = false
       }
-      else{
-        this.isAdmin = JSON.parse(localStorage.getItem("userData"))?.role != "user"
+      else {
+        this.isAdmin = user?.role == "Admin"
       }
+
       this.isAuthenticated = !!user;
-      console.log(this.isAdmin)
     });
   }
 
-  onLogout() {
-    this.isUser = JSON.parse(localStorage.getItem("userData"))?.role == "user"
-    this.isAdmin = JSON.parse(localStorage.getItem("userData"))?.role != "user"
-    if(this.isAdmin){
+  async onLogout() {
+    if (this.isAdmin) {
       this.authService.logout();
     }
-    else{
+    else {
       this.userAuthService.logout()
       //this.authService.logout();
     }
-    
+
   }
 
-  gotoDonate()
-  {
+  gotoDonate() {
     this.router.navigateByUrl("/admin/view-donate")
   }
 
@@ -61,8 +67,8 @@ export class AdminHeaderComponent implements OnInit {
     this.userSub.unsubscribe();
   }
 
-  openMenu(){
-    this.isMenuOpen =!this.isMenuOpen
+  openMenu() {
+    this.isMenuOpen = !this.isMenuOpen
   }
 
 }
