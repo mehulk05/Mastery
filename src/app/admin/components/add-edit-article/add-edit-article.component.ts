@@ -26,6 +26,7 @@ export class AddEditArticleComponent implements OnInit {
   currentFileUpload: FileUpload;
   percentage: number;
 
+  availableCategory: any = ['Politics', 'Social', 'Economic', 'Cultural','Historical']
   @ViewChild('myckeditor') myckeditor: any;
   downloadURL: any;
   constructor(
@@ -77,7 +78,7 @@ export class AddEditArticleComponent implements OnInit {
       body: ["", Validators.required],
       date: [new Date()],
       author: [this.author?.email],
-      category: [""],
+      category: ["",Validators.required],
       isPublic: [false],
       uuid: [this.author?.uuid]
     });
@@ -150,6 +151,7 @@ export class AddEditArticleComponent implements OnInit {
       imgUrl: imgUrl,
       uuid: this.articleForm.value.uuid
     }
+    console.log(articleObject)
 
     if (this.article_id) {
       this.updateArticle(articleObject)
@@ -240,6 +242,12 @@ export class AddEditArticleComponent implements OnInit {
     );
   }
 
+  changeCategory(e){
+
+   this.articleForm.patchValue({
+    category:e.target.value
+   })
+  }
   addUrlToEditor(url) {
     var style = " <img src='" + url + "'  style='max-width: 100%;' class='img-responsive'>";
 
