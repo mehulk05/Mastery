@@ -12,6 +12,7 @@ import { KeyValue } from '@angular/common';
   styleUrls: ['./article-listing.component.css']
 })
 export class ArticleListingComponent implements OnInit {
+  
   isFilter = false
   searchText
   articleList = []
@@ -108,6 +109,7 @@ export class ArticleListingComponent implements OnInit {
     this.loadArticles()
     this.selectedDate = ""
     this.isFilter = false
+
   }
   extractContent(s) {
     var span = document.createElement('span');

@@ -74,4 +74,75 @@ svg {
 
 .datetime ul a {
     padding-left: 15px;
+    color: #000;
+}
+
+.listing-wrapper {
+    display: flex;
+}
+
+.datetime {}
+
+.listing-wrapper .row.lisitng {
+    width: 78%;
+    justify-content: flex-start;
+}
+
+.date-filter .no-active {
+    display: none;
+}
+
+.datetime .date-filter .actived {
+    color: rgb(17 143 232)
+}
+
+.selected-date {
+    display: flex;
+    justify-content: space-between;
+    padding: 0em 1em 0.5em 1em;
+}
+
+.datetime {
+    box-shadow: 0 2px 0 rgb(90 97 105 / 11%), 0 4px 8px rgb(90 97 105 / 8%), 0 10px 10px rgb(90 97 105 / 0%), 0 7px 70px rgb(90 97 105 / 38%);
+    border-radius: .25rem;
+    /* box-shadow: 0 2px 0 rgb(90 97 105 / 11%), 0 4px 8px rgb(90 97 105 / 12%), 0 10px 10px rgb(90 97 105 / 6%), 0 7px 70px rgb(90 97 105 / 10%); */
+    background-color: #fff;
+    border: none;
+    border-radius: .625rem;
+    padding: 1em 0em;
+}
+
+.datetime-wrapper {
+    padding: 1em;
+    width: 22%;
+}
+
+.datetime ul:nth-last-child(1) {
+    margin-bottom: 0;
+}
+
+.datetime hr {
+    max-width: 90%;
+    margin: 0 auto;
+    margin-bottom: 0.5em;
+}
+
+ul.date-filter {
+    padding-left: 1em;
+}
+
+ul.date-filter li {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+@media screen and (max-width:767px) {
+    .listing-wrapper {
+        flex-direction: column-reverse;
+        align-items: center;
+    }
+    .listing-wrapper .row.lisitng,
+    .datetime-wrapper {
+        width: 100%;
+    }
 }

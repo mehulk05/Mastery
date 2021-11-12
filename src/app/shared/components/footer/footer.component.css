@@ -98,6 +98,10 @@
     text-align: center;
 }
 
+a.fa.fa-share-alt {
+    background: #fff;
+}
+
 .vertical-center {
     display: flex;
     justify-content: center;
