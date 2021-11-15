@@ -151,7 +151,6 @@ export class AddEditArticleComponent implements OnInit {
       imgUrl: imgUrl,
       uuid: this.articleForm.value.uuid
     }
-    console.log(articleObject)
 
     if (this.article_id) {
       this.updateArticle(articleObject)
@@ -237,7 +236,7 @@ export class AddEditArticleComponent implements OnInit {
         })
       },
       error => {
-        console.log("error", error);
+      
       }
     );
   }

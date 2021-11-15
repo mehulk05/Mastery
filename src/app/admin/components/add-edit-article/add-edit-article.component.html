@@ -34,12 +34,12 @@
                     <div class="form-group">
                         <select class="form-control" (change)="changeCategory($event)" formControlName="category">
                        
-                            <option value="" disabled>Choose your city</option>
+                            <option value="" disabled>Choose your category</option>
                             <option *ngFor="let catrgory of availableCategory" [value]="catrgory">{{catrgory}}</option>
                     </select>
                         <div class="error" *ngIf="f.category.invalid && ( (f.category.dirty || f.category.touched))">
                             <div *ngIf="f.category.errors.required">
-                                Title is required.
+                                Category is required.
                             </div>
                         </div>
                     </div>
