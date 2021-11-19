@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { UserAuthService } from '@app/shared/services/user-auth.service';
 
 @Component({
   selector: 'app-user-wrappper',
@@ -8,10 +7,10 @@ import { UserAuthService } from '@app/shared/services/user-auth.service';
 })
 export class UserWrappperComponent implements OnInit {
 
-  constructor(private userService:UserAuthService) { }
+  constructor() { }
 
   ngOnInit(): void {
-    this.userService.autoLogin()
+   
   }
 
 }

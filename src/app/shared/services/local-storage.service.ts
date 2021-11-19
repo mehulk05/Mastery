@@ -44,8 +44,8 @@ export class LocalStorageService {
 	setDataInIndexedDB(key, value) {
 		if (isPlatformBrowser(this.platformId)) {
 			return localforage.setItem(key, JSON.stringify(value))
-				.then(() => { })
-				.catch(() => { });
+				.then((r) => { })
+				.catch((e) => { console.log(e)});
 		}
 	}
 

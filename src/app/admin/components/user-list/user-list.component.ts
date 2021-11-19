@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { UserCrudService } from '@app/admin/services/user-services/user-crud.service';
-import { ApiService } from '@app/shared/services/api.service';
-import { CrudService } from '@app/shared/services/crud.service';
+import firebase from "firebase/app";
+import "firebase/firestore";
 import { ToastrService } from 'ngx-toastr';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-user-list',
@@ -15,9 +17,9 @@ export class UserListComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private apiService: ApiService, private crudService: CrudService,
     private userCrudService: UserCrudService,
-    private toastrService: ToastrService) { }
+    private toastrService: ToastrService,
+    private afAuth:AngularFireAuth) { }
 
   ngOnInit(): void {
     this.getAllUserList()
@@ -25,6 +27,8 @@ export class UserListComponent implements OnInit {
 
   async getAllUserList() {
     this.userCrudService.startLoader()
+    this.afAuth.authState.subscribe(async user => {
+
     this.userCrudService.getAll("users").subscribe(data => {
       this.userCrudService.stopLoader()
       this.UserList = data.map(e => {
@@ -33,13 +37,16 @@ export class UserListComponent implements OnInit {
           email: e.payload.doc.data()['email'],
           password: e.payload.doc.data()['password'],
           date: e.payload.doc.data()['date'],
-
+          
         };
       })
+
     }, e => {
+      console.log(e)
       this.userCrudService.stopLoader()
       this.toastrService.error("Error Fetching Users", "Error")
     });
+  })
   }
 
   formatData(data) {
@@ -53,49 +60,39 @@ export class UserListComponent implements OnInit {
   }
 
   editUser(user) {
-    this.router.navigateByUrl("/admin/edit-user/" + user.email)
+    this.router.navigateByUrl("/admin/edit-user/" + user.key)
   }
 
   async deleteUser(userData) {
     this.userCrudService.startLoader()
-    this.userCrudService.delete(userData.email, "users").then(data => {
-      this.userCrudService.stopLoader()
-      this.getAllUserList();
+    if(firebase.app.name=="tempApp"){
+      await firebase.app('tempApp').delete()
+    }
+    let app2 = firebase.initializeApp(environment.firebaseConfig, 'tempApp');
+
+    app2.auth().signInWithEmailAndPassword(userData.email,userData.password).then(data=>{
+      data.user.delete().then(d=>{
+        this.userCrudService.delete(userData.key, "users").then(data => {
+          this.userCrudService.stopLoader()
+          this.deleteInstance(app2)
+          this.getAllUserList();
+        })
+      })
     }, e => {
       this.userCrudService.stopLoader()
       this.toastrService.error("Error Fetching Users", "Error")
+      this.deleteInstance(app2)
     })
+
   }
 
+
+  deleteInstance(appName){
+    appName.delete()
+  }
   addUser() {
     this.router.navigateByUrl("/admin/add-user")
   }
 
-
-  // async getAllUserList() {
-  //   this.apiService.startLoader()
-  //   const result = await this.apiService.get("users.json")
-  //   this.UserList = this.formatData(result)
-
-  // }
-
-  // async deleteUser(userData) {
-  //   this.apiService.startLoader()
-  //   let key  = userData.email.replace(/\./g, ',');
-  //   const result = await this.apiService.delete(`users/${key}.json`)
-  //   this.getAllUserList()
-  // }
-
-  // formatData(data) {
-  //   let returnData = []
-  //   for (const key in data) {
-  //     if (data.hasOwnProperty(key)) {
-  //       let key2 = data[key]
-  //       let values = key2[Object.keys(key2)[0]]
-  //       returnData.push({ ...values, key ,key2});
-  //     }
-  //   }
-  //   return returnData
-  // }
 }
 

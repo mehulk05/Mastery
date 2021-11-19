@@ -32,7 +32,8 @@ export class AuthService {
     private http: HttpClient,
     private router: Router,
     private localStorageService: LocalStorageService,
-    private ngxLoader: NgxSpinnerService,) {
+    private ngxLoader: NgxSpinnerService,
+    private afAuth: AngularFireAuth,) {
   }
 
   signup(email: string, password: string) {
@@ -59,27 +60,44 @@ export class AuthService {
       );
   }
 
+  // login(email: string, password: string) {
+  //   return this.http
+  //     .post<AuthResponseData>(
+  //       'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=' + this.key,
+  //       {
+  //         email: email,
+  //         password: password,
+  //         returnSecureToken: true
+  //       }
+  //     )
+  //     .pipe(
+  //       catchError(this.handleError),
+  //       tap(resData => {
+  //         this.handleAuthentication(
+  //           resData.email,
+  //           resData.localId,
+  //           resData.idToken,
+  //           +resData.expiresIn
+  //         );
+  //       })
+  //     );
+  // }
+
   login(email: string, password: string) {
-    return this.http
-      .post<AuthResponseData>(
-        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=' + this.key,
-        {
-          email: email,
-          password: password,
-          returnSecureToken: true
-        }
-      )
-      .pipe(
-        catchError(this.handleError),
-        tap(resData => {
-          this.handleAuthentication(
-            resData.email,
-            resData.localId,
-            resData.idToken,
-            +resData.expiresIn
-          );
-        })
-      );
+    this.afAuth
+      .signInWithEmailAndPassword(email, password)
+      .then(async result => {
+       const token = await  result.user.getIdToken()
+        this.handleAuthentication(
+                    result.user.email,
+                    result.user.uid,
+                    token,
+                    +result.user.refreshToken
+                  );
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   async autoLogin() {
@@ -161,14 +179,15 @@ export class AuthService {
     token: string,
     expiresIn: number
   ) {
-    const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
+    const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
     const user = new User(email, userId, token, expirationDate);
     user.role = "Admin"
     user.uuid = userId
     this.user.next(user);
-    this.autoLogout(expiresIn * 1000);
+    this.autoLogout(3600 * 1000);
     // localStorage.setItem('userData', JSON.stringify(user));
     await this.localStorageService.setDataInIndexedDB("userData", user)
+    this.router.navigate(["admin/article-list"]);
 
   }
 

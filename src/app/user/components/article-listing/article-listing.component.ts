@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiService } from '@app/shared/services/api.service';
 import { CrudService } from '@app/shared/services/crud.service';
 import * as moment from 'moment';
 import * as _ from 'lodash';
@@ -31,12 +30,6 @@ export class ArticleListingComponent implements OnInit {
     this.loadArticles()
   }
 
-  // async loadArticles() {
-  //   this.apiService.startLoader()
-  //   const result = await this.apiService.get("articles.json")
-  //   let articleList = this.formatData(result)
-  //  this.articleList = await this.formarArticleBody(articleList)
-  // }
 
   async loadArticles() {
     this.crudService.startLoader()

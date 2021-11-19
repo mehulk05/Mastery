@@ -86,7 +86,7 @@
 }
 
 .main-section {
-    min-height: 70vh;
+    min-height: 80vh;
 }
 
 .search-hero {
@@ -149,6 +149,7 @@
     border: none;
     border-radius: .625rem;
     margin-bottom: 4em;
+    cursor: pointer;
 }
 
 .column-coloumn h5 {

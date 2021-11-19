@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ApiService } from '@app/shared/services/api.service';
 import { CrudService } from '@app/shared/services/crud.service';
 import { LocalStorageService } from '@app/shared/services/local-storage.service';
 import { ToastrService } from 'ngx-toastr';
@@ -23,7 +22,6 @@ export class AddEditVideosComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private apiService: ApiService,
     private crudService: CrudService,
     private toastService: ToastrService,
     
@@ -65,10 +63,17 @@ export class AddEditVideosComponent implements OnInit {
 
     this.crudService.getSingle(video_id, this.firestoreKey).then(data => {
       this.crudService.stopLoader()
+      if(data.data()){
+
       this.videoData = data.data()
       this.videoData.key = data.id
       this.isLoading = false
       this.setVideoFormValues(this.videoData)
+      }
+      else{
+        this.isLoading = false
+        this.toastService.error("Error Fetching Video", "Error")
+      }
     }, e => {
       this.crudService.stopLoader()
       this.isLoading = false
@@ -77,6 +82,7 @@ export class AddEditVideosComponent implements OnInit {
   }
 
   setVideoFormValues(videoData) {
+    if(this.author.role == "admin" || (this.author.role=="user" && this.author.uuid == videoData.uuid)){
     this.videoForm.patchValue({
       title: videoData?.title,
       url: videoData?.url,
@@ -85,6 +91,10 @@ export class AddEditVideosComponent implements OnInit {
       creator: videoData.creator,
       uuid:videoData?.uuid
     })
+  }
+  else{
+    this.toastService.error("You dont have permission to access the document", "Permission Error")
+  }
   }
   async onBlurVideoFeild() {
     let videoUrl = this.videoForm.value.url

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '@app/shared/services/auth.service';
 
 @Component({
   selector: 'app-admin-wrapper',
@@ -8,7 +7,7 @@ import { AuthService } from '@app/shared/services/auth.service';
 })
 export class AdminWrapperComponent implements OnInit {
 
-  constructor(private authService:AuthService) { }
+  constructor() { }
 
   ngOnInit(): void {
 

@@ -7,16 +7,13 @@ import {
   } from '@angular/router';
   
   import { Injectable } from '@angular/core';
-  
-  
-  import { Observable } from 'rxjs';
-  import { AuthService } from './auth.service';
-import { UserAuthService } from './user-auth.service';
+
 import { LocalStorageService } from './local-storage.service';
+import { AuthService2 } from './auth2.service';
   
   @Injectable()
   export class SuperAdminAuthGuard implements CanActivate {
-    constructor(private authService: AuthService, private userAuthService:UserAuthService, private router: Router,
+    constructor(private authService2: AuthService2,  private router: Router,
       private localStorageService:LocalStorageService
     ) { }
   
@@ -25,10 +22,10 @@ import { LocalStorageService } from './local-storage.service';
   
      // let token = JSON.parse(localStorage.getItem("userData"))
       const token:any = await this.localStorageService.getDataFromIndexedDB("userData")
-      if (token && token.role == "Admin") {
+      if (token && token.role == "Admin" || token.role == "admin") {
         return true
       }
-      this.userAuthService.logout()
-      this.router.navigateByUrl("/admin/user-auth")
+      this.authService2.logout()
+      this.router.navigateByUrl("/admin/auth")
     }
   }

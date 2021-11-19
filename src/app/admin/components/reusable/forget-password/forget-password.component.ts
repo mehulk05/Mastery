@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AuthService } from '@app/shared/services/auth.service';
+import { AuthService2 } from '@app/shared/services/auth2.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -12,7 +12,7 @@ export class ForgetPasswordComponent implements OnInit {
 
   isLoading: Boolean = false
   error: string = ""
-  constructor(private authService: AuthService,private toastrService:ToastrService) { }
+  constructor(private authService2: AuthService2,private toastrService:ToastrService) { }
 
   ngOnInit(): void {
   }
@@ -23,7 +23,7 @@ export class ForgetPasswordComponent implements OnInit {
       return;
     }
     const email = form.value.email;
-    this.authService.sendPasswordResetEmail(email).then(() => {
+    this.authService2.sendPasswordResetEmail(email).then(() => {
       this.isLoading = false
     })
       .catch(e => {

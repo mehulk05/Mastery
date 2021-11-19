@@ -70,11 +70,19 @@
                 </div>
             </div>
 
+            <div class="fileupload">
+                <div *ngIf="currentFileUpload" class="progress mt-2">
+                    <div class="progress-bar progress-bar-info" role="progressbar" attr.aria-valuenow="{{ percentage }}" aria-valuemin="0" aria-valuemax="100" [ngStyle]="{ width: percentage + '%' }">
+                        {{ percentage }}%
+                    </div>
+                </div>
+            </div>
             <div class="form-row row">
                 <div class="col-md-12">
                     <label>Thumbnail url<span class="error-red">*</span></label>
                     <div class="form-group">
-                        <input type="text" class="form-control" formControlName="thumbnail">
+
+                        <input id="file-input" type="file" #myFileInput (change)="selectFile($event)" />
                     </div>
                 </div>
             </div>
@@ -89,7 +97,7 @@
             </div>
 
             <div class="flex-button">
-                <button type="submit" class="btn btn-common  btn-success butn">Save</button>
+                <button type="submit" class="btn btn-common  btn-success butn" [disabled]="!bookForm.valid">Save</button>
                 <button type="button" class="btn btn-common  btn-danger butn" (click)="goBack()">Cancel</button>
             </div>
 

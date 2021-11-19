@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { AngularFireStorage } from '@angular/fire/storage';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ApiService } from '@app/shared/services/api.service';
+
 import { CrudService } from '@app/shared/services/crud.service';
+import { FileUpload } from '@app/shared/services/fileupload.service';
 import { LocalStorageService } from '@app/shared/services/local-storage.service';
 import { ToastrService } from 'ngx-toastr';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-edit-book',
@@ -12,7 +15,14 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./add-edit-book.component.css']
 })
 export class AddEditBookComponent implements OnInit {
+  @ViewChild('myFileInput') myFileInput;
 
+  
+  selectedFiles: FileList;
+  currentFileUpload: FileUpload;
+  percentage: number;
+  downloadURL: any;
+  
   urlPattern = new RegExp(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/)
   author :any
   bookForm: FormGroup;
@@ -26,7 +36,8 @@ export class AddEditBookComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private crudService: CrudService,
     private toastService: ToastrService,
-    private localStorgaeService:LocalStorageService
+    private localStorgaeService:LocalStorageService,
+    private storage: AngularFireStorage,
   ) {
   }
 
@@ -53,7 +64,7 @@ export class AddEditBookComponent implements OnInit {
       title: ["", Validators.required],
       description: [""],
       url: ["", [Validators.required,Validators.pattern(this.urlPattern)]],
-      thumbnail: [""],
+      thumbnail: [null],
       date: [new Date()],
       author: [""],
       uuid:[this.author?.uuid]
@@ -65,10 +76,17 @@ export class AddEditBookComponent implements OnInit {
     this.crudService.startLoader()
     this.crudService.getSingle(book_id, this.firestoreKey).then(data => {
       this.crudService.stopLoader()
+      if(data.data()){
+     
       this.bookData = data.data()
       this.bookData.key = data.id
       this.isLoading = false
       this.setBookFormValues(this.bookData)
+      }
+      else{
+        this.isLoading = false
+      this.toastService.error("Error Fetching Book", "Error")
+      }
     }, e => {
       this.crudService.stopLoader()
       this.isLoading = false
@@ -77,6 +95,7 @@ export class AddEditBookComponent implements OnInit {
   }
 
   setBookFormValues(bookData) {
+    if(this.author.role == "admin" || (this.author.role=="user" && this.author.uuid == bookData.uuid)){
     this.bookForm.patchValue({
       title: bookData?.title,
       description: bookData?.description,
@@ -87,7 +106,52 @@ export class AddEditBookComponent implements OnInit {
       uuid:bookData?.uuid
     })
   }
+  else{
+    this.toastService.error("You dont have permission to access the document", "Permission Error")
+  }
+  }
 
+  selectFile(event): void {
+    this.percentage = 0
+    const file = event.target.files[0];
+    this.currentFileUpload = new FileUpload(file);
+    const filePath = `RoomsImages`;
+    const fileRef = this.storage.ref(filePath);
+    const task = this.storage.upload(`RoomsImages`, file);
+    task
+      .snapshotChanges()
+      .pipe(
+        finalize(() => {
+          this.downloadURL = fileRef.getDownloadURL();
+          this.downloadURL.subscribe(url => {
+            if (url) {
+              this.fb = url;
+            }
+            this.addUrlToEditor(url)
+
+            task.percentageChanges().subscribe(percentage => {
+              this.percentage = Math.round(percentage);
+              this.percentage = percentage
+            })
+          });
+        })
+      )
+      .subscribe(url => {
+        if (url) {
+          this.selectedFiles = null;
+        }
+      });
+  }
+
+  addUrlToEditor(url) {
+    this.bookForm.patchValue({
+      thumbnail:url
+    })
+  }
+
+  onFileChange(event) { 
+    this.myFileInput.nativeElement.value = '';
+  }
 
   submitForm() {
     let bookObject = {

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiService } from '@app/shared/services/api.service';
 import { CrudService } from '@app/shared/services/crud.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -23,15 +22,6 @@ export class ArticleDetailComponent implements OnInit {
       }
     })
   }
-
-  // getArticle(article_id) {
-  //   this.apiService.startLoader()
-  //   this.apiService.get(`articles/${article_id}.json`).then((articleData: any) => {
-  //     this.articleData = articleData
-  //     let body = articleData.body.split("<p>&nbsp;</p>").join("")
-  //     this.articleData.body = body
-  //   })
-  // }
 
   getArticle(article_id) {
     this.crudService.startLoader()

@@ -11,7 +11,7 @@
     <div class="row lisitng" *ngIf="videoList.length>0 && (videoList  | filter: searchText) as result">
         <ng-container *ngFor="let video of result  | paginate:config">
             <div class="col-lg-3 col-md-6 col-sm-12">
-                <div class="column-coloumn">
+                <div class="column-coloumn" (click)="editArticle(video)">
 
                     <iframe width="100%" height="250" [src]="byPassURL(video?.url )"></iframe>
                     <div class="card-body">

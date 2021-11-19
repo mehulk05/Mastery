@@ -41,4 +41,16 @@ export class CrudService {
   stopLoader() {
     this.ngxLoader.hide();
   }
+
+
+  deleteUser(){
+
+  }
+
+
+  updateUser(){
+
+  }
+
+  
 }

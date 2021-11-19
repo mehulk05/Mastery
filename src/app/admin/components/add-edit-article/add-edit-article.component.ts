@@ -2,8 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ArticleCrudService } from '@app/admin/services/article services/article-crud.service';
-import { ApiService } from '@app/shared/services/api.service';
 import { CrudService } from '@app/shared/services/crud.service';
 import { FileUpload, FileuploadService } from '@app/shared/services/fileupload.service';
 import { LocalStorageService } from '@app/shared/services/local-storage.service';
@@ -87,10 +85,19 @@ export class AddEditArticleComponent implements OnInit {
   getArticle(article_id) {
     this.crudService.startLoader()
     this.crudService.getSingle(article_id, "article").then(data => {
-      this.aricleData = data.data()
-      this.aricleData.id = data.id
-      this.setArticleFormValues(this.aricleData)
       this.crudService.stopLoader()
+      if(data.data()){
+        this.aricleData = data.data()
+        this.aricleData.id = data?.id
+        this.setArticleFormValues(this.aricleData)
+       
+      }
+      else{
+        this.toastService.error("Error Fetching Article", "Error")
+      }
+    
+      
+      
     }, e => {
       this.toastService.error("Error Fetching Article", "Error")
       this.crudService.stopLoader()
@@ -98,15 +105,22 @@ export class AddEditArticleComponent implements OnInit {
   }
 
   setArticleFormValues(articleData) {
-    this.articleForm.patchValue({
-      title: articleData?.title,
-      body: articleData?.body,
-      date: articleData?.date,
-      author: articleData?.author,
-      category: articleData?.category,
-      isPublic: articleData.isPublic ? articleData.isPublic : false,
-      uuid: articleData?.uuid
-    })
+    if(this.author.role == "admin" || (this.author.role=="user" && this.author.uuid == articleData.uuid)){
+      this.articleForm.patchValue({
+        title: articleData?.title,
+        body: articleData?.body,
+        date: articleData?.date,
+        author: articleData?.author,
+        category: articleData?.category,
+        isPublic: articleData.isPublic ? articleData.isPublic : false,
+        uuid: articleData?.uuid
+      })
+    }
+
+    else{
+      this.toastService.error("You dont have permission to access the document", "Permission Error")
+    }
+    
   }
 
   getImages(string) {
@@ -254,38 +268,5 @@ export class AddEditArticleComponent implements OnInit {
     this.myckeditor.instance.insertHtml(style)
     this.articleForm.patchValue({ 'body': innerHtml });
   }
-  // Firebase Realtime operation
-  // getArticle(article_id) {
-  //   this.apiService.startLoader()
-  //   this.apiService.get(`articles/${article_id}.json`).then(articleData => {
-  //     this.setArticleFormValues(articleData)
-  //   })
-  // }
 
-
-  // updateArticle(articleObject) {
-  //   this.apiService.startLoader()
-  //   this.apiService.put(`articles/${this.article_id}.json`, articleObject).then(data => {
-  //     this.router.navigateByUrl("/admin/article-list")
-  //   })
-  // }
-
-  // async createArticle(articleObject) {
-  //   this.apiService.startLoader()
-  //   await this.apiService.post("articles.json", articleObject).then(result => {
-  //     this.router.navigateByUrl("/admin/article-list")
-  //   })
-  // }
-
-  // async getArticleList() {
-  //   this.apiService.startLoader()
-  //   const result = await this.apiService.get("articles.json")
-  //   this.articleList = this.formatData(result)
-  // }
-
-  // async deleteArticle(article) {
-  //   this.apiService.startLoader()
-  //   const result = await this.apiService.delete(`articles/${article.key}.json`)
-  //   this.getArticleList();
-  // }
 }

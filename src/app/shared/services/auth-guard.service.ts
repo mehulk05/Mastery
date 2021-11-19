@@ -3,19 +3,16 @@ import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
   Router,
-  CanActivateChild
 } from '@angular/router';
 
 import { Injectable } from '@angular/core';
-
-
-import { Observable } from 'rxjs';
-import { AuthService } from './auth.service';
 import { LocalStorageService } from './local-storage.service';
+import { AuthService2 } from './auth2.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router,private localStorageService:LocalStorageService
+  constructor(private authService2: AuthService2,
+     private router: Router,private localStorageService:LocalStorageService
   ) { }
 
  async canActivate(route: ActivatedRouteSnapshot,
@@ -26,5 +23,10 @@ export class AuthGuard implements CanActivate {
       return true
     }
     this.router.navigateByUrl("/admin/auth")
+    // if (this.authService2.isAuth()) {
+    //   return true;
+    // } else {
+    //   this.router.navigate(['/admin/auth']);
+    // }
   }
 }

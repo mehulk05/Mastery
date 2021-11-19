@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ApiService } from '@app/shared/services/api.service';
 import { CrudService } from '@app/shared/services/crud.service';
 import { LocalStorageService } from '@app/shared/services/local-storage.service';
 import * as moment from 'moment';
@@ -30,7 +29,6 @@ export class AddEditLiveEventsComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private apiService: ApiService,
     private crudService: CrudService,
     private toastService: ToastrService,
     private localStorgaeService:LocalStorageService
@@ -82,10 +80,18 @@ export class AddEditLiveEventsComponent implements OnInit {
 
     this.crudService.getSingle(event_id, this.firestoreKey).then(data => {
       this.crudService.stopLoader()
-      this.eventData = data.data()
-      this.eventData.key = data.id
-      this.isLoading = false
-      this.setEventFormValues(this.eventData)
+      if(data.data()){
+      
+        this.eventData = data.data()
+        this.eventData.key = data.id
+        this.isLoading = false
+        this.setEventFormValues(this.eventData)
+      }
+      
+      else{
+        this.isLoading = false
+        this.toastService.error("Error Fetching Event", "Error")
+      }
     }, e => {
       this.crudService.stopLoader()
       this.isLoading = false
@@ -94,6 +100,7 @@ export class AddEditLiveEventsComponent implements OnInit {
   }
 
   setEventFormValues(eventData) {
+    if(this.author.role == "admin" || (this.author.role=="user" && this.author.uuid == eventData.uuid)){
     this.eventForm.patchValue({
       title: eventData?.title,
       url: eventData?.url,
@@ -103,6 +110,9 @@ export class AddEditLiveEventsComponent implements OnInit {
       endTime: eventData?.endTime.toDate(),
       uuid:eventData?.uuid
     })
+  }else{
+    this.toastService.error("You dont have permission to access the document", "Permission Error")
+  }
   }
 
 

@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '@app/shared/services/auth.service';
+import { AuthService2 } from '@app/shared/services/auth2.service';
 import { LocalStorageService } from '@app/shared/services/local-storage.service';
-import { UserAuthService } from '@app/shared/services/user-auth.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -22,40 +21,42 @@ export class AdminHeaderComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private authService: AuthService, private userAuthService: UserAuthService,
+    private authService2: AuthService2,
     private localStorgaeService: LocalStorageService) {
 
   }
 
   async ngOnInit(): Promise<void> {
-    this.authService.autoLogin();
+
+    this.authService2.initAuthListener();
     this.userData = await this.localStorgaeService.getDataFromIndexedDB("userData")
     if (this.userData) {
+      
       this.isUser = this.userData.role == "user"
       this.isAdmin = this.userData.role !== "user"
 
     }
 
-    this.userSub = this.authService.user.subscribe(user => {
-      if (user && user.role == "user") {
-        this.isAdmin = false
+    this.userSub = this.authService2.user.subscribe(user => {
+      if(user){
+        if (user && user.role == "user") {
+          this.isAdmin = false
+        }
+        else {
+          this.isAdmin = user?.role == "admin"
+        }
+  
+        this.isAuthenticated = !!user;
       }
-      else {
-        this.isAdmin = user?.role == "Admin"
+      else{
+        this.isAuthenticated = false
       }
-
-      this.isAuthenticated = !!user;
+     
     });
   }
 
   async onLogout() {
-    if (this.isAdmin) {
-      this.authService.logout();
-    }
-    else {
-      this.userAuthService.logout()
-      //this.authService.logout();
-    }
+   this.authService2.logout()
 
   }
 

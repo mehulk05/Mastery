@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiService } from '@app/shared/services/api.service';
 import { CrudService } from '@app/shared/services/crud.service';
 import { LocalStorageService } from '@app/shared/services/local-storage.service';
 import { ToastrService } from 'ngx-toastr';

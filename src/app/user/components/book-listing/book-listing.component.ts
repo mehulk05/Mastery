@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { ApiService } from '@app/shared/services/api.service';
+
 import { CrudService } from '@app/shared/services/crud.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -15,7 +14,7 @@ export class BookListingComponent implements OnInit {
   searchText
   bookList = []
 
-  constructor(private apiService: ApiService,
+  constructor(
     private crudService: CrudService, 
     private toastrService: ToastrService) { 
       this.config = {
@@ -30,7 +29,6 @@ export class BookListingComponent implements OnInit {
   }
 
   async loadBooks() {
-    this.apiService.startLoader()
     this.crudService.startLoader()
     this.crudService.getAll("books").subscribe(data => {
       this.crudService.stopLoader()

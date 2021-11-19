@@ -12,6 +12,7 @@
     border: none;
     border-radius: .625rem;
     margin-bottom: 4em;
+    cursor: pointer;
 }
 
 .article-column h5 {

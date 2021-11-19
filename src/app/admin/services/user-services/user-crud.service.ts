@@ -11,7 +11,7 @@ export class UserCrudService {
   constructor(private firestore: AngularFirestore ,  private ngxLoader: NgxSpinnerService, ) { }
 
   getAll(key) {
-    return this.firestore.collection(key).snapshotChanges().pipe(
+    return this.firestore.collection(key,ref=> ref.where('role', '==', 'user')).snapshotChanges().pipe(
       debounceTime(1000)
       //distinctUntilChanged() // or try this, ignores equal data
      );
@@ -39,5 +39,6 @@ export class UserCrudService {
   stopLoader() {
     this.ngxLoader.hide();
   }
+  
 }
 

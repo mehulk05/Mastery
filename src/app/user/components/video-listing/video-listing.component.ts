@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { ApiService } from '@app/shared/services/api.service';
 import { CrudService } from '@app/shared/services/crud.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -15,7 +14,7 @@ export class VideoListingComponent implements OnInit {
   searchText
   videoList = []
 config:any
-  constructor(private apiService: ApiService, 
+  constructor(
     private router: Router, 
     private crudService: CrudService,
      private toastrService: ToastrService,
@@ -32,7 +31,7 @@ config:any
   }
 
   async loadVideos() {
-    this.apiService.startLoader()
+
     this.crudService.startLoader()
     this.crudService.getAll("videos").subscribe(data => {
       this.crudService.stopLoader()

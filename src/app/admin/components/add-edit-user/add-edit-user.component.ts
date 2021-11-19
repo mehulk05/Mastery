@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { DatabaseReference } from '@angular/fire/database/interfaces';
+import { AngularFireAuth } from '@angular/fire/auth';
+
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserCrudService } from '@app/admin/services/user-services/user-crud.service';
-import { ApiService } from '@app/shared/services/api.service';
 import { CrudService } from '@app/shared/services/crud.service';
 import { EncrDecrService } from '@app/shared/services/EncrDecrService.service';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
 import { v4 as uuidv4 } from 'uuid';
-
+import firebase from "firebase/app";
+import "firebase/firestore";
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 @Component({
   selector: 'app-add-edit-user',
   templateUrl: './add-edit-user.component.html',
@@ -17,22 +19,29 @@ import { v4 as uuidv4 } from 'uuid';
 })
 export class AddEditUserComponent implements OnInit {
   secretkey = environment.secretkey
-
+  app2 
   userForm: FormGroup;
   user_id: any;
   userData: any;
+  oldUserData: any
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private crudService: CrudService,
     private toastService: ToastrService,
     private userCrudService: UserCrudService,
-    private encryptService: EncrDecrService
+    private encryptService: EncrDecrService,
+    private afs: AngularFirestore,
   ) {
   }
 
   ngOnInit(): void {
+    if (!firebase.apps.length) {
+      this.app2 = firebase.initializeApp(environment.firebaseConfig, 'tempApp');
+   }else {
+      this.app2= firebase.app(); // if already initialized, use that one
+   }
+
 
     this.createUserForm()
     this.activatedRoute.params.subscribe(data => {
@@ -58,21 +67,42 @@ export class AddEditUserComponent implements OnInit {
   }
 
 
-  createUser(userData) {
+  createUser(userinfo) {
+
     this.userCrudService.startLoader()
-    this.userCrudService.create(userData, "users").then(data => {
-      this.router.navigateByUrl("/admin/user-list")
+    const app2=  firebase.initializeApp(environment.firebaseConfig, 'tempApp');
+    app2.auth().createUserWithEmailAndPassword(userinfo.email, userinfo.password).then(data => {
+      const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${data.user.uid}`);
+      const userData = {
+        uuid: data.user.uid,
+        email: data.user.email,
+        role: 'user',
+        date:userinfo.date,
+        password: this.userForm.value.password,
+      }
+
+       userRef.set(userData, { merge: true }).then(d=>{
+        this.deleteInstance(app2)
+        this.router.navigateByUrl("/admin/user-list")
+       }, e => {
+        this.userCrudService.stopLoader()
+        this.deleteInstance(app2)
+        this.toastService.error("Error Creating User", "Error")
+      })
     }, e => {
       this.userCrudService.stopLoader()
+      this.deleteInstance(app2)
       this.toastService.error("Error Creating User", "Error")
     })
+
+  
   }
 
   getUser(key) {
     this.userCrudService.startLoader()
     this.userCrudService.getSingle(key, "users").then(data => {
       this.userData = data.data()
-      // this.userData.id =  "12"
+      this.oldUserData = data.data()
       this.setUserFormValues(this.userData)
       this.userCrudService.stopLoader()
     }, e => {
@@ -81,23 +111,59 @@ export class AddEditUserComponent implements OnInit {
     })
   }
 
-  updateUser(userData) {
+  updateUser(userinfo) {
     this.userCrudService.startLoader()
-    this.userCrudService.delete(this.user_id, "users").then(data => {
-      this.userCrudService.create(userData, "users").then(data => {
-        this.router.navigateByUrl("/admin/user-list")
-      }, e => {
-        this.userCrudService.stopLoader()
-        this.toastService.error("Error Updating User", "Error")
+    const app2=  firebase.initializeApp(environment.firebaseConfig, 'tempApp');
+    app2.auth().signInWithEmailAndPassword(this.oldUserData.email, this.oldUserData.password).then(data => {
+
+      data.user.updatePassword(userinfo.password).then(rt => {
+        data.user.updateEmail(userinfo.email).then(email => {
+          const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${data.user.uid}`);
+          const userData = {
+            uuid: data.user.uid,
+            email: userinfo.email,
+            role: 'user',
+            password: userinfo.password,
+          }
+           this.deleteInstance(app2)
+           userRef.set(userData, { merge: true }).then(data=>{
+             this.router.navigateByUrl("/admin/user-list")
+
+           })
+        })
+
       })
+    },e=>{
+      this.handleError(app2,e)
+      
     })
 
+
+
+
+    // this.userCrudService.startLoader()
+    // this.userCrudService.delete(this.user_id, "users").then(data => {
+    //   this.userCrudService.create(userData, "users").then(data => {
+    //     this.router.navigateByUrl("/admin/user-list")
+    //   }, e => {
+    //     this.userCrudService.stopLoader()
+    //     this.toastService.error("Error Updating User", "Error")
+    //   })
+    // })
+
+  }
+
+  handleError(appName,e){
+    this.userCrudService.stopLoader()
+    this.deleteInstance(appName)
+    this.toastService.error("Error Updating User", e)
   }
 
   setUserFormValues(userData) {
     this.userForm.patchValue({
       email: userData?.email,
-      password: this.encryptService.get(this.secretkey, userData?.password),
+      // password: this.encryptService.get(this.secretkey, userData?.password),
+      password:userData.password,
       date: userData?.date,
       role: userData?.role,
       uuid: userData?.uuid
@@ -105,17 +171,24 @@ export class AddEditUserComponent implements OnInit {
   }
 
 
+  deleteInstance(appName){
+    appName.delete()
+  }
+
+
   submitForm() {
-    let password = this.encryptService.set(this.secretkey, this.userForm.value.password);
+    //let password = this.encryptService.set(this.secretkey, this.userForm.value.password);
     let userData = {
       email: this.userForm.value.email,
-      password: password,
+      password: this.userForm.value.password,
       date: this.userForm.value.date,
       role: this.userForm.value.role,
       uuid: this.userForm.value.uuid
     }
 
-    let decrypt = this.encryptService.get(this.secretkey, password)
+
+
+
     if (this.user_id) {
       this.updateUser(userData)
     }
@@ -133,31 +206,5 @@ export class AddEditUserComponent implements OnInit {
     this.router.navigateByUrl("/admin/user-list")
   }
 
-
-  // Fire base real Time
-  // async createUser(userData) {
-  //   let key  = userData.email.replace(/\./g, ',');
-  //   this.apiService.startLoader()
-  //   await this.apiService.put(`users/${key}.json`, userData).then(result => {
-  //     this.router.navigateByUrl("/admin/user-list")
-  //   })
-  // }
-
-  // async updateUser(userData) {
-  //   let newkey  = userData.email.replace(/\./g, ',');
-  //   let oldkey = this.user_id.replace(/\./g, ',');
-  //   this.apiService.startLoader()
-  //   const result  = await this.apiService.delete(`users/${oldkey}.json`)
-  //   this.apiService.put(`users/${newkey}.json`, userData).then(data => {
-  //     this.router.navigateByUrl("/admin/user-list")
-  //   })
-  // }
-
-  // getUser(user_id) {
-  //   this.apiService.startLoader()
-  //   this.apiService.get(`users/${user_id}.json`).then(userData => {
-  //     this.setUserFormValues(userData)
-  //   })
-  // }
 
 }
