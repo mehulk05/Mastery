@@ -87,6 +87,7 @@ svg {
 .listing-wrapper .row.lisitng {
     width: 78%;
     justify-content: flex-start;
+    padding-left: 1em;
 }
 
 .date-filter .no-active {
@@ -116,6 +117,7 @@ svg {
 .datetime-wrapper {
     padding: 1em;
     width: 22%;
+    max-width: 270px;
 }
 
 .datetime ul:nth-last-child(1) {
@@ -145,5 +147,11 @@ ul.date-filter li {
     .listing-wrapper .row.lisitng,
     .datetime-wrapper {
         width: 100%;
+    }
+    .listing-wrapper .row.lisitng {
+        padding-left: 0;
+    }
+    .datetime-wrapper {
+        max-width: 300px;
     }
 }

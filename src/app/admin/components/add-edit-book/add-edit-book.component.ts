@@ -1,3 +1,4 @@
+import { LocationStrategy } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -30,6 +31,8 @@ export class AddEditBookComponent implements OnInit {
   firestoreKey = "books"
   bookData: any;
   isLoading = false
+  showModal: boolean;
+  isUploading: boolean;
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -38,7 +41,12 @@ export class AddEditBookComponent implements OnInit {
     private toastService: ToastrService,
     private localStorgaeService:LocalStorageService,
     private storage: AngularFireStorage,
+    private location: LocationStrategy
   ) {
+    history.pushState(null, null, window.location.href);
+    this.location.onPopState(() => {
+      this.goBack()
+  });
   }
 
   async ngOnInit(): Promise<void> {
@@ -112,12 +120,13 @@ export class AddEditBookComponent implements OnInit {
   }
 
   selectFile(event): void {
+    this.isUploading = true
     this.percentage = 0
     const file = event.target.files[0];
     this.currentFileUpload = new FileUpload(file);
-    const filePath = `RoomsImages`;
+    const filePath = `books`;
     const fileRef = this.storage.ref(filePath);
-    const task = this.storage.upload(`RoomsImages`, file);
+    const task = this.storage.upload(`books`, file);
     task
       .snapshotChanges()
       .pipe(
@@ -125,6 +134,7 @@ export class AddEditBookComponent implements OnInit {
           this.downloadURL = fileRef.getDownloadURL();
           this.downloadURL.subscribe(url => {
             if (url) {
+              this.isUploading = false
               this.fb = url;
             }
             this.addUrlToEditor(url)
@@ -198,7 +208,22 @@ export class AddEditBookComponent implements OnInit {
   }
 
   goBack() {
+    history.pushState(null, null, window.location.href);
+    if(this.isUploading){
+      history.pushState(null, null, location.href);
+      this.showModal =  true
+    }
+    else{
+      this.router.navigateByUrl("/admin/book-list")
+    }
+  }
+  goToBook(){
     this.router.navigateByUrl("/admin/book-list")
+  }
+  
+  hideModal(){
+    this.isUploading = false
+    this.showModal =  false
   }
 }
 

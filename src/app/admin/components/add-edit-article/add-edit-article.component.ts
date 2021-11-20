@@ -1,7 +1,8 @@
+import { LocationStrategy } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { CrudService } from '@app/shared/services/crud.service';
 import { FileUpload, FileuploadService } from '@app/shared/services/fileupload.service';
 import { LocalStorageService } from '@app/shared/services/local-storage.service';
@@ -27,6 +28,8 @@ export class AddEditArticleComponent implements OnInit {
   availableCategory: any = ['Politics', 'Social', 'Economic', 'Cultural','Historical']
   @ViewChild('myckeditor') myckeditor: any;
   downloadURL: any;
+  isUploading: boolean;
+  showModal: any;
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -35,9 +38,14 @@ export class AddEditArticleComponent implements OnInit {
     private toastService: ToastrService,
     private uploadService: FileuploadService,
     private storage: AngularFireStorage,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private location: LocationStrategy
   ) {
     this.config = { uiColor: '#f2f2f2' };
+    history.pushState(null, null, window.location.href);
+    this.location.onPopState(() => {
+      this.goBack()
+  });
 
   }
 
@@ -200,17 +208,29 @@ export class AddEditArticleComponent implements OnInit {
   }
 
   goBack() {
+    history.pushState(null, null, window.location.href);
+    if(this.isUploading){
+      history.pushState(null, null, location.href);
+      this.showModal =  true
+    }
+    else{
+      this.router.navigateByUrl("/admin/article-list")
+    }
+  }
+
+  goBackToArticle(){
     this.router.navigateByUrl("/admin/article-list")
   }
 
   selectFile(event): void {
+    this.isUploading = true
     this.percentage = 0
     this.selectedFiles = event.target.files;
     const file = event.target.files[0];
     this.currentFileUpload = new FileUpload(file);
-    const filePath = `RoomsImages`;
+    const filePath = `articles`;
     const fileRef = this.storage.ref(filePath);
-    const task = this.storage.upload(`RoomsImages/`, file);
+    const task = this.storage.upload(`articles/`, file);
     task
       .snapshotChanges()
       .pipe(
@@ -222,8 +242,12 @@ export class AddEditArticleComponent implements OnInit {
             }
             this.addUrlToEditor(this.fb)
             task.percentageChanges().subscribe(percentage => {
+              this.isUploading = false
               this.percentage = Math.round(percentage);
               this.percentage = percentage
+            },e=>{
+              this.toastService.error(e,"Error")
+              this.isUploading = false
             })
           });
         })
@@ -233,6 +257,9 @@ export class AddEditArticleComponent implements OnInit {
           this.selectedFiles = null;
           event.target.value = "";
         }
+      },
+    e=>{
+        this.toastService.error(e,"Error")
       });
   }
 
@@ -262,11 +289,19 @@ export class AddEditArticleComponent implements OnInit {
    })
   }
   addUrlToEditor(url) {
-    var style = " <img src='" + url + "'  style='max-width: 100%;' class='img-responsive'>";
+    if(url){
+      var style = " <img src='" + url + "'  style='max-width: 100%;' class='img-responsive'>";
 
-    let innerHtml = this.articleForm.value.body
-    this.myckeditor.instance.insertHtml(style)
-    this.articleForm.patchValue({ 'body': innerHtml });
+      let innerHtml = this.articleForm.value.body
+      this.myckeditor.instance.insertHtml(style)
+      this.articleForm.patchValue({ 'body': innerHtml });
+    }
+    
+  }
+
+  hideModal(){
+    this.isUploading = false
+    this.showModal =  false
   }
 
 }

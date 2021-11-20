@@ -86,7 +86,9 @@
 }
 
 .main-section {
-    min-height: 80vh;
+    margin-bottom: 135px;
+    display: block;
+    position: relative;
 }
 
 .search-hero {
@@ -154,6 +156,12 @@
 
 .column-coloumn h5 {
     margin-top: 15px;
+    height: 50px;
+    max-height: 50px;
+    display: block;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    overflow: hidden;
 }
 
 .column-coloumn a {
@@ -249,6 +257,9 @@ button.donate-btn {
 } */
 
 @media screen and (max-width:767px) {
+    .main-section {
+        margin-bottom: 230px;
+    }
     .header-wrapper .donate-btn {
         display: block;
     }
