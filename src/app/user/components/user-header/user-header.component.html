@@ -8,35 +8,22 @@
     </div>
     <nav class="main-navigation__header-nav">
         <ul class="nav-links">
-            <!-- <li>
-                <a routerLinkActive="active" routerLink="/user/" [routerLinkActiveOptions]="{exact: true}">Home</a>
-            </li> -->
 
             <li>
-                <a routerLinkActive="active" routerLink="/user/article-list"> Article</a>
+                <a routerLinkActive="active" routerLink="/user/live-shows" [routerLinkActiveOptions]="{exact: true}"> Event</a>
             </li>
-
             <li>
-                <a routerLinkActive="active" routerLink="/user/about"> About</a>
+                <a routerLinkActive="active" routerLink="/user/article-list"> Articles</a>
             </li>
             <li>
                 <a routerLinkActive="active" routerLink="/user/video-list" [routerLinkActiveOptions]="{exact: true}"> Vidoes</a>
             </li>
-
             <li>
                 <a routerLinkActive="active" routerLink="/user/book-list" [routerLinkActiveOptions]="{exact: true}"> Books</a>
             </li>
-
             <li>
-                <a routerLinkActive="active" routerLink="/user/live-shows" [routerLinkActiveOptions]="{exact: true}"> Shows</a>
+                <a routerLinkActive="active" routerLink="/user/about"> About</a>
             </li>
-
-            <!-- <li>
-                <a routerLinkActive="active" routerLink="/admin/" [routerLinkActiveOptions]="{exact: true}"> Shows</a>
-            </li> -->
-
-
-            <li><button *ngIf="isAuthenticated" (click)="onLogout()">Logout </button></li>
         </ul>
     </nav>
     <div class="mobile-only-icon">

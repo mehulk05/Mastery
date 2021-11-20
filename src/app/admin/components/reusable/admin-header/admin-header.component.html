@@ -9,22 +9,30 @@
 
     <nav class="main-navigation__header-nav">
         <ul class="nav-links">
+
             <li *ngIf="isAuthenticated">
-                <a routerLinkActive="active" routerLink="/admin/article-list"> Article</a>
+                <a routerLinkActive="active" routerLink="/admin/event-list"> Event</a>
+            </li>
+
+            <li *ngIf="isAuthenticated">
+                <a routerLinkActive="active" routerLink="/admin/article-list"> Articles</a>
+            </li>
+
+            <li *ngIf="isAuthenticated">
+                <a routerLinkActive="active" routerLink="/admin/video-list"> Videos</a>
+            </li>
+
+
+            <li *ngIf="isAuthenticated">
+                <a routerLinkActive="active" routerLink="/admin/book-list"> Book</a>
             </li>
 
             <li *ngIf="isAuthenticated && isAdmin">
                 <a routerLinkActive="active" routerLink="/admin/about"> About</a>
             </li>
 
-            <li *ngIf="isAuthenticated">
-                <a routerLinkActive="active" routerLink="/admin/book-list"> Book</a>
-            </li>
 
 
-            <li *ngIf="isAuthenticated">
-                <a routerLinkActive="active" routerLink="/admin/event-list"> Events</a>
-            </li>
 
 
             <li *ngIf="isAuthenticated && isAdmin">
@@ -32,10 +40,6 @@
                     Users</a>
             </li>
 
-
-            <li *ngIf="isAuthenticated">
-                <a routerLinkActive="active" routerLink="/admin/video-list"> Videos</a>
-            </li>
 
             <li><a *ngIf="!isAuthenticated" routerLinkActive="active" routerLink="/admin/auth">Login/Register</a></li>
             <li><button *ngIf="isAuthenticated" (click)="onLogout()">Logout </button></li>

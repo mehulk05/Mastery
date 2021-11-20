@@ -14,7 +14,7 @@ const routes: Routes = [
     path: '',
     component: UserWrappperComponent,
     children: [
-      { path: '', redirectTo: 'article-list', pathMatch: 'full' },
+      { path: '', redirectTo: 'live-shows', pathMatch: 'full' },
       {
         path:"about",
         component:AboutComponent,
