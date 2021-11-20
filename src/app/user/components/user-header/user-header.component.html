@@ -42,14 +42,11 @@
     <div class="Menus">
         <nav>
             <ul id="navigation" (click)="openMenu()">
-                <!-- <li>
-                    <a routerLinkActive="active" routerLink="/admin/" [routerLinkActiveOptions]="{exact: true}">Home</a>
-                </li> -->
-                <!-- <li>
-                    <a routerLinkActive="active" routerLink="/admin/user-list" [routerLinkActiveOptions]="{exact: true}"> Users</a>
-                </li> -->
                 <li>
-                    <a routerLinkActive="active" routerLink="/user/article-list"> Article</a>
+                    <a routerLinkActive="active" routerLink="/user/live-shows" [routerLinkActiveOptions]="{exact: true}"> Shows</a>
+                </li>
+                <li>
+                    <a routerLinkActive="active" routerLink="/user/article-list"> Articles</a>
                 </li>
                 <li>
                     <a routerLinkActive="active" routerLink="/user/video-list" [routerLinkActiveOptions]="{exact: true}"> Vidoes</a>
@@ -60,13 +57,8 @@
                 </li>
 
                 <li>
-                    <a routerLinkActive="active" routerLink="/user/live-shows" [routerLinkActiveOptions]="{exact: true}"> Shows</a>
+                    <a routerLinkActive="active" routerLink="/user/about"> About</a>
                 </li>
-                <!-- <li>
-                    <a routerLinkActive="active" routerLink="/admin/" [routerLinkActiveOptions]="{exact: true}"> Shows</a>
-                </li> -->
-
-                <li *ngIf="isAuthenticated"><button (click)="onLogout()">Logout </button></li>
             </ul>
         </nav>
     </div>

@@ -16,9 +16,6 @@ export class UserHeaderComponent implements OnInit {
 
   }
 
-
- 
-
   openMenu(){
     this.isMenuOpen =!this.isMenuOpen
   }
