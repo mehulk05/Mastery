@@ -28,8 +28,9 @@ export class AddEditArticleComponent implements OnInit {
   availableCategory: any = ['Politics', 'Social', 'Economic', 'Cultural','Historical']
   @ViewChild('myckeditor') myckeditor: any;
   downloadURL: any;
-  isUploading: boolean;
+  isUploading: boolean =false;
   showModal: any;
+  isUploaded: boolean;
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -141,39 +142,64 @@ export class AddEditArticleComponent implements OnInit {
     return images;
   }
 
-  getMeta(url) {
-    var img = new Image();
-    img.src = url
-    return { ht: img.height, width: img.width, url: url }
+  async getMeta(url) {
+    return new Promise((resolve, reject) => {
+      let img = new Image()
+      img.onload = () => resolve({ ht: img.height, width: img.width, url: url })
+      img.onerror = reject
+      img.src = url
+    })
+
+    // var img = new Image();
+    // img.src = url
+    // return img.onload = await function(){
+    //   console.log(img.width)
+    //   return { ht: img.height, width: img.width, url: url }
+    // }
+    
 
   }
 
-  submitForm() {
+  async submitForm() {
     let body = this.articleForm.value.body
-    let img = this.getImages(body)
-
+    let img = await this.getImages(body)
     let imgUrl = "https://neilpatel.com/wp-content/uploads/2017/08/blog.jpg"
-
-    if (img.length > 0) {
-      img.map(item => {
-        let meta = this.getMeta(item)
-        if (meta.width > 300) {
-          imgUrl = meta.url
-        }
-      })
+    if(img.length>0){
+      imgUrl = img[0]
     }
+   
+    // let imgss = new Image()
+    // imgss.src =imgUrl
+    // console.log(imgss,imgss.width)
+    // // if (img.length > 0) {
+    // //   let flag = false
+    // //  await Promise.all(img.map(async (item:any) => {
+    // //     if(!flag){
+    // //       let meta:any = await this.getMeta(item)
+    // //       console.log(meta)
+          
+    // //       if (meta.width > 300) {
+    // //         imgUrl = meta.url
+    // //         flag = true
+            
+    // //       }
+    // //     }
+       
+    // //   }))
+ 
+    // // }
 
-    let articleObject = {
-      title: this.articleForm.value.title,
-      body: this.articleForm.value.body,
-      author: this.articleForm.value.author,
-      category: this.articleForm.value.category,
-      date: this.articleForm.value.date,
-      isPublic: this.articleForm.value.isPublic,
-      imgUrl: imgUrl,
-      uuid: this.articleForm.value.uuid
-    }
 
+      let articleObject = {
+        title: this.articleForm.value.title,
+        body: this.articleForm.value.body,
+        author: this.articleForm.value.author,
+        category: this.articleForm.value.category,
+        date: this.articleForm.value.date,
+        isPublic: this.articleForm.value.isPublic,
+        imgUrl: imgUrl,
+        uuid: this.articleForm.value.uuid
+      }
     if (this.article_id) {
       this.updateArticle(articleObject)
     }
@@ -208,7 +234,7 @@ export class AddEditArticleComponent implements OnInit {
   }
 
   goBack() {
-    history.pushState(null, null, window.location.href);
+   
     if(this.isUploading){
       history.pushState(null, null, location.href);
       this.showModal =  true
