@@ -20,7 +20,7 @@ export class ArticleListingComponent implements OnInit {
   selectedDate: any;
   constructor(private crudService: CrudService, private router: Router) {
     this.config = {
-      itemsPerPage: 4,
+      itemsPerPage: 3,
       currentPage: 1,
       totalItems: this.articleList.length
     };
