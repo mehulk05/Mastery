@@ -25,10 +25,10 @@ export class AddEditArticleComponent implements OnInit {
   currentFileUpload: FileUpload;
   percentage: number;
 
-  availableCategory: any = ['Politics', 'Social', 'Economic', 'Cultural','Historical']
+  availableCategory: any = ['Politics', 'Social', 'Economic', 'Cultural', 'Historical']
   @ViewChild('myckeditor') myckeditor: any;
   downloadURL: any;
-  isUploading: boolean =false;
+  isUploading: boolean = false;
   showModal: any;
   isUploaded: boolean;
   constructor(
@@ -46,7 +46,7 @@ export class AddEditArticleComponent implements OnInit {
     history.pushState(null, null, window.location.href);
     this.location.onPopState(() => {
       this.goBack()
-  });
+    });
 
   }
 
@@ -85,7 +85,7 @@ export class AddEditArticleComponent implements OnInit {
       body: ["", Validators.required],
       date: [new Date()],
       author: [this.author?.email],
-      category: ["",Validators.required],
+      category: ["", Validators.required],
       isPublic: [false],
       uuid: [this.author?.uuid]
     });
@@ -95,18 +95,18 @@ export class AddEditArticleComponent implements OnInit {
     this.crudService.startLoader()
     this.crudService.getSingle(article_id, "article").then(data => {
       this.crudService.stopLoader()
-      if(data.data()){
+      if (data.data()) {
         this.aricleData = data.data()
         this.aricleData.id = data?.id
         this.setArticleFormValues(this.aricleData)
-       
+
       }
-      else{
+      else {
         this.toastService.error("Error Fetching Article", "Error")
       }
-    
-      
-      
+
+
+
     }, e => {
       this.toastService.error("Error Fetching Article", "Error")
       this.crudService.stopLoader()
@@ -114,7 +114,7 @@ export class AddEditArticleComponent implements OnInit {
   }
 
   setArticleFormValues(articleData) {
-    if(this.author.role == "admin" || (this.author.role=="user" && this.author.uuid == articleData.uuid)){
+    if (this.author.role == "admin" || (this.author.role == "user" && this.author.uuid == articleData.uuid)) {
       this.articleForm.patchValue({
         title: articleData?.title,
         body: articleData?.body,
@@ -126,10 +126,10 @@ export class AddEditArticleComponent implements OnInit {
       })
     }
 
-    else{
+    else {
       this.toastService.error("You dont have permission to access the document", "Permission Error")
     }
-    
+
   }
 
   getImages(string) {
@@ -149,57 +149,29 @@ export class AddEditArticleComponent implements OnInit {
       img.onerror = reject
       img.src = url
     })
-
-    // var img = new Image();
-    // img.src = url
-    // return img.onload = await function(){
-    //   console.log(img.width)
-    //   return { ht: img.height, width: img.width, url: url }
-    // }
-    
-
   }
 
   async submitForm() {
     let body = this.articleForm.value.body
     let img = await this.getImages(body)
     let imgUrl = "https://neilpatel.com/wp-content/uploads/2017/08/blog.jpg"
-    if(img.length>0){
+    if (img.length > 0) {
       imgUrl = img[0]
+      var p = document.createElement('p')
+      p.innerHTML = imgUrl
+      imgUrl = p.innerText
     }
-   
-    // let imgss = new Image()
-    // imgss.src =imgUrl
-    // console.log(imgss,imgss.width)
-    // // if (img.length > 0) {
-    // //   let flag = false
-    // //  await Promise.all(img.map(async (item:any) => {
-    // //     if(!flag){
-    // //       let meta:any = await this.getMeta(item)
-    // //       console.log(meta)
-          
-    // //       if (meta.width > 300) {
-    // //         imgUrl = meta.url
-    // //         flag = true
-            
-    // //       }
-    // //     }
-       
-    // //   }))
- 
-    // // }
 
-
-      let articleObject = {
-        title: this.articleForm.value.title,
-        body: this.articleForm.value.body,
-        author: this.articleForm.value.author,
-        category: this.articleForm.value.category,
-        date: this.articleForm.value.date,
-        isPublic: this.articleForm.value.isPublic,
-        imgUrl: imgUrl,
-        uuid: this.articleForm.value.uuid
-      }
+    let articleObject = {
+      title: this.articleForm.value.title,
+      body: this.articleForm.value.body,
+      author: this.articleForm.value.author,
+      category: this.articleForm.value.category,
+      date: this.articleForm.value.date,
+      isPublic: this.articleForm.value.isPublic,
+      imgUrl: imgUrl,
+      uuid: this.articleForm.value.uuid
+    }
     if (this.article_id) {
       this.updateArticle(articleObject)
     }
@@ -234,17 +206,17 @@ export class AddEditArticleComponent implements OnInit {
   }
 
   goBack() {
-   
-    if(this.isUploading){
+
+    if (this.isUploading) {
       history.pushState(null, null, location.href);
-      this.showModal =  true
+      this.showModal = true
     }
-    else{
+    else {
       this.router.navigateByUrl("/admin/article-list")
     }
   }
 
-  goBackToArticle(){
+  goBackToArticle() {
     this.router.navigateByUrl("/admin/article-list")
   }
 
@@ -271,8 +243,8 @@ export class AddEditArticleComponent implements OnInit {
               this.isUploading = false
               this.percentage = Math.round(percentage);
               this.percentage = percentage
-            },e=>{
-              this.toastService.error(e,"Error")
+            }, e => {
+              this.toastService.error(e, "Error")
               this.isUploading = false
             })
           });
@@ -284,9 +256,9 @@ export class AddEditArticleComponent implements OnInit {
           event.target.value = "";
         }
       },
-    e=>{
-        this.toastService.error(e,"Error")
-      });
+        e => {
+          this.toastService.error(e, "Error")
+        });
   }
 
 
@@ -303,31 +275,31 @@ export class AddEditArticleComponent implements OnInit {
         })
       },
       error => {
-      
+
       }
     );
   }
 
-  changeCategory(e){
+  changeCategory(e) {
 
-   this.articleForm.patchValue({
-    category:e.target.value
-   })
+    this.articleForm.patchValue({
+      category: e.target.value
+    })
   }
   addUrlToEditor(url) {
-    if(url){
+    if (url) {
       var style = " <img src='" + url + "'  style='max-width: 100%;' class='img-responsive'>";
 
       let innerHtml = this.articleForm.value.body
       this.myckeditor.instance.insertHtml(style)
       this.articleForm.patchValue({ 'body': innerHtml });
     }
-    
+
   }
 
-  hideModal(){
+  hideModal() {
     this.isUploading = false
-    this.showModal =  false
+    this.showModal = false
   }
 
 }

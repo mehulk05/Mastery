@@ -28,7 +28,7 @@ export interface AuthResponseData {
 export class AuthService2 {
     user$:any;
     user = new BehaviorSubject<any>(null);
-    key = environment.firebase.apiKey
+    key = environment.firebaseConfig.apiKey
     userdata: User;
     isAuthenticated: any;
     authChange = new Subject<boolean>();
