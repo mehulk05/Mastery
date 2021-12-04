@@ -49,6 +49,7 @@ export class GalleryListComponent implements OnInit {
           category: e.payload.doc.data()['category'],
           date: e.payload.doc.data()['date'],
           shortDesc: desc,
+          evenDate:e.payload.doc.data()['eventDate'],
           imgUrl: imgUrl,
           author: e.payload.doc.data()['author'],
           isPublic: e.payload.doc.data()["isPublic"]
@@ -123,8 +124,8 @@ export class GalleryListComponent implements OnInit {
     return returnData
   }
 
-  editArticle(article) {
-    this.router.navigateByUrl("/user/article-detail/" + article.key)
+  editGallery(gallery) {
+    this.router.navigateByUrl("/user/gallery-detail/" + gallery.key)
   }
 
   pageChanged(event) {

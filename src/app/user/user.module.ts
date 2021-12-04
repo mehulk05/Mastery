@@ -23,6 +23,7 @@ import { AboutComponent } from './components/about/about.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { DonateComponent } from './components/donate/donate.component';
 import { GalleryListComponent } from './components/gallery-list/gallery-list.component';
+import { GalleryDetailComponent } from './components/gallery-detail/gallery-detail.component';
 
 
 
@@ -40,6 +41,7 @@ import { GalleryListComponent } from './components/gallery-list/gallery-list.com
     AboutComponent,
     DonateComponent,
     GalleryListComponent,
+    GalleryDetailComponent,
   ],
   imports: [
     CommonModule,

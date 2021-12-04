@@ -1,14 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
 import { AboutComponent } from './components/about/about.component';
 import { ArticleDetailComponent } from './components/article-detail/article-detail.component';
 import { ArticleListingComponent } from './components/article-listing/article-listing.component';
 import { BookListingComponent } from './components/book-listing/book-listing.component';
 import { DonateComponent } from './components/donate/donate.component';
+import { GalleryDetailComponent } from './components/gallery-detail/gallery-detail.component';
 import { GalleryListComponent } from './components/gallery-list/gallery-list.component';
 import { LiveEventsComponent } from './components/live-events/live-events.component';
 import { UserWrappperComponent } from './components/user-wrappper/user-wrappper.component';
 import { VideoListingComponent } from './components/video-listing/video-listing.component';
+
 
 const routes: Routes = [
   {
@@ -31,6 +34,12 @@ const routes: Routes = [
         component: ArticleDetailComponent,
       //  canActivate:[UserAuthGuard]
       },
+      {
+        path: 'gallery-detail/:id',
+        component: GalleryDetailComponent,
+      //  canActivate:[UserAuthGuard]
+      },
+
       {
         path: 'article-list',
         component: ArticleListingComponent,
