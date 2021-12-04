@@ -5,6 +5,7 @@ import { SuperAdminAuthGuard } from '@app/shared/services/super-admin-guard.serv
 import { AboutViewComponent } from './components/about-view/about-view.component';
 import { AddEditArticleComponent } from './components/add-edit-article/add-edit-article.component';
 import { AddEditBookComponent } from './components/add-edit-book/add-edit-book.component';
+import { AddEditGalleryComponent } from './components/add-edit-gallery/add-edit-gallery.component';
 import { AddEditLiveEventsComponent } from './components/add-edit-live-events/add-edit-live-events.component';
 import { AddEditUserComponent } from './components/add-edit-user/add-edit-user.component';
 import { AddEditVideosComponent } from './components/add-edit-videos/add-edit-videos.component';
@@ -15,6 +16,8 @@ import { BookListComponent } from './components/book-list/book-list.component';
 import { EditAboutComponent } from './components/edit-about/edit-about.component';
 import { EditDontateComponent } from './components/edit-dontate/edit-dontate.component';
 import { EventListComponent } from './components/event-list/event-list.component';
+import { GalleryListComponent } from './components/gallery-list/gallery-list.component';
+import { GalleryComponent } from './components/gallery/gallery.component';
 import { ForgetPasswordComponent } from './components/reusable/forget-password/forget-password.component';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { VideoListComponent } from './components/video-list/video-list.component';
@@ -37,6 +40,32 @@ const routes: Routes = [
       {
         path:"about",
         component:AboutViewComponent,
+        canActivate:[SuperAdminAuthGuard]
+      },
+
+      {
+        path:"gallery-list",
+        component:GalleryListComponent,
+        canActivate:[SuperAdminAuthGuard]
+      },
+
+      {
+        path:"view-gallery/:id",
+        component:GalleryComponent,
+        canActivate:[SuperAdminAuthGuard]
+      },
+
+
+      {
+        path:"add-gallery",
+        component:AddEditGalleryComponent,
+        canActivate:[SuperAdminAuthGuard]
+      },
+
+
+      {
+        path:"edit-gallery/:id",
+        component:AddEditGalleryComponent,
         canActivate:[SuperAdminAuthGuard]
       },
 

@@ -5,6 +5,7 @@ import { ArticleDetailComponent } from './components/article-detail/article-deta
 import { ArticleListingComponent } from './components/article-listing/article-listing.component';
 import { BookListingComponent } from './components/book-listing/book-listing.component';
 import { DonateComponent } from './components/donate/donate.component';
+import { GalleryListComponent } from './components/gallery-list/gallery-list.component';
 import { LiveEventsComponent } from './components/live-events/live-events.component';
 import { UserWrappperComponent } from './components/user-wrappper/user-wrappper.component';
 import { VideoListingComponent } from './components/video-listing/video-listing.component';
@@ -33,6 +34,11 @@ const routes: Routes = [
       {
         path: 'article-list',
         component: ArticleListingComponent,
+       // canActivate:[UserAuthGuard]
+      },
+      {
+        path: 'gallery-list',
+        component: GalleryListComponent,
        // canActivate:[UserAuthGuard]
       },
       {

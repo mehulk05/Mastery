@@ -29,6 +29,9 @@ import { EditAboutComponent } from './components/edit-about/edit-about.component
 import { ViewDonateComponent } from './components/view-donate/view-donate.component';
 import { EditDontateComponent } from './components/edit-dontate/edit-dontate.component';
 import { SuperAdminAuthGuard } from '@app/shared/services/super-admin-guard.service';
+import { GalleryComponent } from './components/gallery/gallery.component';
+import { AddEditGalleryComponent } from './components/add-edit-gallery/add-edit-gallery.component';
+import { GalleryListComponent } from './components/gallery-list/gallery-list.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +56,9 @@ import { SuperAdminAuthGuard } from '@app/shared/services/super-admin-guard.serv
     
     ViewDonateComponent,
     EditDontateComponent,
+    GalleryComponent,
+    AddEditGalleryComponent,
+    GalleryListComponent,
   ],
   imports: [
     

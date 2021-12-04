@@ -11,6 +11,10 @@
         <ul class="nav-links">
 
             <li *ngIf="isAuthenticated">
+                <a routerLinkActive="active" routerLink="/admin/gallery-list"> Gallery</a>
+            </li>
+
+            <li *ngIf="isAuthenticated">
                 <a routerLinkActive="active" routerLink="/admin/event-list"> Event</a>
             </li>
 

@@ -23,7 +23,7 @@ export class FileuploadService {
           fileUpload.url = downloadURL;
           this.downloadUrl.next(downloadURL)
           fileUpload.name = fileUpload.file.name;
-          this.saveFileData(fileUpload);
+         // this.saveFileData(fileUpload);
         });
       })
     ).subscribe();
@@ -31,9 +31,9 @@ export class FileuploadService {
     return uploadTask.percentageChanges();
   }
 
-  private saveFileData(fileUpload: FileUpload): void {
-    this.db.list(this.basePath).push(fileUpload);
-  }
+  // private saveFileData(fileUpload: FileUpload): void {
+  //   this.db.list(this.basePath).push(fileUpload);
+  // }
 
   getFiles(numberItems): AngularFireList<FileUpload> {
     return this.db.list(this.basePath, ref =>

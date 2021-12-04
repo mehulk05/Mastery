@@ -22,6 +22,7 @@ import { DropDownListAllModule, MultiSelectAllModule } from '@syncfusion/ej2-ang
 import { AboutComponent } from './components/about/about.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { DonateComponent } from './components/donate/donate.component';
+import { GalleryListComponent } from './components/gallery-list/gallery-list.component';
 
 
 
@@ -38,6 +39,7 @@ import { DonateComponent } from './components/donate/donate.component';
     LiveEventsComponent,
     AboutComponent,
     DonateComponent,
+    GalleryListComponent,
   ],
   imports: [
     CommonModule,
