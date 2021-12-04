@@ -56,14 +56,13 @@
                             <br>
 
                             <div class="img-grid">
-                                <div class="row  mx-0">
+                                <div class="row  mx-0 justify-content-center">
                                     <ng-container *ngFor="let img of aritcle?.imgUrl">
                                         <div class="col-lg-4 col-md-6 col-sm-12">
-                                            <div class="bg-img img-responsive text-center" [style.backgroundImage]="'url('+img+')'">
+                                            <div class="bg-img img-responsive text-center">
                                                 <img src={{img}}>
                                             </div>
                                         </div>
-
                                     </ng-container>
                                 </div>
 

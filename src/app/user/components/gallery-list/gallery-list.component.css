@@ -144,6 +144,13 @@ ul.date-filter li {
     object-position: 79%;
 }
 
+.bg-img {
+    border: 1px solid #dadce0;
+    overflow: hidden;
+    border-radius: 12px;
+    margin: 2em 0;
+}
+
 
 /* .img-grid .bg-img {
     min-height: 260px;

@@ -81,6 +81,11 @@ export class AddEditGalleryComponent implements OnInit {
     });
   }
 
+  deleteImage(img){
+    this.galleryimagePaths.splice(this.galleryimagePaths.indexOf(img), 1);
+    this.toastService.success("Image removed Successfully","Success")
+  }
+
   getGallery(gallery_id) {
     this.crudService.startLoader()
     this.crudService.getSingle(gallery_id, "gallery").then(data => {
