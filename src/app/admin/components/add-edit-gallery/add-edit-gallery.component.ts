@@ -35,6 +35,8 @@ export class AddEditGalleryComponent implements OnInit {
   gallerycurrentFileUpload: FileUpload;
   galleryimagePaths =[]
   urlPattern = new RegExp(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/)
+  shouldUndoAction: boolean;
+  copyGalleryImagesPaths: any[] = [];
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -82,8 +84,20 @@ export class AddEditGalleryComponent implements OnInit {
   }
 
   deleteImage(img){
+    this.copyGalleryImagesPaths =JSON.parse(JSON.stringify(this.galleryimagePaths ));
+    this.shouldUndoAction =true
     this.galleryimagePaths.splice(this.galleryimagePaths.indexOf(img), 1);
     this.toastService.success("Image removed Successfully","Success")
+  }
+
+  restoreImages(){
+    this.shouldUndoAction =false
+    this.galleryimagePaths = JSON.parse(JSON.stringify(this.copyGalleryImagesPaths ));
+  }
+  deleteAllImg(){
+    this.copyGalleryImagesPaths =JSON.parse(JSON.stringify(this.galleryimagePaths ));
+    this.shouldUndoAction =true
+    this.galleryimagePaths=[]
   }
 
   getGallery(gallery_id) {
@@ -120,6 +134,7 @@ export class AddEditGalleryComponent implements OnInit {
         uuid: galleryData?.uuid
       })
       this.galleryimagePaths = galleryData.imgUrl
+      this.copyGalleryImagesPaths =JSON.parse(JSON.stringify(this.galleryimagePaths));
     }
 
     else {
@@ -132,6 +147,7 @@ export class AddEditGalleryComponent implements OnInit {
   addUrl(){
     this.galleryForm.value
    this.galleryimagePaths.push(this.galleryForm.value.addUrl)
+   this.copyGalleryImagesPaths =JSON.parse(JSON.stringify(this.galleryimagePaths ));
    this.galleryForm.patchValue({
      addUrl:null
    })
@@ -160,7 +176,6 @@ export class AddEditGalleryComponent implements OnInit {
   }
 
   async creategallery(galleryObject) {
-    console.log(galleryObject)
     this.crudService.startLoader()
     this.crudService.create(galleryObject, "gallery").then(data => {
       this.router.navigateByUrl("/admin/gallery-list")
@@ -223,13 +238,13 @@ export class AddEditGalleryComponent implements OnInit {
       
       const task = this.storage.upload(filePath, img);
       this.percentage = await task.percentageChanges().toPromise();
-      console.log(this.percentage)
       task
         .snapshotChanges()
         .pipe(
           finalize(async () => {
             const singleImgPath = await fileRef.getDownloadURL().toPromise();
             this.galleryimagePaths.push(singleImgPath);
+            this.copyGalleryImagesPaths =JSON.parse(JSON.stringify(this.galleryimagePaths ));
             imagePaths.push(singleImgPath)
             if (imagePaths.length == this.selectedImages.length) {
 
@@ -239,7 +254,6 @@ export class AddEditGalleryComponent implements OnInit {
           })
         ).subscribe(url => {
           if (url) {
-            console.log(url)
             this.selectedFiles = null;
             
           }

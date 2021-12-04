@@ -28,12 +28,6 @@ input.ng-invalid.ng-touched {
     position: relative;
 }
 
-@media screen and (max-width:767px) {
-    .image-upload {
-        right: 0.7em;
-    }
-}
-
 :ng-deep img {
     max-width: 100%;
     height: auto !important;
@@ -80,4 +74,26 @@ input.ng-invalid.ng-touched {
     /* color: #fff; */
     padding: 2px 8px;
     border: solid gainsboro
+}
+
+.action-buttons {
+    display: flex;
+    padding-bottom: 1em;
+    padding-top: 2em;
+}
+
+.preview-imgs .row {
+    border-top: 1px solid gainsboro;
+}
+
+@media screen and (max-width:767px) {
+    .image-upload {
+        right: 0.7em;
+    }
+    .gridview {
+        flex-direction: column;
+    }
+    .grid-child {
+        width: 100%;
+    }
 }
