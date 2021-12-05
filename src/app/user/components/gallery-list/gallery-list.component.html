@@ -19,8 +19,6 @@
                         <a href="javascript:void(0)" (click)="clearFilter()">Clear </a>
                     </div>
                     <hr>
-
-
                 </ng-container>
 
                 <ul class="date-filter" *ngFor="let item of articleListByDate | keyvalue:keyDescOrder">
@@ -42,14 +40,24 @@
 
             <ng-container *ngFor="let aritcle of result | paginate:config">
                 <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="article-column" (click)="editGallery(aritcle)">
+                    <div class="article-column">
                         <div class="card-header">
                             <h5 class="card-title">
-                                <p>
-                                    {{aritcle?.evenDate.toDate() | date:'MMM d, y'}}
-                                </p>
-                                <a href="javascript:void(0)" (click)="editGallery(aritcle)">{{aritcle?.title}}</a>
+                                <div class="card-header-items">
+                                    <a href="javascript:void(0)" (click)="editGallery(aritcle)">{{aritcle?.title}}</a>
+                                    <p class="pt-2">
+                                        {{aritcle?.evenDate.toDate() | date:'MMM d, y'}}
+                                    </p>
+                                </div>
+                                <div class="action-btn">
+                                    <button class="btn btn-outline-primary mr-2" (click)="editGallery(aritcle)">View Details</button>
+                                    <button class="btn btn-outline-primary" (click)="downloadAllImages(aritcle?.imgUrl)">Download All</button>
+                                </div>
+
+
                             </h5>
+
+
                         </div>
 
                         <div class="card-body">

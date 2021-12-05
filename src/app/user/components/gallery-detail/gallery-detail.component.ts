@@ -78,6 +78,20 @@ export class GalleryDetailComponent implements OnInit {
         });
 }
 
+async downloadAllImages(img){
+  img.map(async (data,i)=>{
+    const a = document.createElement("a");
+    a.href = await this.toDataURL(data);
+    a.download = "img"+i+".png";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  })
+  
+}
+
+
+
     // this.getBase64ImageFromURL(img).subscribe(base64data => {
     //   console.log(base64data);
     //   this.base64Image = "data:image/jpg;base64," + base64data;

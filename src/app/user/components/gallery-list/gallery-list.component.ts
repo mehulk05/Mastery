@@ -136,4 +136,24 @@ export class GalleryListComponent implements OnInit {
     return a.key > b.key ? -1 : (b.key > a.key ? 1 : 0);
   }
 
+  async downloadAllImages(img){
+    img.map(async (data,i)=>{
+      const a = document.createElement("a");
+      a.href = await this.toDataURL(data);
+      a.download = "img"+i+".png";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    })
+    
 }
+
+toDataURL(url) {
+return fetch(url).then((response) => {
+        return response.blob();
+    }).then(blob => {
+        return URL.createObjectURL(blob);
+    });
+}
+  }
+
