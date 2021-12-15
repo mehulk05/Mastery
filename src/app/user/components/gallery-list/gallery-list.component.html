@@ -61,11 +61,13 @@
                         </div>
 
                         <div class="card-body">
-                            <br>
+                            <p><b>Total - {{aritcle.imgUrl.length}} images. </b>
+                                <a style="color: rgb(7, 99, 160) !important;" href="javascript(0)" (click)="editGallery(aritcle)">View All </a>
+                            </p>
 
                             <div class="img-grid">
                                 <div class="row  mx-0 justify-content-center">
-                                    <ng-container *ngFor="let img of aritcle?.imgUrl">
+                                    <ng-container *ngFor="let img of aritcle?.imgUrl| slice:0:6;">
                                         <div class="col-lg-4 col-md-6 col-sm-12">
                                             <div class="bg-img img-responsive text-center">
                                                 <img src={{img}}>
