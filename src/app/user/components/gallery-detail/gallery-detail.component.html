@@ -44,24 +44,34 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <button class="btn btn-outline-primary">
-                                <a href="javascript:void(0);" (click)="downloadImage(img)">
-                                    Download
+                            <button class="btn btn-outline-secondary last-btn">
+                                
+                                <a href={{img}} download target="_blank" class="fa fa-eye">
+                                    <span class="text-sm">
+                                        Open Image
+                                    </span>
+                                    
+                                </a>
+                            </button>
+                            <button class="btn btn-outline-primary ml-2">
+                                <a href="javascript:void(0);" class="fa fa-download" (click)="downloadImage(img)">
+                                    <span class="text-sm">
+                                        Download
+                                    </span>
+                                 
                                 </a>
 
                             </button>
 
                             <button class="btn btn-outline-primary ml-2" (click)="downloadAllImages(galleryData.imgUrl)">
-                            Download All Image
+                                <span class="">
+                                    Download All Image        
+                                </span>
+                            
 
                             </button>
 
-                            <button class="btn btn-outline-secondary ml-2">
-                                
-                                <a href={{img}} download target="_blank">
-                                    Open Image
-                                </a>
-                            </button>
+
                         </div>
                     </div>
                     <br>

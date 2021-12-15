@@ -104,6 +104,12 @@ a.fa.fa-share-alt {
     background: #fff;
 }
 
+.fa.fa-github,
+.fa.fa-medium {
+    background-color: #fff;
+    color: #000;
+}
+
 .vertical-center {
     display: flex;
     justify-content: center;

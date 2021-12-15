@@ -177,4 +177,18 @@ ul.date-filter li {
     .datetime-wrapper {
         max-width: 300px;
     }
+    .card-title {
+        flex-direction: column;
+    }
+    .card-title {
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+    .card-header-items {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        width: 100%;
+    }
 }
