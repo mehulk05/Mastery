@@ -60,10 +60,10 @@ export class GalleryListComponent implements OnInit {
       })
       console.log(  this.articleList)
       let grouped_items = _.groupBy(this.articleList, (b: any) =>
-        moment(b.date.toDate()).startOf('month').format('YYYY/MM'));
+        moment(b.evenDate.toDate()).startOf('month').format('YYYY/MM'));
 
       _.values(grouped_items)
-        .forEach(arr => arr.sort((a, b) => moment(a.date).day() - moment(b.date).day()));
+        .forEach(arr => arr.sort((a, b) => moment(a.evenDate).day() - moment(b.evenDate).day()));
 
       this.articleListByDate = grouped_items
       this.crudService.stopLoader()
@@ -97,7 +97,7 @@ export class GalleryListComponent implements OnInit {
     this.isFilter = true
     this.articleList = item.value
     let data = this.articleList.filter(data => {
-      return moment(data.date.toDate()).startOf('month').format('YYYY/MM') == date
+      return moment(data.evenDate.toDate()).startOf('month').format('YYYY/MM') == date
     })
   }
 

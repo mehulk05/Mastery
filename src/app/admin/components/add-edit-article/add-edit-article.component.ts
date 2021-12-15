@@ -65,7 +65,7 @@ export class AddEditArticleComponent implements OnInit {
 
     })
 
-    this.config.extraPlugins = 'colorbutton , justify'
+    this.config.extraPlugins = 'colorbutton , justify,codesnippet'
     // this.config = {
     //   extraPlugins: 'uploadimage',
     //   uploadUrl: 'https://ckeditor.com/apps/ckfinder/3.4.5/core/connector/php/connector.php?command=QuickUpload&type=Files&responseType=json',
