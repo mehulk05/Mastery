@@ -4,6 +4,7 @@ import { CrudService } from '@app/shared/services/crud.service';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { KeyValue } from '@angular/common';
+import { Title, Meta } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-article-listing',
@@ -18,7 +19,7 @@ export class ArticleListingComponent implements OnInit {
   config: any;
   articleListByDate: any
   selectedDate: any;
-  constructor(private crudService: CrudService, private router: Router) {
+  constructor(private crudService: CrudService,  private meta: Meta,private router: Router) {
     this.config = {
       itemsPerPage: 3,
       currentPage: 1,
@@ -28,6 +29,15 @@ export class ArticleListingComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadArticles()
+    this.meta.addTags([
+      { name: 'keywords', content: 'Angular SEO Integration, Music CRUD, Angular Universal' },
+      { name: 'robots', content: 'index, follow' },
+      { name: 'author', content: 'Digamber Singh' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { name: 'date', content: '2019-10-31', scheme: 'YYYY-MM-DD' },
+      { charset: 'UTF-8' }
+    ]);
+    this.meta.updateTag({ name: 'description', content: "Abc" });
   }
 
 

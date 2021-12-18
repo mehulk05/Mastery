@@ -28,8 +28,12 @@
                             "./node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
                             "./node_modules/bootstrap/dist/css/bootstrap.min.css",
                             "src/styles.css"
+
+
                         ],
-                        "scripts": [],
+                        "scripts": [
+
+                        ],
                         "serviceWorker": true,
                         "ngswConfigPath": "ngsw-config.json"
                     },

@@ -81,3 +81,9 @@ p.datetime {
 .detail-img img {
     max-width: 100%;
 }
+
+.detail-body ::ng-deep img {
+    display: flex;
+    margin: 0 auto;
+    padding: 1em;
+}

@@ -38,3 +38,7 @@ input.ng-invalid.ng-touched {
     max-width: 100%;
     height: auto !important;
 }
+
+.content-editor ::ng-deep .ql-editor {
+    min-height: 700px;
+}

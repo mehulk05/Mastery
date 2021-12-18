@@ -44,6 +44,7 @@ import { GalleryDetailComponent } from './components/gallery-detail/gallery-deta
     GalleryDetailComponent,
   ],
   imports: [
+
     CommonModule,
     UserRoutingModule,
     FormsModule,
