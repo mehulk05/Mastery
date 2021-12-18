@@ -87,7 +87,8 @@ export class AddEditArticleComponent implements OnInit {
       author: [this.author?.email],
       category: ["", Validators.required],
       isPublic: [false],
-      uuid: [this.author?.uuid]
+      uuid: [this.author?.uuid],
+      thumbnail:[""]
     });
   }
 
@@ -122,7 +123,8 @@ export class AddEditArticleComponent implements OnInit {
         author: articleData?.author,
         category: articleData?.category,
         isPublic: articleData.isPublic ? articleData.isPublic : false,
-        uuid: articleData?.uuid
+        uuid: articleData?.uuid,
+        thumbnail:articleData?.thumbnail
       })
     }
 
@@ -170,7 +172,8 @@ export class AddEditArticleComponent implements OnInit {
       date: this.articleForm.value.date,
       isPublic: this.articleForm.value.isPublic,
       imgUrl: imgUrl,
-      uuid: this.articleForm.value.uuid
+      uuid: this.articleForm.value.uuid,
+      thumbnail:this.articleForm.value.thumbnail
     }
     if (this.article_id) {
       this.updateArticle(articleObject)
