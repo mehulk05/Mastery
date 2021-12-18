@@ -24,6 +24,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { DonateComponent } from './components/donate/donate.component';
 import { GalleryListComponent } from './components/gallery-list/gallery-list.component';
 import { GalleryDetailComponent } from './components/gallery-detail/gallery-detail.component';
+import { AuthGuard } from '@app/shared/services/auth-guard.service';
 
 
 
@@ -55,6 +56,6 @@ import { GalleryDetailComponent } from './components/gallery-detail/gallery-deta
     MultiSelectAllModule,
     NgxPaginationModule
   ],
-  providers:[]
+  providers:[AuthGuard]
 })
 export class UserModule { }

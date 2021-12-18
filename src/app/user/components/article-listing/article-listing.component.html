@@ -27,10 +27,13 @@
                     <li [ngClass]="item.key ==  selectedDate?'actived' : 'no-actived'" (click)="getArticleByDate(item,item.key)">
                         {{item.key | date:'MMM, y'}} - ({{item.value.length}})
                     </li>
+                    <ul>
 
+                    </ul>
                     <ng-container *ngFor="let i of item.value;let index = j">
-                        <a [ngClass]="item.key==selectedDate?'active': 'no-active'" href="javascript:void(0)" (click)="editArticle(i)"> {{i.title}}</a>
-
+                        <li class="child">
+                            <a [ngClass]="item.key==selectedDate?'active': 'no-active'" href="javascript:void(0)" (click)="editArticle(i)"> {{i.title}}</a>
+                        </li>
                     </ng-container>
                 </ul>
             </div>
@@ -43,7 +46,7 @@
             <ng-container *ngFor="let aritcle of result | paginate:config">
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="article-column" (click)="editArticle(aritcle)">
-                        <div class="article-image" [style.backgroundImage]="'url('+aritcle?.imgUrl+')'">
+                        <div class="article-image" [style.backgroundImage]="'url('+aritcle?.thumbnail+')'">
 
                         </div>
 
