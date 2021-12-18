@@ -21,7 +21,7 @@ export class GalleryListComponent implements OnInit {
   selectedDate: any;
   constructor(private crudService: CrudService, private router: Router) {
     this.config = {
-      itemsPerPage: 3,
+      itemsPerPage: 6,
       currentPage: 1,
       totalItems: this.articleList.length
     };

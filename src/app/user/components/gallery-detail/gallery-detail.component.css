@@ -87,6 +87,8 @@ p.datetime {
     min-height: 260px;
     object-fit: cover;
     object-position: 79%;
+    max-height: 600px;
+    width: 100%;
 }
 
 .article-column {

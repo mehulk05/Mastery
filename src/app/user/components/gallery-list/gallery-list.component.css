@@ -148,6 +148,8 @@ ul.date-filter li {
     min-height: 260px;
     object-fit: cover;
     object-position: 79%;
+    max-height: 300px;
+    width: 100%;
 }
 
 .bg-img {
