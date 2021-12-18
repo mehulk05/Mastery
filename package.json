@@ -8,10 +8,7 @@
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e",
-        "dev:ssr": "ng run mastery:serve-ssr",
-        "serve:ssr": "node dist/mastery/server/main.js",
-        "build:ssr": "ng build --prod && ng run mastery:server:production",
-        "prerender": "ng run mastery:prerender"
+
     },
     "private": true,
     "dependencies": {
