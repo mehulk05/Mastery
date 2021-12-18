@@ -19,7 +19,6 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): Promise<any>{
 
     const token:any = await this.localStorageService.getDataFromIndexedDB("userData")
-    console.log(token)
     if (token) {
       return true
     }

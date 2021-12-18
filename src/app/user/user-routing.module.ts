@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from '@app/shared/services/auth-guard.service';
 
 import { AboutComponent } from './components/about/about.component';
 import { ArticleDetailComponent } from './components/article-detail/article-detail.component';
@@ -38,7 +37,7 @@ const routes: Routes = [
       {
         path: 'gallery-detail/:id',
         component: GalleryDetailComponent,
-         canActivate:[AuthGuard]
+      //  canActivate:[UserAuthGuard]
       },
 
       {
@@ -49,7 +48,7 @@ const routes: Routes = [
       {
         path: 'gallery-list',
         component: GalleryListComponent,
-        canActivate:[AuthGuard]
+       // canActivate:[UserAuthGuard]
       },
       {
         path: 'video-list',

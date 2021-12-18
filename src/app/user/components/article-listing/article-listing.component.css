@@ -86,15 +86,7 @@ svg {
     display: flex;
 }
 
-.datetime .child {
-    margin-left: 15px;
-    margin-top: 8px;
-}
-
-.datetime .child a {
-    padding-left: 0;
-    font-size: 13.5px;
-}
+.datetime {}
 
 .listing-wrapper .row.lisitng {
     width: 78%;
@@ -104,10 +96,6 @@ svg {
 
 .date-filter .no-active {
     display: none;
-}
-
-.date-filter p {
-    margin-bottom: 0px;
 }
 
 .datetime .date-filter .actived {

@@ -1,9 +1,9 @@
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CrudService } from '@app/shared/services/crud.service';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import { isPlatformBrowser, KeyValue } from '@angular/common';
+import { KeyValue } from '@angular/common';
 import { Title, Meta } from '@angular/platform-browser';
 
 @Component({
@@ -19,31 +19,25 @@ export class ArticleListingComponent implements OnInit {
   config: any;
   articleListByDate: any
   selectedDate: any;
-  constructor(private crudService: CrudService,  private meta: Meta,private router: Router,
-    @Inject(PLATFORM_ID) private platformId: any) {
+  constructor(private crudService: CrudService,  private meta: Meta,private router: Router) {
     this.config = {
-      itemsPerPage: 9,
+      itemsPerPage: 3,
       currentPage: 1,
       totalItems: this.articleList.length
     };
   }
 
   ngOnInit(): void {
-    if (isPlatformBrowser(this.platformId)) {
     this.loadArticles()
     this.meta.addTags([
-     
-      { name: 'robots', content: 'index,follow,max-image-preview:large' },
-      { name: 'og:title', content: 'Mehul Kotharis Blogs' },
-      { name: 'og:type', content: 'Website' },
-      { name: 'author', content: 'Mehul Kothari' },
-      { name: 'article:author', content: 'Mehul Kothari' },
-      { name: 'twitter:creator', content: 'Mehul Kothari' },
+      { name: 'keywords', content: 'Angular SEO Integration, Music CRUD, Angular Universal' },
+      { name: 'robots', content: 'index, follow' },
+      { name: 'author', content: 'Digamber Singh' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { name: 'date', content: '2019-10-31', scheme: 'YYYY-MM-DD' },
       { charset: 'UTF-8' }
-    ])
-    }
-    
+    ]);
+    this.meta.updateTag({ name: 'description', content: "Abc" });
   }
 
 
@@ -64,26 +58,12 @@ export class ArticleListingComponent implements OnInit {
           shortDesc: desc,
           imgUrl: imgUrl,
           author: e.payload.doc.data()['author'],
-          isPublic: e.payload.doc.data()["isPublic"],
-          thumbnail:e.payload.doc.data()["thumbnail"]
+          isPublic: e.payload.doc.data()["isPublic"]
         };
       })
       this.articleList = this.articleList.filter(data => {
-        this.meta.addTags([
-          { name: 'keywords', content: data.title}, 
-          { name: 'description', content: data.body},
-          { name: 'og:image', content:data.imgUrl },
-          { name: 'og:description', content:data.body },
-          { name: 'twitter:image:src', content:data.imgUrl },
-          { name: 'og:image', content:data.imgUrl },
-          { name: 'og:image', content:data.imgUrl },
-
-
-        ])
-        data.thumbnail = data.thumbnail?data.thumbnail : data.imgUrl
         return data.isPublic == true
       })
-
 
       let grouped_items = _.groupBy(this.articleList, (b: any) =>
         moment(b.date.toDate()).startOf('month').format('YYYY/MM'));
@@ -93,13 +73,29 @@ export class ArticleListingComponent implements OnInit {
 
       this.articleListByDate = grouped_items
       this.crudService.stopLoader()
-      console.log(this.articleList)
     }, e => {
       this.crudService.stopLoader()
     });
   }
 
+  formarArticleBody(articles) {
+    let updatedArticleList = []
+    let publicArticles = []
+    let desc
+    articles.forEach(article => {
+      desc = this.extractContent(article.body)
+      article.shortDesc = desc
+      article.imgUrl = article.imgUrl ? article.imgUrl : 'https://neilpatel.com/wp-content/uploads/2017/08/blog.jpg'
+      article.isPublic = article.isPublic ? article.isPublic : false
+      if (article.isPublic) {
+        publicArticles.push(article)
+      }
 
+      updatedArticleList.push(article)
+    });
+
+    return publicArticles
+  }
 
   getArticleByDate(item, date) {
 

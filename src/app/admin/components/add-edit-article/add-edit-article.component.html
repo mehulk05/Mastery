@@ -52,18 +52,6 @@
                 </div>
             </div>
 
-            <div class="form-row row">
-                <div class="col-md-12">
-                    <label>Thumbnail<span class="error-red">*</span></label>
-                    <div class="form-group">
-                        <input type="text" class="form-control" formControlName="thumbnail">
-                    </div>
-                </div>
-                <div class="preview-img">
-                    <img src={{f.thumbnail.value}} width="400">
-                </div>
-            </div>
-
             <div class="fileupload">
                 <div *ngIf="currentFileUpload" class="progress mt-2">
                     <div class="progress-bar progress-bar-info" role="progressbar" attr.aria-valuenow="{{ percentage }}" aria-valuemin="0" aria-valuemax="100" [ngStyle]="{ width: percentage + '%' }">
